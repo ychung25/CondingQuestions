@@ -3,11 +3,15 @@
 
 #include "stdafx.h"
 #include "Recursion.h"
+#include "ArrayAndPointer.h"
+
 
 int main()
 {
 	DoFactorial();
 	DoFibonacci();
+	DoBinarySearch();
+	DoArraysAndPointers();
 	return 0;
 }
 
