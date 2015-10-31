@@ -3,12 +3,14 @@
 
 #include "stdafx.h"
 #include "Recursion.h"
-#include <random>
+#include "ArrayAndPointer.h"
 
 int main()
 {
 	DoFactorial();
 	DoFibonacci();
+	DoBinarySearch();
+	DoArraysAndPointers();
 	DoMergeSort();
 
 	return 0;

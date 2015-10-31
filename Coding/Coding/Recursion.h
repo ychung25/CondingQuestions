@@ -1,4 +1,6 @@
 #pragma once
+#include <cstdlib>
+#include <ctime>
 
 // Factorial example
 int FactorialLoop(int n)
