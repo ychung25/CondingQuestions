@@ -3,11 +3,14 @@
 
 #include "stdafx.h"
 #include "Recursion.h"
+#include <random>
 
 int main()
 {
 	DoFactorial();
 	DoFibonacci();
+	DoMergeSort();
+
 	return 0;
 }
 
