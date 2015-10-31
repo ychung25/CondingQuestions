@@ -12,6 +12,7 @@ int main()
 	DoBinarySearch();
 	DoArraysAndPointers();
 	DoMergeSort();
+	DoQuickSort();
 
 	return 0;
 }

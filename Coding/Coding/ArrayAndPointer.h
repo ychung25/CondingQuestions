@@ -1,6 +1,13 @@
 #pragma once
 #include <memory>
 
+void DontDoThis(int n, int data[])
+{
+	// int data[n]; <-the size must be constant value.
+	// sizeof(data); <-this return the size of a pointer in byte not the size of an array.
+
+}
+
 // Creating arrays
 void CreateArray()
 {
@@ -12,6 +19,10 @@ void CreateArray()
 
 	int* heapArray2 = (int*)malloc(3 * sizeof(int));
 	free(heapArray2);
+
+	int n = 10;
+	int data[10];
+	DontDoThis(n, data);
 }
 
 // Using arrays

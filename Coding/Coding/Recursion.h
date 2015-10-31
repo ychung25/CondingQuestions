@@ -157,3 +157,126 @@ void DoMergeSort()
 	int data[] = { 2, 1 , -3, 99, -20, 43, 89, 50, -5, -13, 1000 };
 	MergeSort(0, sizeof(data)/sizeof(data[0])-1, data);
 }
+
+// QuickSort v1, something I figured out! A complex.
+void QuickSort1(int start, int end, int data[])
+{
+	if (start >= end)
+	{
+		return;
+	}
+
+	srand(time(NULL));
+	int pivot = (rand() % (end - start + 1)) + start;
+
+	for (int i = start; i <= end;)
+	{
+		if (pivot < i)
+		{
+			if (data[i] < data[pivot])
+			{
+				if (pivot + 1 == i)
+				{
+					int temp = data[i];
+					data[i] = data[pivot];
+					data[pivot] = temp;
+					
+				}
+				else
+				{
+					int temp = data[pivot + 1];
+					data[pivot + 1] = data[pivot];
+					data[pivot] = data[i];
+					data[i] = temp;
+				}
+				pivot++;
+			}
+			else
+			{
+				i++;
+			}
+		}
+		else if (pivot > i)
+		{
+			if (data[i] > data[pivot])
+			{
+				if (pivot - 1 == i)
+				{
+					int temp = data[i];
+					data[i] = data[pivot];
+					data[pivot] = temp;
+
+				}
+				else
+				{
+					int temp = data[pivot - 1];
+					data[pivot - 1] = data[pivot];
+					data[pivot] = data[i];
+					data[i] = temp;
+				}
+				pivot--;
+			}
+			else
+			{
+				i++;
+			}
+		}
+		else if (pivot == i)
+		{
+			i++;
+		}
+	}
+
+	QuickSort1(start, pivot - 1, data);
+	QuickSort1(pivot + 1, end, data);
+}
+
+// Textbook version of QuickSort
+void QuickSort2(int start, int end, int data[])
+{
+	if (start >= end)
+	{
+		return;
+	}
+
+	srand(time(NULL));
+	int pivot = (rand() % (end - start + 1)) + start;
+
+	int g = start;
+	for (int i = start; i <= end; i++)
+	{
+		if (data[i] < data[pivot])
+		{
+			if (pivot == g)
+			{
+				pivot = i;
+			}
+
+			int temp = data[g];
+			data[g] = data[i];
+			data[i] = temp;
+			g++;
+		}
+	}
+
+	int temp = data[g];
+	data[g] = data[pivot];
+	data[pivot] = temp;
+
+	QuickSort2(start, pivot - 1, data);
+	QuickSort2(pivot + 1, end, data);
+}
+
+void DoQuickSort()
+{
+	{
+		int data[] = { 9,6,50,-23,0,100, -40, 4, 5, 6, 0, -1 ,20, 34, 10, 99 };
+		QuickSort1(0, (sizeof(data) / sizeof(data[0])) - 1, data);
+	}
+	{
+		int data[] = { 9,6,50,-23,0,100, -40, 4, 5, 6, 0, -1 ,20, 34, 10, 99 };
+		QuickSort2(0, (sizeof(data) / sizeof(data[0])) - 1, data);
+
+		int breakpoint = 10 * 20;
+	}
+}
