@@ -536,5 +536,39 @@ void DoHanoi()
 	std::wcout << "\n-------tower of hanoi answer------\n";
 	Hanoi(bars, 0, 1);
 	Hanoi(bars, 0, 2);
+}
 
+
+
+
+void moveDisks(int n, char origin, char destination, char buffer) {
+
+	if (n <= 0) return;
+
+	//Move top n - 1 disks from origin to buffer
+	moveDisks(n - 1, origin, buffer, destination);
+
+	//Move nth disk (the bottom disk) from origin to destination
+	std::wcout << "Moving ";
+	std::wcout << n;
+	std::wcout << "th from '";
+	std::wcout << origin;
+	std::wcout << "' to '";
+	std::wcout << destination;
+	std::wcout << "'\n";
+
+	//Move top n - 1 disks from buffer to destination
+	moveDisks(n - 1, buffer, destination, origin);
+}
+
+// This is the textbook version.
+void DoHanoi2()
+{
+	std::wcout << "\n\nTower of Hanoi\n";
+	int diskNumber = 3;
+	char peg1 = 'A';
+	char peg2 = 'B';
+	char peg3 = 'C';
+
+	moveDisks(diskNumber, peg1, peg2, peg3);
 }

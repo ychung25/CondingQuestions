@@ -15,7 +15,9 @@ int main()
 	DoQuickSort();
 	DoPreInPostOrderTraveral();
 	DoBreathFirstSearch();
+	
 	DoHanoi();
+	DoHanoi2();
 
 	return 0;
 }
