@@ -30,6 +30,12 @@
     <ClInclude Include="ArrayAndPointer.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Queue.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Stack.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

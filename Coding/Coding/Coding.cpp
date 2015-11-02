@@ -13,6 +13,9 @@ int main()
 	DoArraysAndPointers();
 	DoMergeSort();
 	DoQuickSort();
+	DoPreInPostOrderTraveral();
+	DoBreathFirstSearch();
+	DoHanoi();
 
 	return 0;
 }

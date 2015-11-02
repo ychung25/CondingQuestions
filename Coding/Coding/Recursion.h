@@ -1,6 +1,10 @@
 #pragma once
+#include <stdio.h>
+#include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include "Stack.h"
+#include "Queue.h"
 
 // Factorial example
 int FactorialLoop(int n)
@@ -279,4 +283,258 @@ void DoQuickSort()
 
 		int breakpoint = 10 * 20;
 	}
+}
+
+struct Node
+{
+	Node* left;
+	Node* right;
+	int data;
+};
+
+void CreateSampleBinaryTree(Node** rootNode)
+{
+	Node* node1 = new Node();
+	node1->left = nullptr;
+	node1->right = nullptr;
+	node1->data = 1;
+	*rootNode = node1;
+
+	Node* node2 = new Node();
+	node2->left = nullptr;
+	node2->right = nullptr;
+	node2->data = 2;
+	node1->left = node2;
+
+	Node* node3 = new Node();
+	node3->left = nullptr;
+	node3->right = nullptr;
+	node3->data = 3;
+	node1->right = node3;
+
+	Node* node4 = new Node();
+	node4->left = nullptr;
+	node4->right = nullptr;
+	node4->data = 4;
+	node2->left = node4;
+
+	Node* node5 = new Node();
+	node5->left = nullptr;
+	node5->right = nullptr;
+	node5->data = 5;
+	node2->right = node5;
+
+	Node* node6 = new Node();
+	node6->left = nullptr;
+	node6->right = nullptr;
+	node6->data = 6;
+	node3->left = node6;
+
+	Node* node7 = new Node();
+	node7->left = nullptr;
+	node7->right = nullptr;
+	node7->data = 7;
+	node3->right = node7;
+}
+
+void TreeTraversal(Node* node)
+{
+	if (node == nullptr)
+		return;
+
+	//std::wcout << node->data; // PreOrder
+	TreeTraversal(node->left);
+	//std::wcout << node->data; // InOrder
+	TreeTraversal(node->right);
+	//std::wcout << node->data; // PostOrder
+}
+
+void DoPreInPostOrderTraveral()
+{
+	Node* rootNode;
+	CreateSampleBinaryTree(&rootNode);
+	TreeTraversal(rootNode);
+}
+
+void BreathFirstSearch(Queue* queue)
+{
+	if (queue->IsEmpty())
+		return;
+
+	Node* node;
+	queue->Deqeue((void**)&node);
+
+	std::wcout << node->data;
+
+	if (node->left != nullptr)
+		queue->Enqueue(node->left);
+	if (node->right != nullptr)
+		queue->Enqueue(node->right);
+
+	BreathFirstSearch(queue);
+}
+
+void DoBreathFirstSearch()
+{
+	Node* rootNode;
+	CreateSampleBinaryTree(&rootNode);
+
+	Queue* queue = new Queue();
+	queue->Enqueue(rootNode);
+	BreathFirstSearch(queue);
+	delete queue;
+}
+
+class HanoiBar
+{
+public:
+	HanoiBar() : size(0) {}
+	~HanoiBar() {}
+
+	void push(int disk)
+	{
+		array[size] = disk;
+		size++;
+	}
+
+	int pop()
+	{
+		size--;
+		return array[size];
+	}
+
+	int peek()
+	{
+		size--;
+		int data = array[size];
+		size++;
+		return data;
+	}
+
+	bool IsCompleted()
+	{
+		bool toReturn = true;
+		if (size == 3)
+		{
+			for (int i = 0; i < size - 1; i++)
+			{
+				if (array[i] < array[i + 1])
+				{
+					toReturn = false;
+				}
+			}
+		}
+		else
+		{
+			toReturn =  false;
+		}
+		
+		return toReturn;
+	}
+
+	HanoiBar& operator= (const HanoiBar& other)
+	{
+		if (this != &other)
+		{
+			size = other.size;
+			for (int i = 0; i < 3; i++)
+			{
+				array[i] = other.array[i];
+			}
+		}
+		return *this;
+	}
+
+	int array[3];
+	int size;
+};
+
+bool g_done = false;
+
+void Hanoi(HanoiBar bars[], int from, int to)
+{
+	if (g_done)
+		return;
+	int disk = bars[from].pop();
+	bars[to].push(disk);
+
+	{
+		HanoiBar b0 = bars[0];
+		HanoiBar b1 = bars[1];
+		HanoiBar b2 = bars[2];
+
+		std::wcout << "\n\n";
+
+		std::wcout << "\n bar1:";
+		for (int i = 0; i < bars[0].size; i++)
+		{
+			std::wcout << bars[0].array[i];
+			std::wcout << ", ";
+		}
+
+		std::wcout << "\n bar2:";
+		for (int i = 0; i < bars[1].size; i++)
+		{
+			std::wcout << bars[1].array[i];
+			std::wcout << ", ";
+		}
+
+		std::wcout << "\n bar3:";
+		for (int i = 0; i < bars[2].size; i++)
+		{
+			std::wcout << bars[2].array[i];
+			std::wcout << ", ";
+		}
+	}
+
+	if (bars[to].IsCompleted())
+	{
+		g_done = true;
+		return;
+	}
+	
+	for (int i = 0; i < 3; i++)
+	{
+		if (i != to)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				if (i != j)
+				{
+					if (bars[i].size > 0)
+					{
+						if (bars[j].size == 0)
+						{
+							HanoiBar barsCopy[3];
+							barsCopy[0] = bars[0];
+							barsCopy[1] = bars[1];
+							barsCopy[2] = bars[2];
+							Hanoi(barsCopy, i, j);
+						}
+						else if (bars[i].peek() < bars[j].peek())
+						{
+							HanoiBar barsCopy[3];
+							barsCopy[0] = bars[0];
+							barsCopy[1] = bars[1];
+							barsCopy[2] = bars[2];
+							Hanoi(barsCopy, i, j);
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+void DoHanoi()
+{
+	HanoiBar bars[3];
+	bars[0].push(3);
+	bars[0].push(2);
+	bars[0].push(1);
+
+	std::wcout << "\n-------tower of hanoi answer------\n";
+	Hanoi(bars, 0, 1);
+	Hanoi(bars, 0, 2);
+
 }
