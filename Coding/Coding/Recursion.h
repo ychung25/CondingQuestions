@@ -385,190 +385,203 @@ void DoBreathFirstSearch()
 	delete queue;
 }
 
-class HanoiBar
+//class HanoiBar
+//{
+//public:
+//	HanoiBar() : size(0) {}
+//	~HanoiBar() {}
+//
+//	void push(int disk)
+//	{
+//		array[size] = disk;
+//		size++;
+//	}
+//
+//	int pop()
+//	{
+//		size--;
+//		return array[size];
+//	}
+//
+//	int peek()
+//	{
+//		size--;
+//		int data = array[size];
+//		size++;
+//		return data;
+//	}
+//
+//	bool IsCompleted()
+//	{
+//		bool toReturn = true;
+//		if (size == 3)
+//		{
+//			for (int i = 0; i < size - 1; i++)
+//			{
+//				if (array[i] < array[i + 1])
+//				{
+//					toReturn = false;
+//				}
+//			}
+//		}
+//		else
+//		{
+//			toReturn =  false;
+//		}
+//		
+//		return toReturn;
+//	}
+//
+//	HanoiBar& operator= (const HanoiBar& other)
+//	{
+//		if (this != &other)
+//		{
+//			size = other.size;
+//			for (int i = 0; i < 3; i++)
+//			{
+//				array[i] = other.array[i];
+//			}
+//		}
+//		return *this;
+//	}
+//
+//	int array[3];
+//	int size;
+//};
+
+//bool g_done = false;
+//
+//void Hanoi(HanoiBar bars[], int from, int to)
+//{
+//	if (g_done)
+//		return;
+//	int disk = bars[from].pop();
+//	bars[to].push(disk);
+//
+//	{
+//		HanoiBar b0 = bars[0];
+//		HanoiBar b1 = bars[1];
+//		HanoiBar b2 = bars[2];
+//
+//		std::wcout << "\n\n";
+//
+//		std::wcout << "\n bar1:";
+//		for (int i = 0; i < bars[0].size; i++)
+//		{
+//			std::wcout << bars[0].array[i];
+//			std::wcout << ", ";
+//		}
+//
+//		std::wcout << "\n bar2:";
+//		for (int i = 0; i < bars[1].size; i++)
+//		{
+//			std::wcout << bars[1].array[i];
+//			std::wcout << ", ";
+//		}
+//
+//		std::wcout << "\n bar3:";
+//		for (int i = 0; i < bars[2].size; i++)
+//		{
+//			std::wcout << bars[2].array[i];
+//			std::wcout << ", ";
+//		}
+//	}
+//
+//	if (bars[to].IsCompleted())
+//	{
+//		g_done = true;
+//		return;
+//	}
+//	
+//	for (int i = 0; i < 3; i++)
+//	{
+//		if (i != to)
+//		{
+//			for (int j = 0; j < 3; j++)
+//			{
+//				if (i != j)
+//				{
+//					if (bars[i].size > 0)
+//					{
+//						if (bars[j].size == 0)
+//						{
+//							HanoiBar barsCopy[3];
+//							barsCopy[0] = bars[0];
+//							barsCopy[1] = bars[1];
+//							barsCopy[2] = bars[2];
+//							Hanoi(barsCopy, i, j);
+//						}
+//						else if (bars[i].peek() < bars[j].peek())
+//						{
+//							HanoiBar barsCopy[3];
+//							barsCopy[0] = bars[0];
+//							barsCopy[1] = bars[1];
+//							barsCopy[2] = bars[2];
+//							Hanoi(barsCopy, i, j);
+//						}
+//					}
+//				}
+//			}
+//		}
+//	}
+//}
+//
+//void DoHanoi()
+//{
+//	HanoiBar bars[3];
+//	bars[0].push(3);
+//	bars[0].push(2);
+//	bars[0].push(1);
+//
+//	std::wcout << "\n-------tower of hanoi answer------\n";
+//	Hanoi(bars, 0, 1);
+//	Hanoi(bars, 0, 2);
+//}
+
+//void moveDisks(int n, char origin, char destination, char buffer) {
+//
+//	if (n <= 0) return;
+//
+//	//Move top n - 1 disks from origin to buffer
+//	moveDisks(n - 1, origin, buffer, destination);
+//
+//	//Move nth disk (the bottom disk) from origin to destination
+//	std::wcout << "Moving ";
+//	std::wcout << n;
+//	std::wcout << "th from '";
+//	std::wcout << origin;
+//	std::wcout << "' to '";
+//	std::wcout << destination;
+//	std::wcout << "'\n";
+//
+//	//Move top n - 1 disks from buffer to destination
+//	moveDisks(n - 1, buffer, destination, origin);
+//}
+//
+//// This is the textbook version.
+//void DoHanoi2()
+//{
+//	std::wcout << "\n\nTower of Hanoi\n";
+//	int diskNumber = 3;
+//	char peg1 = 'A';
+//	char peg2 = 'B';
+//	char peg3 = 'C';
+//
+//	moveDisks(diskNumber, peg1, peg2, peg3);
+//}
+
+void Hanoi(int n, char origin, char destination, char buffer)
 {
-public:
-	HanoiBar() : size(0) {}
-	~HanoiBar() {}
+	if (n == 0) { return; }
 
-	void push(int disk)
-	{
-		array[size] = disk;
-		size++;
-	}
-
-	int pop()
-	{
-		size--;
-		return array[size];
-	}
-
-	int peek()
-	{
-		size--;
-		int data = array[size];
-		size++;
-		return data;
-	}
-
-	bool IsCompleted()
-	{
-		bool toReturn = true;
-		if (size == 3)
-		{
-			for (int i = 0; i < size - 1; i++)
-			{
-				if (array[i] < array[i + 1])
-				{
-					toReturn = false;
-				}
-			}
-		}
-		else
-		{
-			toReturn =  false;
-		}
-		
-		return toReturn;
-	}
-
-	HanoiBar& operator= (const HanoiBar& other)
-	{
-		if (this != &other)
-		{
-			size = other.size;
-			for (int i = 0; i < 3; i++)
-			{
-				array[i] = other.array[i];
-			}
-		}
-		return *this;
-	}
-
-	int array[3];
-	int size;
-};
-
-bool g_done = false;
-
-void Hanoi(HanoiBar bars[], int from, int to)
-{
-	if (g_done)
-		return;
-	int disk = bars[from].pop();
-	bars[to].push(disk);
-
-	{
-		HanoiBar b0 = bars[0];
-		HanoiBar b1 = bars[1];
-		HanoiBar b2 = bars[2];
-
-		std::wcout << "\n\n";
-
-		std::wcout << "\n bar1:";
-		for (int i = 0; i < bars[0].size; i++)
-		{
-			std::wcout << bars[0].array[i];
-			std::wcout << ", ";
-		}
-
-		std::wcout << "\n bar2:";
-		for (int i = 0; i < bars[1].size; i++)
-		{
-			std::wcout << bars[1].array[i];
-			std::wcout << ", ";
-		}
-
-		std::wcout << "\n bar3:";
-		for (int i = 0; i < bars[2].size; i++)
-		{
-			std::wcout << bars[2].array[i];
-			std::wcout << ", ";
-		}
-	}
-
-	if (bars[to].IsCompleted())
-	{
-		g_done = true;
-		return;
-	}
-	
-	for (int i = 0; i < 3; i++)
-	{
-		if (i != to)
-		{
-			for (int j = 0; j < 3; j++)
-			{
-				if (i != j)
-				{
-					if (bars[i].size > 0)
-					{
-						if (bars[j].size == 0)
-						{
-							HanoiBar barsCopy[3];
-							barsCopy[0] = bars[0];
-							barsCopy[1] = bars[1];
-							barsCopy[2] = bars[2];
-							Hanoi(barsCopy, i, j);
-						}
-						else if (bars[i].peek() < bars[j].peek())
-						{
-							HanoiBar barsCopy[3];
-							barsCopy[0] = bars[0];
-							barsCopy[1] = bars[1];
-							barsCopy[2] = bars[2];
-							Hanoi(barsCopy, i, j);
-						}
-					}
-				}
-			}
-		}
-	}
+	Hanoi(n - 1, origin, buffer, destination);
+	printf("Moving %dth disk from Peg%c to Peg%c\n", n, origin, destination);
+	Hanoi(n - 1, buffer, destination, origin);
 }
 
 void DoHanoi()
 {
-	HanoiBar bars[3];
-	bars[0].push(3);
-	bars[0].push(2);
-	bars[0].push(1);
+	printf("\nTower Of Hanoi Solution\n");
 
-	std::wcout << "\n-------tower of hanoi answer------\n";
-	Hanoi(bars, 0, 1);
-	Hanoi(bars, 0, 2);
-}
-
-
-
-
-void moveDisks(int n, char origin, char destination, char buffer) {
-
-	if (n <= 0) return;
-
-	//Move top n - 1 disks from origin to buffer
-	moveDisks(n - 1, origin, buffer, destination);
-
-	//Move nth disk (the bottom disk) from origin to destination
-	std::wcout << "Moving ";
-	std::wcout << n;
-	std::wcout << "th from '";
-	std::wcout << origin;
-	std::wcout << "' to '";
-	std::wcout << destination;
-	std::wcout << "'\n";
-
-	//Move top n - 1 disks from buffer to destination
-	moveDisks(n - 1, buffer, destination, origin);
-}
-
-// This is the textbook version.
-void DoHanoi2()
-{
-	std::wcout << "\n\nTower of Hanoi\n";
-	int diskNumber = 3;
-	char peg1 = 'A';
-	char peg2 = 'B';
-	char peg3 = 'C';
-
-	moveDisks(diskNumber, peg1, peg2, peg3);
+	Hanoi(3, 'A', 'C', 'B');
 }
