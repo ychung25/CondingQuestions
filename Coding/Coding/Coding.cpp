@@ -20,6 +20,7 @@ int main()
 	DoBinaryString();
 
 
+
 	return 0;
 }
 
