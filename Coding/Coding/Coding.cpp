@@ -16,6 +16,8 @@ int main()
 	DoPreInPostOrderTraveral();
 	DoBreathFirstSearch();
 	DoHanoi();
+	DoKString();
+	DoBinaryString();
 
 	return 0;
 }

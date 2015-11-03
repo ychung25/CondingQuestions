@@ -585,3 +585,48 @@ void DoHanoi()
 
 	Hanoi(3, 'A', 'C', 'B');
 }
+
+void KString(int n, char string[], int k, char charSet[])
+{
+	if (n == 0)
+	{
+		printf("%s\n", string);
+		return;
+	}
+
+	for (int i = 0; i < k; i++)
+	{
+		string[n - 1] = charSet[i];
+		KString(n - 1, string, k, charSet);
+	}
+}
+
+void DoKString()
+{
+	char string[4];
+	string[3] = '\0';
+	char charSet[] = { 'A','B','C', 'D' };
+	KString(3, string, 4, charSet);
+}
+
+void BinaryString(int n, char string[])
+{
+	if (n == 0)
+	{
+		printf("%s\n", string);
+		return;
+	}
+
+	string[n - 1] = '0';
+	BinaryString(n - 1, string);
+	string[n - 1] = '1';
+	BinaryString(n - 1, string);
+}
+
+void DoBinaryString()
+{
+	printf("---- Binary Strings---\n");
+	char string[5];
+	string[4] = '\0';
+	BinaryString(4, string);
+}
