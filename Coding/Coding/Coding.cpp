@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "Recursion.h"
 #include "ArrayAndPointer.h"
+#include "SinglyLinkedList.h"
+#include "DoublyLinkedList.h"
 
 int main()
 {
@@ -18,6 +20,8 @@ int main()
 	DoHanoi();
 	DoKString();
 	DoBinaryString();
+	DoSinglyLinkedList();
+	DoDoublyLinkedList();
 
 
 
