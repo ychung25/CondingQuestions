@@ -6,6 +6,7 @@
 #include "ArrayAndPointer.h"
 #include "SinglyLinkedList.h"
 #include "DoublyLinkedList.h"
+#include "CircularLinkedList.h"
 
 int main()
 {
@@ -22,6 +23,7 @@ int main()
 	DoBinaryString();
 	DoSinglyLinkedList();
 	DoDoublyLinkedList();
+	DoCircularLinkedList();
 
 
 
