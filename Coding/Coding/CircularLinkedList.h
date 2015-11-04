@@ -151,6 +151,7 @@ void DoCircularLinkedList()
 	cll.InsertAfterTarget(&node6, &node7);
 	cll.Traverse();
 
+
 	cll.RemoveAfterTarget(&node1);
 	cll.RemoveBeforeTarget(&node1);
 	cll.Traverse();
