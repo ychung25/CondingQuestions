@@ -46,6 +46,8 @@ public:
 		{
 			target->p = node;
 			node->p = target;
+			m_head = target;
+			m_tail = node;
 		}
 		else
 		{
@@ -77,6 +79,51 @@ public:
 				m_tail = node;
 			}
 
+		}
+	}
+
+	void InsertBefore(XORNode* target, XORNode* node)
+	{
+		if (target->p == nullptr)
+		{
+			target->p = node;
+			node->p = target;
+			m_head = node;
+			m_tail = target;
+		}
+		else
+		{
+			XORNode* prev = 0;
+			XORNode* prevPrev = 0;
+			XORNode* current = m_head;
+			while (current != target)
+			{
+				if (prev)
+				{
+					prevPrev = prev;
+				}
+				XORNode* temp = current;
+				current = (XORNode*)((unsigned long long)(current->p) ^ (unsigned long long)(prev));
+				prev = temp;
+			}
+
+			XORNode* next = (XORNode*)((unsigned long long)(prev) ^ (unsigned long long)(target->p));
+			
+			target->p = (XORNode*)((unsigned long long)(node) ^ (unsigned long long)(next));
+			
+			if (prev)
+			{
+				node->p = (XORNode*)((unsigned long long)(prev) ^ (unsigned long long)(target));
+				if (prevPrev)
+				{
+					prev->p = (XORNode*)((unsigned long long)(prevPrev) ^ (unsigned long long)(node));
+				}
+			}
+			else
+			{
+				node->p = target;
+				m_head = node;
+			}
 		}
 	}
 
@@ -127,6 +174,8 @@ void DoXORDoublyLinkedList()
 	XORNode node5(5);
 	XORNode node6(6);
 	XORNode node7(7);
+	XORNode node8(8);
+	XORNode node9(9);
 
 	XORDDL xordll;
 	xordll.Insert(&node1);
@@ -136,6 +185,8 @@ void DoXORDoublyLinkedList()
 	xordll.InsertAfter(&node4, &node5);
 	xordll.InsertAfter(&node6, &node7);
 	xordll.InsertAfter(&node1, &node2);
+	xordll.Insert(&node9);
+	xordll.InsertBefore(&node9, &node8);
 	xordll.TraverserForward();
 	xordll.TraverseBackward();
 }
