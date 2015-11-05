@@ -96,4 +96,5 @@ void DoXORDoublyLinkedList()
 	xordll.Insert(&node6);
 	xordll.TraverserForward();
 	xordll.TraverseBackward();
+
 }
