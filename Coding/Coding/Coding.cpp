@@ -11,6 +11,7 @@
 
 int main()
 {
+	// Recursion
 	DoFactorial();
 	DoFibonacci();
 	DoBinarySearch();
@@ -22,6 +23,8 @@ int main()
 	DoHanoi();
 	DoKString();
 	DoBinaryString();
+
+	// Linked List
 	DoSinglyLinkedList();
 	DoDoublyLinkedList();
 	DoCircularLinkedList();
