@@ -7,6 +7,7 @@
 #include "SinglyLinkedList.h"
 #include "DoublyLinkedList.h"
 #include "CircularLinkedList.h"
+#include "XORDoublyLinkedList.h"
 
 int main()
 {
@@ -24,6 +25,7 @@ int main()
 	DoSinglyLinkedList();
 	DoDoublyLinkedList();
 	DoCircularLinkedList();
+	DoXORDoublyLinkedList();
 
 
 
