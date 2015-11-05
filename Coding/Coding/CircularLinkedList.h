@@ -118,7 +118,6 @@ public:
 	{
 		CLLNode* first = m_head;
 		CLLNode* second = m_head;
-
 		while (second != nullptr)
 		{
 			first = first->next;
