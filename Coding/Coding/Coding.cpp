@@ -8,27 +8,37 @@
 #include "DoublyLinkedList.h"
 #include "CircularLinkedList.h"
 #include "XORDoublyLinkedList.h"
+#include "HashTable.h"
+
+#include "LinkedListQuestions.h"
 
 int main()
 {
-	// Recursion
+	// [Array and pointer]
+	DoArraysAndPointers();
+
+	// [Recursion]
 	DoFactorial();
 	DoFibonacci();
 	DoBinarySearch();
-	DoArraysAndPointers();
 	DoMergeSort();
 	DoQuickSort();
 	DoPreInPostOrderTraveral();
 	DoBreathFirstSearch();
 	DoHanoi();
-	DoKString();
 	DoBinaryString();
+	DoKString();
 
-	// Linked List
+	// [Linked List]
+	// Becareful with head & tail edge cases
 	DoSinglyLinkedList();
 	DoDoublyLinkedList();
 	DoCircularLinkedList();
 	DoXORDoublyLinkedList();
+
+	LinkedListQuestions::DoLinkedListQuestions();
+
+	HashTable::DoHashTable();
 
 
 

@@ -127,6 +127,17 @@ void ArrayOfArrays()
 	int data = *(*(arrayOfArrays + 1) + 1); // should be 200;
 }
 
+void Alias()
+{
+	int data = 10;
+	int& aliasToData = data;
+	aliasToData = 20;
+	if (data == 20)
+	{
+		// yeah the data changed!
+	}
+}
+
 void DoArraysAndPointers()
 {
 	CreateArray();
@@ -136,4 +147,5 @@ void DoArraysAndPointers()
 	InAndOutArray();
 	TwoDimensionArray();
 	ArrayOfArrays();
+	Alias();
 }

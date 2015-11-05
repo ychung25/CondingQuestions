@@ -148,6 +148,8 @@
     <ClInclude Include="ArrayAndPointer.h" />
     <ClInclude Include="CircularLinkedList.h" />
     <ClInclude Include="DoublyLinkedList.h" />
+    <ClInclude Include="HashTable.h" />
+    <ClInclude Include="LinkedListQuestions.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="Recursion.h" />
     <ClInclude Include="SinglyLinkedList.h" />

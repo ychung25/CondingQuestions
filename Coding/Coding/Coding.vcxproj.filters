@@ -48,6 +48,12 @@
     <ClInclude Include="XORDoublyLinkedList.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="LinkedListQuestions.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HashTable.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
