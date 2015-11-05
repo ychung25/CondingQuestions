@@ -114,6 +114,30 @@ public:
 		}
 	}
 
+	bool IsItCircular()
+	{
+		CLLNode* first = m_head;
+		CLLNode* second = m_head;
+
+		while (second != nullptr)
+		{
+			first = first->next;
+			
+			CLLNode* next = second->next;
+			second = next;
+			if (second)
+			{
+				second = second->next;
+			}
+
+			if (first == second)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
 	void Traverse()
 	{
 		printf("DLL content");
@@ -155,4 +179,5 @@ void DoCircularLinkedList()
 	cll.RemoveAfterTarget(&node1);
 	cll.RemoveBeforeTarget(&node1);
 	cll.Traverse();
+	cll.IsItCircular();
 }

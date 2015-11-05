@@ -40,6 +40,46 @@ public:
 		}
 	}
 
+	void InsertAfter(XORNode* target, XORNode* node)
+	{
+		if (target->p == nullptr)
+		{
+			target->p = node;
+			node->p = target;
+		}
+		else
+		{
+			XORNode* prev = 0;
+			XORNode* current = m_head;
+			while (current != target)
+			{
+				XORNode* temp = current;
+				current  = (XORNode*)((unsigned long long)(current->p) ^ (unsigned long long)prev);
+				prev = temp;
+			}
+
+			XORNode* next = (XORNode*)((unsigned long long)(target->p) ^ (unsigned long long)prev);
+			XORNode* nextNext = 0;
+			if (next)
+			{
+				nextNext = (XORNode*)((unsigned long long)(next->p) ^ (unsigned long long)target);
+			}
+
+			node->p = (XORNode*)((unsigned long long)target ^ (unsigned long long)next);
+			target->p = (XORNode*)((unsigned long long)prev ^ (unsigned long long)node);
+			if (next)
+			{
+				next->p = (XORNode*)((unsigned long long)node ^ (unsigned long long)nextNext);
+			}
+			
+			if (!next)
+			{
+				m_tail = node;
+			}
+
+		}
+	}
+
 	void TraverserForward()
 	{
 		printf("XORDLL traverse forward ");
@@ -86,15 +126,16 @@ void DoXORDoublyLinkedList()
 	XORNode node4(4);
 	XORNode node5(5);
 	XORNode node6(6);
+	XORNode node7(7);
 
 	XORDDL xordll;
 	xordll.Insert(&node1);
-	xordll.Insert(&node2);
 	xordll.Insert(&node3);
 	xordll.Insert(&node4);
-	xordll.Insert(&node5);
 	xordll.Insert(&node6);
+	xordll.InsertAfter(&node4, &node5);
+	xordll.InsertAfter(&node6, &node7);
+	xordll.InsertAfter(&node1, &node2);
 	xordll.TraverserForward();
 	xordll.TraverseBackward();
-
 }
