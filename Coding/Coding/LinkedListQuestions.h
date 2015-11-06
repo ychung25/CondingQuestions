@@ -77,7 +77,7 @@ namespace LinkedListQuestions
 	}
 
 	/* Find the nth element from the end of the Single Linked List
-	by using twp pointer*/
+	by using two pointer*/
 	Node* FindNthFromEndV4(Node* node, int nth)
 	{
 		Node* current = node;
@@ -102,6 +102,28 @@ namespace LinkedListQuestions
 		}
 
 		return following;
+	}
+
+	Node* ReverseLinkedList(Node* head);
+
+	/* Find the nth element from the end of the Single Linked List
+	by using twp pointer*/
+	Node* FindNthFromEndV5(Node* node, int nth)
+	{
+		Node* reversedLinkedList = ReverseLinkedList(node);
+		Node* current = reversedLinkedList;
+		int i = 0;
+		while (current)
+		{
+			if (i == nth)
+			{
+				return current;
+			}
+			current = current->next;
+			i++;
+		}
+
+		return current;
 	}
 	
 
@@ -187,9 +209,105 @@ namespace LinkedListQuestions
 		*head = node1;
 	}
 
-	void DeleteSampleLinkedList(Node* head)
+	void CreateCyleLinkedList(Node** head)
 	{
+		Node* node1 = new Node();
+		Node* node2 = new Node();
+		Node* node3 = new Node();
+		Node* node4 = new Node();
+		Node* node5 = new Node();
+		Node* node6 = new Node();
+		Node* node7 = new Node();
+		Node* node8 = new Node();
 
+		node1->data = 1;
+		node1->next = node2;
+		node1->prev = nullptr;
+
+		node2->data = 2;
+		node2->next = node3;
+		node2->prev = nullptr;
+
+		node3->data = 3;
+		node3->next = node4;
+		node3->prev = nullptr;
+
+		node4->data = 4;
+		node4->next = node5;
+		node4->prev = nullptr;
+
+		node5->data = 5;
+		node5->next = node6;
+		node5->prev = nullptr;
+
+		node6->data = 6;
+		node6->next = node7;
+		node6->prev = nullptr;
+
+		node7->data = 7;
+		node7->next = node3;
+		node7->prev = nullptr;
+
+		*head = node1;
+	}
+
+	bool DetectCycle(Node* start, Node** cycleStartPoint)
+	{
+		bool result = false;
+		Node* slow = start;
+		Node* fast = start;
+
+		while (slow && fast)
+		{
+			slow = slow->next;
+			
+			fast = fast->next;
+			if (!fast)
+			{
+				break;
+			}
+			fast = fast->next;
+
+			if (slow == fast)
+			{
+				result = true;
+				break;
+			}
+		}
+
+		if (result)
+		{
+			slow = start;
+
+			while (slow != fast)
+			{
+				slow = slow->next;
+				fast = fast->next;
+			}
+			*cycleStartPoint = slow;
+		}
+
+		return result;
+	}
+
+	void DeleteLinkedList(Node* head)
+	{
+		Node* current = head;
+
+		Node* cycleStartPoint = 0;
+		bool hasCycle = DetectCycle(head, &cycleStartPoint);
+
+		while (current)
+		{
+			Node* next = current->next;
+			delete current;
+			current = next;
+
+			if (next == cycleStartPoint)
+			{
+				break;
+			}
+		}
 	}
 
 	void DoLinkedListQuestions()
@@ -197,8 +315,6 @@ namespace LinkedListQuestions
 		{
 			Node* head = 0;
 			CreateSampleLinkedList(&head);
-
-			Node* reversedLL =  ReverseLinkedList(head);
 
 			int nth = 3;
 
@@ -212,9 +328,15 @@ namespace LinkedListQuestions
 
 			result = FindNthFromEndV4(current, nth);
 
+			result = FindNthFromEndV5(current, nth);
 
-			int stop = 10;
+			DeleteLinkedList(head);
+			DeleteLinkedList(result);
 
+			Node* cycleStartPoint;
+			CreateCyleLinkedList(&head);
+			bool hasCycle = DetectCycle(head, &cycleStartPoint);
+			DeleteLinkedList(head);
 		}
 	}
 }
