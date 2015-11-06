@@ -308,7 +308,7 @@ namespace LinkedListQuestions
 		}
 	}
 
-	Node* ReverseLinkedList(Node* head)
+	Node* ReverseLinkedListV1(Node* head)
 	{
 		Node* current = head;
 		Node* temp = 0;
@@ -325,6 +325,77 @@ namespace LinkedListQuestions
 		return temp;
 	}
 
+	Node* ReversLinkedListV2(Node* node, Node** newHead)
+	{
+		if (node)
+		{
+			Node* prev = ReversLinkedListV2(node->next, newHead);
+			if (prev)
+			{
+				prev->next = node;
+			}
+			else
+			{
+				*newHead = node;
+			}
+
+			node->next = 0;
+		}
+
+		return node;
+	}
+
+	/* Two linked list meeting up at some point, find the meeting point*/
+	void FindTheMeetingPoint(Node* headA, Node* headB, Node** meetingPoint)
+	{
+		Node* currentA = headA;
+		Node* currentB = headB;
+
+		int lengthA = 0;
+		int lengthB = 0;
+
+		while (currentA)
+		{
+			lengthA++;
+			currentA = currentA->next;
+		}
+		while (currentB)
+		{
+			lengthB++;
+			currentB = currentB->next;
+		}
+
+		int diff = lengthA - lengthB;
+		if (diff < 0)
+		{
+			diff *= -1;
+		}
+
+		currentA = headA;
+		currentB = headB;
+		if (lengthA > lengthB)
+		{
+			for (int i = 0; i < diff; i++)
+			{
+				currentA = currentA->next;
+			}
+		}
+		else
+		{
+			for (int i = 0; i < diff; i++)
+			{
+				currentB = currentB->next;
+			}
+		}
+
+		while (currentA != currentB)
+		{
+			currentA = currentA->next;
+			currentB = currentB->next;
+		}
+
+		*meetingPoint =  currentA;
+	}
 
 	void TraverseLinkedList(Node* node)
 	{
@@ -335,6 +406,7 @@ namespace LinkedListQuestions
 		}
 	}
 
+
 	void DoLinkedListQuestions()
 	{
 		{
@@ -342,8 +414,8 @@ namespace LinkedListQuestions
 			CreateSampleLinkedList(&head);
 
 			int nth = 3;
-
 			Node* current = head;
+
 			Node* result = FindNthFromEndV1(current, nth);
 
 			int nthTemp = nth;
@@ -355,16 +427,63 @@ namespace LinkedListQuestions
 
 			result = FindNthFromEndV5(current, nth);
 
-			Node* reversedLinkedList = ReverseLinkedList(current);
+			DeleteLinkedList(head);
+		}
+
+		{
+			Node* head = 0;
+			CreateSampleLinkedList(&head);
+
+			Node* current = head;
+
+			Node* reversedLinkedList = ReverseLinkedListV1(current);
 			TraverseLinkedList(reversedLinkedList);
 
-			DeleteLinkedList(head);
-			DeleteLinkedList(result);
+			Node* newReversedHead;
+			ReversLinkedListV2(reversedLinkedList, &newReversedHead);
+			TraverseLinkedList(newReversedHead);
+
+			DeleteLinkedList(newReversedHead);
+		}
+
+		{
+			Node* head = 0;
+			CreateSampleLinkedList(&head);
+
+			Node* current = head;
 
 			Node* cycleStartPoint;
-			CreateCyleLinkedList(&head);
-			bool hasCycle = DetectCycle(head, &cycleStartPoint);
-			DeleteLinkedList(head);
+			CreateCyleLinkedList(&current);
+			bool hasCycle = DetectCycle(current, &cycleStartPoint);
+			DeleteLinkedList(current);
+		}
+
+		{
+			Node* firstHead = 0;
+			CreateSampleLinkedList(&firstHead);
+
+			Node* secondHead = 0;
+			CreateSampleLinkedList(&secondHead);
+
+			Node* firstLinkedList = firstHead;
+			Node* secondLinkedList = secondHead;
+
+			for (int i = 0; i < 3; i++)
+			{
+				firstLinkedList = firstLinkedList->next;
+			}
+
+			while (secondLinkedList->next)
+			{
+				secondLinkedList = secondLinkedList->next;
+			}
+
+			secondLinkedList->next = firstLinkedList;
+
+			Node* meetingPoint = 0;
+			FindTheMeetingPoint(firstHead, secondHead, &meetingPoint);
+			int i = 0;
+			i++;
 		}
 	}
 }
