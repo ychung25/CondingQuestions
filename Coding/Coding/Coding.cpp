@@ -38,8 +38,6 @@ int main()
 
 	LinkedListQuestions::DoLinkedListQuestions();
 
-	HashTable::DoHashTable();
-
 
 
 	return 0;

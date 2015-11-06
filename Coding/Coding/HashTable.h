@@ -109,10 +109,4 @@ namespace HashTable
 		int arraySize;
 		Node** array;
 	};
-
-
-	void DoHashTable()
-	{
-
-	}
 }

@@ -14,7 +14,7 @@ void CreateArray()
 	int stackArray[] = { 1,2 };
 	int stackArray2[3];
 
-	int* heapArray = new int[10];
+	int* heapArray = new int[10]; // 	int* heapArray = new int[10](); initializes with 0
 	delete[] heapArray;
 
 	int* heapArray2 = (int*)malloc(3 * sizeof(int));
