@@ -38,8 +38,6 @@ int main()
 
 	LinkedListQuestions::DoLinkedListQuestions();
 
-
-
 	return 0;
 }
 

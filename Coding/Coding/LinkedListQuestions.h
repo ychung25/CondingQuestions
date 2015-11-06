@@ -104,13 +104,13 @@ namespace LinkedListQuestions
 		return following;
 	}
 
-	Node* ReverseLinkedList(Node* head);
+	Node* CreateNewReverseLinkedList(Node* head);
 
 	/* Find the nth element from the end of the Single Linked List
 	by using twp pointer*/
 	Node* FindNthFromEndV5(Node* node, int nth)
 	{
-		Node* reversedLinkedList = ReverseLinkedList(node);
+		Node* reversedLinkedList = CreateNewReverseLinkedList(node);
 		Node* current = reversedLinkedList;
 		int i = 0;
 		while (current)
@@ -127,7 +127,7 @@ namespace LinkedListQuestions
 	}
 	
 
-	Node* ReverseLinkedList(Node* head)
+	Node* CreateNewReverseLinkedList(Node* head)
 	{
 		if (!head) { return 0; }
 		Node* current = head;
@@ -176,7 +176,6 @@ namespace LinkedListQuestions
 		Node* node5 = new Node();
 		Node* node6 = new Node();
 		Node* node7 = new Node();
-		Node* node8 = new Node();
 
 		node1->data = 1;
 		node1->next = node2;
@@ -218,7 +217,6 @@ namespace LinkedListQuestions
 		Node* node5 = new Node();
 		Node* node6 = new Node();
 		Node* node7 = new Node();
-		Node* node8 = new Node();
 
 		node1->data = 1;
 		node1->next = node2;
@@ -310,6 +308,33 @@ namespace LinkedListQuestions
 		}
 	}
 
+	Node* ReverseLinkedList(Node* head)
+	{
+		Node* current = head;
+		Node* temp = 0;
+
+		while (current)
+		{
+			Node* next = current->next;
+			current->next = temp;
+			temp = current;
+			current = next;
+
+		}
+
+		return temp;
+	}
+
+
+	void TraverseLinkedList(Node* node)
+	{
+		while (node)
+		{
+			printf("%d , ", node->data);
+			node = node->next;
+		}
+	}
+
 	void DoLinkedListQuestions()
 	{
 		{
@@ -329,6 +354,9 @@ namespace LinkedListQuestions
 			result = FindNthFromEndV4(current, nth);
 
 			result = FindNthFromEndV5(current, nth);
+
+			Node* reversedLinkedList = ReverseLinkedList(current);
+			TraverseLinkedList(reversedLinkedList);
 
 			DeleteLinkedList(head);
 			DeleteLinkedList(result);
