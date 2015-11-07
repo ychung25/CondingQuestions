@@ -1,4 +1,5 @@
 #pragma once
+#include "Stack.h"
 
 namespace LinkedListQuestions
 {
@@ -345,8 +346,8 @@ namespace LinkedListQuestions
 		return node;
 	}
 
-	/* Two linked list meeting up at some point, find the meeting point*/
-	void FindTheMeetingPoint(Node* headA, Node* headB, Node** meetingPoint)
+	/* Two linked list meeting up at some point, find the meeting point.*/
+	void FindTheMeetingPointV1(Node* headA, Node* headB, Node** meetingPoint)
 	{
 		Node* currentA = headA;
 		Node* currentB = headB;
@@ -397,6 +398,161 @@ namespace LinkedListQuestions
 		*meetingPoint =  currentA;
 	}
 
+	/* Two linked list meeting up at some point, find the meeting point.*/
+	void FindTheMeetingPointV2(Node* headA, Node* headB, Node** meetingPoint)
+	{
+		Node* currentA = headA;
+		Node* currentB = headB;
+		Stack stackA;
+		Stack stackB;
+
+		while (currentA)
+		{
+			stackA.push(currentA);
+			currentA = currentA->next;
+		}
+
+		while (currentB)
+		{
+			stackB.push(currentB);
+			currentB = currentB->next;
+		}
+
+		Node* prev = 0;
+		currentA = (Node*)stackA.pop();
+		currentB = (Node*)stackB.pop();
+		while (currentA == currentB)
+		{
+			prev = currentA;
+			currentA = (Node*)stackA.pop();
+			currentB = (Node*)stackB.pop();
+		}
+
+		*meetingPoint = prev;
+	}
+
+	Node* FindMiddleNodeV1(Node* node)
+	{
+		Node* current = node;
+		int length = 0;
+		
+		while (current)
+		{
+			length++;
+			current = current->next;
+		}
+
+		int mid = 0;
+		if (length % 2)
+		{
+			mid = length / 2;
+		}
+		else
+		{
+			return nullptr;
+		}
+
+		int i = 0;
+
+		current = node;
+		while (i < mid)
+		{
+			current = current->next;
+			i++;
+		}
+
+		return current;
+	}
+
+	Node* FindMiddleNodeV2(Node* node)
+	{
+		Node* slow = node;
+		Node* fast = node;
+
+		while (fast)
+		{
+			Node* next = fast->next;
+			if (!next) { break; }
+
+			fast = next->next;
+			slow = slow->next;
+		}
+
+		if (fast)
+		{
+			return slow;
+		}
+		else
+		{
+			return nullptr;
+		}
+
+	}
+
+	bool IsLinkedListLengthEven(Node* node)
+	{
+		Node* current = node;
+		while (current)
+		{
+			Node* next = current->next;
+			if (!next)
+				break;
+			current = next->next;
+		}
+		if (current)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+	void MergeTwoSortedLinkedList(Node* h1, Node* h2, Node** newHead)
+	{
+		Node* newNode = 0;
+		while (h1 && h2)
+		{
+			Node* temp = 0;
+			if (h1->data <= h2->data)
+			{
+				temp = h1;
+				h1 = h1->next;
+			}
+			else
+			{
+				temp = h2;
+				h2 = h2->next;
+			}
+
+			if (!newNode)
+			{
+				*newHead = temp;
+			}
+			else
+			{
+				newNode->next = temp;
+			}
+			newNode = temp;
+
+
+			Node* tail = h1;
+			if (h2)
+				tail = h2;
+
+			if (!newNode)
+			{
+				newNode = tail;
+				*newHead = newNode;
+			}
+			else
+			{
+				newNode->next = tail;
+			}
+		}
+	}
+
 	void TraverseLinkedList(Node* node)
 	{
 		while (node)
@@ -405,6 +561,12 @@ namespace LinkedListQuestions
 			node = node->next;
 		}
 	}
+
+
+
+
+
+
 
 
 	void DoLinkedListQuestions()
@@ -481,9 +643,53 @@ namespace LinkedListQuestions
 			secondLinkedList->next = firstLinkedList;
 
 			Node* meetingPoint = 0;
-			FindTheMeetingPoint(firstHead, secondHead, &meetingPoint);
-			int i = 0;
-			i++;
+			FindTheMeetingPointV1(firstHead, secondHead, &meetingPoint);
+
+			meetingPoint = 0;
+			FindTheMeetingPointV2(firstHead, secondHead, &meetingPoint);
+		}
+
+		{
+			Node* firstHead = 0;
+			CreateSampleLinkedList(&firstHead);
+
+			Node* current = firstHead;
+			Node* midNode = FindMiddleNodeV1(current);
+
+			midNode = 0;
+			midNode = FindMiddleNodeV2(current);
+			
+			DeleteLinkedList(firstHead);
+		}
+
+		{
+			Node* firstHead = 0;
+			CreateSampleLinkedList(&firstHead);
+
+
+			bool isEven = IsLinkedListLengthEven(firstHead);
+		}
+
+		{
+			Node* nodeA1 = new Node();
+			Node* nodeA2 = new Node();
+			Node* nodeA3 = new Node();
+			nodeA1->data = 10;
+			nodeA2->data = 20;
+			nodeA3->data = 30;
+			nodeA1->next = nodeA2;
+			nodeA2->next = nodeA3;
+			nodeA3->next = 0;
+
+			Node* nodeB1 = new Node();
+			Node* nodeB2 = new Node();
+			nodeB1->data = 5;
+			nodeB2->data = 23;
+			nodeB1->next = nodeB2;
+			nodeB2->next = 0;
+			
+			Node* mergedList = 0;
+			MergeTwoSortedLinkedList(nodeA1, nodeB1, &mergedList);
 		}
 	}
 }

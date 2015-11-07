@@ -33,6 +33,8 @@ public:
 
 	void* pop()
 	{
+		if (!m_tail) { return nullptr; }
+
 		void* data = m_tail->data;
 		if (m_head == m_tail)
 		{
