@@ -693,7 +693,7 @@ namespace LinkedListQuestions
 		return next;
 	}
 
-	void GetTwoCyclesFromOneCycle(Node* node, Node** Cycle1, Node** Cycle2)
+	void GetTwoCyclesFromOneCycleV1(Node* node, Node** Cycle1, Node** Cycle2)
 	{
 		if (!node)
 		{
@@ -737,6 +737,40 @@ namespace LinkedListQuestions
 			fast->next = *Cycle2;
 			slow->next = *Cycle1;
 		}
+	}
+
+	void GetTwoCyclesFromOneCycleV2(Node* head, Node** C1, Node** C2)
+	{
+		if (!head) { *C1 = 0; *C2 = 0; return; }
+		Node* current = head->next;
+		if (head == current)
+		{
+			*C1 = head;
+			*C2 = 0;
+			return;
+		}
+		int length = 1;
+		Node* beforeHead = 0;
+		while (current != head)
+		{
+			beforeHead = current;
+			current = current->next;
+			length++;
+		}
+
+		Node* mid = head;
+		for (int i = 0; i < (length / 2); i++)
+		{
+			mid = mid->next;
+		}
+
+		Node* midNext = mid->next;
+		
+		mid->next = head;
+		beforeHead->next = midNext;
+
+		*C1 = head;
+		*C2 = midNext;
 	}
 
 	void TraverseLinkedList(Node* node)
@@ -923,7 +957,11 @@ namespace LinkedListQuestions
 
 			Node* Cycle1 = 0;
 			Node* Cycle2 = 0;
-			GetTwoCyclesFromOneCycle(nodeA1, &Cycle1, &Cycle2);
+			//GetTwoCyclesFromOneCycleV1(nodeA1, &Cycle1, &Cycle2);
+			GetTwoCyclesFromOneCycleV2(nodeA1, &Cycle1, &Cycle2);
+
+			int i = 0;
+			i++;
 		}
 
 	}
