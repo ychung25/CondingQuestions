@@ -1112,7 +1112,7 @@ namespace LinkedListQuestions
 			//Node* reversedGroup = ReverseKGroupV1(nodeA1, 5);
 			Node* reversedGroup = 0;
 			ReverseKGroupV2(nodeA1, 3, &reversedGroup);
-ufcv			int i = 9;
+			int i = 9;
 			i++;
 		}
 
