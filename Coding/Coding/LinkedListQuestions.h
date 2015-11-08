@@ -693,6 +693,52 @@ namespace LinkedListQuestions
 		return next;
 	}
 
+	void GetTwoCyclesFromOneCycle(Node* node, Node** Cycle1, Node** Cycle2)
+	{
+		if (!node)
+		{
+			*Cycle1 = 0;
+			*Cycle2 = 0;
+			return;
+		}
+
+		Node* beforeSlow = node;
+		Node* slow = node->next;
+		if (slow == node)
+		{
+			*Cycle1 = node;
+			*Cycle2 = 0;
+			return;
+		}
+
+		Node* fast = node->next->next;
+		Node* beforeFast = node->next;
+
+		while (fast != node && fast->next != node)
+		{
+			slow = slow->next;
+			beforeSlow = beforeSlow->next;
+
+			fast = fast->next->next;
+			beforeFast = beforeFast->next->next;
+		}
+
+		if (fast == node)
+		{
+			*Cycle1 = fast;
+			*Cycle2 = slow;
+			beforeFast->next = *Cycle2;
+			beforeSlow->next = *Cycle1;
+		}
+		else
+		{
+			*Cycle1 = fast->next;
+			*Cycle2 = slow->next;
+			fast->next = *Cycle2;
+			slow->next = *Cycle1;
+		}
+	}
+
 	void TraverseLinkedList(Node* node)
 	{
 		while (node)
@@ -856,12 +902,29 @@ namespace LinkedListQuestions
 			Node* mergedList = 0;
 			//ReverseInPairV1(nodeA1, &mergedList);
 			mergedList = ReverseInPairV2(nodeA1);
-
-			int i = 0;
-			i++;
-			
 		}
 
+		{
+			Node* nodeA1 = new Node();
+			Node* nodeA2 = new Node();
+			Node* nodeA3 = new Node();
+			Node* nodeA4 = new Node();
+			Node* nodeA5 = new Node();
+			nodeA1->data = 1;
+			nodeA2->data = 2;
+			nodeA3->data = 3;
+			nodeA4->data = 4;
+			nodeA5->data = 5;
+			nodeA1->next = nodeA2;
+			nodeA2->next = nodeA3;
+			nodeA3->next = nodeA4;
+			nodeA4->next = nodeA5;
+			nodeA5->next = nodeA1;
+
+			Node* Cycle1 = 0;
+			Node* Cycle2 = 0;
+			GetTwoCyclesFromOneCycle(nodeA1, &Cycle1, &Cycle2);
+		}
 
 	}
 }
