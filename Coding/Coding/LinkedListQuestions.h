@@ -884,6 +884,27 @@ namespace LinkedListQuestions
 			*newHead = h;;
 	}
 
+	Node* JosephusCircle(Node* h, int m)
+	{
+		if (!h || (h == h->next)) { return h; }
+
+		Node* c = h;
+		while (1)
+		{
+			Node* p = 0;
+			for (int i = 0; i < m; i++)
+			{
+				p = c;
+				c = c->next;
+				if (p == c)
+					return c;
+			}
+			p->next = c->next;
+			c->next = 0;
+			c = p->next;
+		}
+	}
+
 	void TraverseLinkedList(Node* node)
 	{
 		while (node)
@@ -1116,5 +1137,23 @@ namespace LinkedListQuestions
 			i++;
 		}
 
+		Node* nodeA1 = new Node();
+		Node* nodeA2 = new Node();
+		Node* nodeA3 = new Node();
+		Node* nodeA4 = new Node();
+		Node* nodeA5 = new Node();
+		nodeA1->data = 1;
+		nodeA2->data = 2;
+		nodeA3->data = 3;
+		nodeA4->data = 4;
+		nodeA5->data = 5;
+		nodeA1->next = nodeA2;
+		nodeA2->next = nodeA3;
+		nodeA3->next = nodeA4;
+		nodeA4->next = nodeA5;
+		nodeA5->next = nodeA1;
+
+		Node* lastRemainingNode = 0;
+		lastRemainingNode = JosephusCircle(nodeA1, 3);
 	}
 }
