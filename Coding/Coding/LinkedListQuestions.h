@@ -509,7 +509,7 @@ namespace LinkedListQuestions
 		}
 	}
 
-	void MergeTwoSortedLinkedList(Node* h1, Node* h2, Node** newHead)
+	void MergeTwoSortedLinkedListV1(Node* h1, Node* h2, Node** newHead)
 	{
 		Node* newNode = 0;
 		while (h1 && h2)
@@ -551,6 +551,146 @@ namespace LinkedListQuestions
 				newNode->next = tail;
 			}
 		}
+	}
+
+	void MergeTwoSortedLinkedListV2(Node* h1, Node* h2, Node* newNode, Node** newHead)
+	{
+		if (!h1)
+		{
+			if (!newNode)
+			{
+				*newHead = h2;
+			}
+			else
+			{
+				newNode->next = h2;
+			}
+			return;
+		}
+
+		if (!h2)
+		{
+			if (!newNode)
+			{
+				*newHead = h1;
+			}
+			else
+			{
+				newNode->next = h1;
+			}
+			return;
+		}
+
+		if (h1->data <= h2->data)
+		{
+			if (!newNode)
+			{
+				*newHead = h1;
+			}
+			else
+			{
+				newNode->next = h1;
+			}
+			newNode = h1;
+			h1 = h1->next;
+		}
+		else
+		{
+			if (!newNode)
+			{
+				*newHead = h2;
+			}
+			else
+			{
+				newNode->next = h2;
+			}
+			newNode = h2;
+			h2 = h2->next;
+		}
+
+		MergeTwoSortedLinkedListV2(h1, h2, newNode, newHead);
+	}
+
+	Node* MergeTwoSortedLinkedListV3(Node* h1, Node* h2)
+	{
+		if (!h1)
+		{
+			return h2;
+		}
+		if (!h2)
+		{
+			return h1;
+		}
+
+		if (h1->data <= h2->data)
+		{
+			h1->next = MergeTwoSortedLinkedListV3(h1->next, h2);
+			return h1;
+		}
+		else 
+		{
+			h2->next = MergeTwoSortedLinkedListV3(h1, h2->next);
+			return h2;
+		}
+	}
+
+	void ReverseInPairV1(Node* node, Node** newHead)
+	{
+		Node* current = node;
+		Node* temp = 0;
+		Stack stack;
+		while (current)
+		{
+			stack.push(current);
+			current = current->next;
+
+			if (!current)
+			{
+				if (temp)
+				{
+					temp->next = (Node*)stack.pop();
+				}
+				else
+				{
+					*newHead = (Node*)stack.pop();
+				}
+				return;
+			}
+			stack.push(current);
+
+			if (current)
+			{
+				current = current->next;
+			}
+
+			Node* a = (Node*)stack.pop();
+			Node* b = (Node*)stack.pop();
+
+			a->next = b;
+			if(temp)
+			{
+				temp->next = a;
+			}
+			else
+			{
+				*newHead = a;
+			}
+			temp = b;
+			temp->next = 0;
+		}
+	}
+
+	Node* ReverseInPairV2(Node* node)
+	{
+		if (!node) { return node; }
+		Node* current = node;
+		Node* next = current->next;
+		if (!next) { return node; }
+		Node* nextNext = next->next;
+
+		next->next = current;
+		current->next = ReverseInPairV2(nextNext);
+		return next;
 	}
 
 	void TraverseLinkedList(Node* node)
@@ -671,6 +811,7 @@ namespace LinkedListQuestions
 		}
 
 		{
+
 			Node* nodeA1 = new Node();
 			Node* nodeA2 = new Node();
 			Node* nodeA3 = new Node();
@@ -689,7 +830,38 @@ namespace LinkedListQuestions
 			nodeB2->next = 0;
 			
 			Node* mergedList = 0;
-			MergeTwoSortedLinkedList(nodeA1, nodeB1, &mergedList);
+			//MergeTwoSortedLinkedListV1(nodeA1, nodeB1, &mergedList);
+			//MergeTwoSortedLinkedListV2(nodeA1, nodeB1, 0, &mergedList);
+			Node* temp = MergeTwoSortedLinkedListV3(nodeA1, nodeB1);
 		}
+
+		{
+
+			Node* nodeA1 = new Node();
+			Node* nodeA2 = new Node();
+			Node* nodeA3 = new Node();
+			Node* nodeA4 = new Node();
+			Node* nodeA5 = new Node();
+			nodeA1->data = 1;
+			nodeA2->data = 2;
+			nodeA3->data = 3;
+			nodeA4->data = 4;
+			nodeA5->data = 5;
+			nodeA1->next = nodeA2;
+			nodeA2->next = nodeA3;
+			nodeA3->next = nodeA4;
+			nodeA4->next = nodeA5;
+			nodeA5->next = 0;
+
+			Node* mergedList = 0;
+			//ReverseInPairV1(nodeA1, &mergedList);
+			mergedList = ReverseInPairV2(nodeA1);
+
+			int i = 0;
+			i++;
+			
+		}
+
+
 	}
 }
