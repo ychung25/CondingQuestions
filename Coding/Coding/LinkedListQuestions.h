@@ -773,6 +773,117 @@ namespace LinkedListQuestions
 		*C2 = midNext;
 	}
 
+	bool IsItPalindrome(Node* head)
+	{
+		if (!head) { return true; }
+		Node* current = head;
+		int length = 0;
+		while (current)
+		{
+			length++;
+			current = current->next;
+		}
+
+		current = head;
+		for (int i = 0; i < (length / 2); i++)
+		{
+			current = current->next;
+		}
+
+		Node* prev = current;
+		current = current->next;
+
+		while (current)
+		{
+			Node* temp = current->next;
+			current->next = prev;
+			prev = current;
+			current = temp;
+		}
+		
+		for (int i = 0; i < length / 2; i++)
+		{
+			if (head->data != prev->data)
+			{
+				return false;
+			}
+			head = head->next;
+			prev = prev->next;
+		}
+
+		return true;
+	}
+
+	Node* ReverseKGroupV1(Node* h, int k)
+	{
+		if (!h || k <= 1) { return h; }
+
+		int len = k;
+		Node* c = h;
+		while (c && len > 0)
+		{
+			len--;
+			c = c->next;
+		}
+		if (len)
+			return h;
+
+		c = h;
+		Node* pc = 0;
+		Node* ac = 0;
+
+		for (int i = 0; i < k; i++)
+		{
+			ac = c->next;
+			c->next = pc;
+			pc = c;
+			c = ac;
+			if (!c)
+				break;
+		}
+
+		h->next = ReverseKGroupV1(c, k);
+		return pc;
+	}
+
+	void ReverseKGroupV2(Node* h, int k, Node** newHead)
+	{
+		if (!h || k <= 0) { *newHead = 0; return; }
+		Node* c = h;
+		int len = 0;
+		while (c)
+		{
+			len++;
+			c = c->next;
+		}
+		
+		c = h;
+		Node* ac = 0;
+		Node* pc = 0;
+		Node* x = 0;
+		for (int i = 0; i < (len / k); i++)
+		{
+			Node* temp = c;
+			for (int j = 0; j < k; j++)
+			{
+				ac = c->next;
+				c->next = pc;
+				pc = c;
+				c = ac;
+			}
+			if (x)
+				x->next = pc;
+			if (i == 0)
+				*newHead = pc;
+			x = temp;
+		}
+
+		if (x)
+			x->next = c;
+		else
+			*newHead = h;;
+	}
+
 	void TraverseLinkedList(Node* node)
 	{
 		while (node)
@@ -957,10 +1068,51 @@ namespace LinkedListQuestions
 
 			Node* Cycle1 = 0;
 			Node* Cycle2 = 0;
-			//GetTwoCyclesFromOneCycleV1(nodeA1, &Cycle1, &Cycle2);
-			GetTwoCyclesFromOneCycleV2(nodeA1, &Cycle1, &Cycle2);
+			GetTwoCyclesFromOneCycleV1(nodeA1, &Cycle1, &Cycle2);
+			//GetTwoCyclesFromOneCycleV2(nodeA1, &Cycle1, &Cycle2);
+		}
 
-			int i = 0;
+		{
+			Node* nodeA1 = new Node();
+			Node* nodeA2 = new Node();
+			Node* nodeA3 = new Node();
+			Node* nodeA4 = new Node();
+			Node* nodeA5 = new Node();
+			nodeA1->data = 1;
+			nodeA2->data = 2;
+			nodeA3->data = 3;
+			nodeA4->data = 2;
+			nodeA5->data = 1;
+			nodeA1->next = nodeA2;
+			nodeA2->next = nodeA3;
+			nodeA3->next = nodeA4;
+			nodeA4->next = nodeA5;
+			nodeA5->next = 0;
+
+			bool result = IsItPalindrome(nodeA1);
+		}
+
+		{
+			Node* nodeA1 = new Node();
+			Node* nodeA2 = new Node();
+			Node* nodeA3 = new Node();
+			Node* nodeA4 = new Node();
+			Node* nodeA5 = new Node();
+			nodeA1->data = 1;
+			nodeA2->data = 2;
+			nodeA3->data = 3;
+			nodeA4->data = 4;
+			nodeA5->data = 5;
+			nodeA1->next = nodeA2;
+			nodeA2->next = nodeA3;
+			nodeA3->next = nodeA4;
+			nodeA4->next = nodeA5;
+			nodeA5->next = 0;
+
+			//Node* reversedGroup = ReverseKGroupV1(nodeA1, 5);
+			Node* reversedGroup = 0;
+			ReverseKGroupV2(nodeA1, 3, &reversedGroup);
+ufcv			int i = 9;
 			i++;
 		}
 
