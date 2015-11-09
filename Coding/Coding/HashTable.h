@@ -66,7 +66,7 @@ namespace HashTable
 
 		}
 
-		void* get(unsigned long long  key)
+		void* remove(unsigned long long  key)
 		{
 			int hashPosition = key % arraySize;
 			Node* head = array[hashPosition];
@@ -99,7 +99,26 @@ namespace HashTable
 					delete current;
 					return value;
 				}
-				current->next = current;
+				current = current->next;
+			}
+
+			return nullptr;
+		}
+
+		void* get(unsigned long long  key)
+		{
+			int hashPosition = key % arraySize;
+			Node* head = array[hashPosition];
+
+			Node* current = head;
+			while (current)
+			{
+				KeyValuePair* keyValuePair = current->data;
+				if (keyValuePair->key == key)
+				{
+					return keyValuePair->value;
+				}
+				current = current->next;
 			}
 
 			return nullptr;

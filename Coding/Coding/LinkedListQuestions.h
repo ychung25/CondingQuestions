@@ -1,5 +1,6 @@
 #pragma once
 #include "Stack.h"
+#include "HashTable.h"
 
 namespace LinkedListQuestions
 {
@@ -905,6 +906,41 @@ namespace LinkedListQuestions
 		}
 	}
 
+	/* Assume that Node has 
+	       - 'next' pointer which points to next
+		   - 'prev' pointer which points to random node
+    */
+	void CloneListWithRandomPointerV1(Node* head, Node** newHead)
+	{
+		HashTable::HashTable hash;
+		Node* current = head;
+		*newHead = 0;
+
+		while (current)
+		{
+			Node* copy = new Node();
+			if (*newHead == 0)
+				*newHead = copy;
+			copy->data = current->data;
+			copy->next = 0;
+			copy->prev = 0;
+			hash.Insert((unsigned long long)current, copy);
+			current = current->next;
+		}
+
+		current = head;
+		while (current)
+		{
+			Node* next = (Node*)hash.get((unsigned long long)current->next);
+			Node* prev = (Node*)hash.get((unsigned long long)current->prev);
+			Node* copy = (Node*)hash.get((unsigned long long)current);
+
+			copy->next = next;
+			copy->prev = prev;
+			current = current->next;
+		}
+	}
+
 	void TraverseLinkedList(Node* node)
 	{
 		while (node)
@@ -1137,23 +1173,54 @@ namespace LinkedListQuestions
 			i++;
 		}
 
-		Node* nodeA1 = new Node();
-		Node* nodeA2 = new Node();
-		Node* nodeA3 = new Node();
-		Node* nodeA4 = new Node();
-		Node* nodeA5 = new Node();
-		nodeA1->data = 1;
-		nodeA2->data = 2;
-		nodeA3->data = 3;
-		nodeA4->data = 4;
-		nodeA5->data = 5;
-		nodeA1->next = nodeA2;
-		nodeA2->next = nodeA3;
-		nodeA3->next = nodeA4;
-		nodeA4->next = nodeA5;
-		nodeA5->next = nodeA1;
+		{
+			Node* nodeA1 = new Node();
+			Node* nodeA2 = new Node();
+			Node* nodeA3 = new Node();
+			Node* nodeA4 = new Node();
+			Node* nodeA5 = new Node();
+			nodeA1->data = 1;
+			nodeA2->data = 2;
+			nodeA3->data = 3;
+			nodeA4->data = 4;
+			nodeA5->data = 5;
+			nodeA1->next = nodeA2;
+			nodeA2->next = nodeA3;
+			nodeA3->next = nodeA4;
+			nodeA4->next = nodeA5;
+			nodeA5->next = nodeA1;
 
-		Node* lastRemainingNode = 0;
-		lastRemainingNode = JosephusCircle(nodeA1, 3);
+			Node* lastRemainingNode = 0;
+			lastRemainingNode = JosephusCircle(nodeA1, 3);
+		}
+
+		{
+			Node* nodeA1 = new Node();
+			Node* nodeA2 = new Node();
+			Node* nodeA3 = new Node();
+			Node* nodeA4 = new Node();
+			Node* nodeA5 = new Node();
+			nodeA1->data = 1;
+			nodeA2->data = 2;
+			nodeA3->data = 3;
+			nodeA4->data = 4;
+			nodeA5->data = 5;
+			nodeA1->next = nodeA2;
+			nodeA2->next = nodeA3;
+			nodeA3->next = nodeA4;
+			nodeA4->next = nodeA5;
+			nodeA5->next = 0;
+
+			nodeA1->prev = nodeA3;
+			nodeA2->prev = nodeA1;
+			nodeA3->prev = nodeA2;
+			nodeA4->prev = nodeA5;
+			nodeA5->prev = nodeA3;
+
+			Node* newHead = 0;
+			CloneListWithRandomPointerV1(nodeA1, &newHead);
+			int i = 0;
+			i++;
+		}
 	}
 }
