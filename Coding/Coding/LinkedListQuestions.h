@@ -941,6 +941,59 @@ namespace LinkedListQuestions
 		}
 	}
 
+
+	/* Assume that Node has
+	- 'next' pointer which points to next
+	- 'prev' pointer which points to random node
+	  This one has O(c) space complexity!!!
+	*/
+	void CloneListWithRandomPointerV2(Node* head, Node** newHead)
+	{
+		*newHead = 0;
+		if (!head) { return; }
+
+		Node* before = head;
+		Node* current = head->next;
+		while (before)
+		{
+			Node* copy = new Node();
+			if (!(*newHead))
+				*newHead = copy;
+			copy->data = before->data;
+			before->next = copy;
+			copy->next = current;
+
+			before = current;
+			if (current)
+				current = current->next;
+		}
+
+		current = head;
+		while (current)
+		{
+			Node* copy = current->next;
+			copy->prev = current->prev->next;
+			current = current->next->next;
+		}
+
+		before = head;
+		current = head->next;
+		while (before)
+		{
+			Node* beforeNext = before->next->next;
+			Node* currentNext = 0;
+			if (beforeNext)
+				currentNext = current->next->next;
+
+			before->next = beforeNext;
+			current->next = currentNext;
+
+			before = beforeNext;
+			current = currentNext;
+		}
+
+	}
+
 	void TraverseLinkedList(Node* node)
 	{
 		while (node)
@@ -1218,9 +1271,8 @@ namespace LinkedListQuestions
 			nodeA5->prev = nodeA3;
 
 			Node* newHead = 0;
-			CloneListWithRandomPointerV1(nodeA1, &newHead);
-			int i = 0;
-			i++;
+			//CloneListWithRandomPointerV1(nodeA1, &newHead);
+			CloneListWithRandomPointerV2(nodeA1, &newHead);
 		}
 	}
 }
