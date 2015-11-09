@@ -69,7 +69,7 @@ namespace LinkedListQuestions
 		Node* current = node;
 		while (current)
 		{
-			hashTable.Insert(i, current);
+			hashTable.insert(i, current);
 			current = current->next;
 			i++;
 		}
@@ -924,7 +924,7 @@ namespace LinkedListQuestions
 			copy->data = current->data;
 			copy->next = 0;
 			copy->prev = 0;
-			hash.Insert((unsigned long long)current, copy);
+			hash.insert((unsigned long long)current, copy);
 			current = current->next;
 		}
 
@@ -992,6 +992,57 @@ namespace LinkedListQuestions
 			current = currentNext;
 		}
 
+	}
+
+	void EvenBeforeOdd(Node* head, Node** newHead)
+	{
+		*newHead = 0;
+		if (!head) { return; }
+		
+		Node* odd = 0;
+		Node* oddHead = 0;
+		Node* even = 0;
+		Node* evenHead = 0;
+		Node* current = head;
+
+		while (current)
+		{
+			if ((current->data % 2) == 0)
+			{
+				if (!even)
+				{
+					even = current;
+					evenHead = current;
+				}
+				else
+				{
+					even->next = current;
+					even = current;
+				}
+			}
+			else
+			{
+				if (!odd)
+				{
+					odd = current;
+					oddHead = current;
+				}
+				else
+				{
+					odd->next = current;
+					odd = current;
+				}
+			}
+			
+			current = current->next;
+		}
+
+		if (odd)
+			odd->next = 0;
+		if (even)
+			even->next = oddHead;
+
+		*newHead = evenHead;
 	}
 
 	void TraverseLinkedList(Node* node)
@@ -1273,6 +1324,31 @@ namespace LinkedListQuestions
 			Node* newHead = 0;
 			//CloneListWithRandomPointerV1(nodeA1, &newHead);
 			CloneListWithRandomPointerV2(nodeA1, &newHead);
+		}
+
+		{
+			Node* nodeA1 = new Node();
+			Node* nodeA2 = new Node();
+			Node* nodeA3 = new Node();
+			Node* nodeA4 = new Node();
+			Node* nodeA5 = new Node();
+			nodeA1->data = 1;
+			nodeA2->data = 2;
+			nodeA3->data = 3;
+			nodeA4->data = 4;
+			nodeA5->data = 5;
+			nodeA1->next = nodeA2;
+			nodeA2->next = nodeA3;
+			nodeA3->next = nodeA4;
+			nodeA4->next = nodeA5;
+			nodeA5->next = 0;
+
+			Node* newHead = 0;
+			EvenBeforeOdd(nodeA1, &newHead);
+
+			int i = 0;
+			i++;
+
 		}
 	}
 }
