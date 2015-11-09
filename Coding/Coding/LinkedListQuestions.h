@@ -1045,6 +1045,179 @@ namespace LinkedListQuestions
 		*newHead = evenHead;
 	}
 
+	/* find the last p % k == 0 node 
+	   p = current position of elements (assume the first element is p = 1)
+	   k = any int > 0 */
+	void FindModularNode(Node* head, int k, Node** node)
+	{
+		*node = 0;
+		if (!head || k < 1) { return; }
+
+		int len = 0;
+		Node* current = head;
+		while (current)
+		{
+			len++;
+			if (len % k == 0)
+				*node = current;
+			current = current->next;
+		}
+	}
+
+	/* find n / k  node
+	n = # of elements
+	k = any int > 0 */
+	void FindFractionNode(Node* head, int k, Node** node)
+	{
+		*node = 0;
+		if (!head || k < 1) { return; }
+
+		int len = 0;
+		Node* current = head;
+		Node* fractionNode = 0;
+		
+		while (current)
+		{
+			len++;
+			if (((len - 1) / k) < (len / k))
+			{
+				if (!fractionNode)
+				{
+					fractionNode = head;
+				}
+				else
+				{
+					fractionNode = fractionNode->next;
+				}
+
+			}
+
+			current = current->next;
+		}
+
+		*node = fractionNode;
+	}
+
+	void FindFractionNodeV2(Node* head, int k, Node** node)
+	{
+		*node = 0;
+		if (!head || k < 1) { return; }
+
+		Node* current = head;
+		Node* fractionNode = 0;
+		int i = 0;
+		while (current)
+		{
+			i++;
+			if ((i % k) == 0)
+			{
+				if (!fractionNode)
+					fractionNode = head;
+				else
+					fractionNode = fractionNode->next;
+			}
+
+			current = current->next;
+		}
+
+		*node = fractionNode;
+	}
+
+	/* find n^(1/2) node
+	n = # of elements */
+	void FindRootOfNode(Node* head, Node** node)
+	{
+		*node = 0;
+		if (!head) { return; }
+
+		Node* current = head;
+		Node* hereNode = 0;
+		int len = 0;
+		int here = 1;
+		while (current)
+		{
+			len++;
+			if (here * here < len)
+			{
+				here++;
+				if (!hereNode)
+				{
+					hereNode = head;
+				}
+				else
+				{
+					hereNode = hereNode->next;
+				}
+
+			}
+			current = current->next;
+		}
+
+		*node = hereNode;
+	}
+
+	/* Merge L1 and L1 so that is becomes
+	a1, b1, a2, b2, a3, a4 ...  if length of a > b
+	a1, b1, a2, b2, b3, b4 ... if lenth of a < b*/
+	void MergeWithRule(Node* h1, Node* h2, Node** newHead)
+	{
+		*newHead = 0;
+		if (!h1 && !h2) { return; }
+		if (!h1) { *newHead = h2; return; }
+		if (!h2) { *newHead = h1; return; }
+
+		Node* a = h1;
+		Node* b = h2;
+		while (a && b)
+		{
+			Node* aNext = a->next;
+			Node* bNext = b->next;
+			
+			a->next = b;
+			if (aNext)
+				b->next = aNext;
+
+			a = aNext;
+			b = bNext;
+		}
+
+		*newHead = h1;
+	}
+
+	/* this is the special version of nth/k fraction node.*/
+	float FindMedianInSortedLinkedList(Node* head)
+	{ 
+		if (!head) { return -1; } // error
+		if (!head->next) { return head->data; }
+
+		Node* current = head;
+		Node* median = 0;
+		int i = 0;
+		while (current)
+		{
+			i++;
+			if ((i % 2) == 0)
+			{
+				if (!median)
+					median = head;
+				else
+					median = median->next;
+			}
+
+			current = current->next;
+		}
+
+		if (i % 2 == 0)
+		{
+			return (((median->data + median->next->data) / (float)2));
+		}
+		else
+		{
+			median = median->next;
+			return median->data;
+		}
+	}
+
 	void TraverseLinkedList(Node* node)
 	{
 		while (node)
@@ -1345,10 +1518,88 @@ namespace LinkedListQuestions
 
 			Node* newHead = 0;
 			EvenBeforeOdd(nodeA1, &newHead);
+		}
 
+		{
+			Node* nodeA1 = new Node();
+			Node* nodeA2 = new Node();
+			Node* nodeA3 = new Node();
+			Node* nodeA4 = new Node();
+			Node* nodeA5 = new Node();
+			Node* nodeA6 = new Node();
+			Node* nodeA7 = new Node();
+			nodeA1->data = 1;
+			nodeA2->data = 2;
+			nodeA3->data = 3;
+			nodeA4->data = 4;
+			nodeA5->data = 5;
+			nodeA6->data = 6;
+			nodeA7->data = 7;
+			nodeA1->next = nodeA2;
+			nodeA2->next = nodeA3;
+			nodeA3->next = nodeA4;
+			nodeA4->next = nodeA5;
+			nodeA5->next = nodeA6;
+			nodeA6->next = nodeA7;
+			nodeA7->next = 0;
+
+			Node* newHead = 0;
+			FindModularNode(nodeA1, 2, &newHead);
+
+			FindFractionNode(nodeA1, 3, &newHead);
+
+			FindFractionNodeV2(nodeA1, 3, &newHead);
+
+			FindRootOfNode(nodeA1, &newHead);
+		}
+
+		{
+			Node* nodeA1 = new Node();
+			Node* nodeA2 = new Node();
+			nodeA1->data = 1;
+			nodeA2->data = 2;
+			nodeA1->next = nodeA2;
+			nodeA2->next = 0;
+
+			Node* nodeB1 = new Node();
+			Node* nodeB2 = new Node();
+			Node* nodeB3 = new Node();
+			Node* nodeB4 = new Node();
+			nodeB1->data = 10;
+			nodeB2->data = 20;
+			nodeB3->data = 30;
+			nodeB4->data = 40;
+			nodeB1->next = nodeB2;
+			nodeB2->next = nodeB3;
+			nodeB3->next = nodeB4;
+			nodeB4->next = 0;
+
+			Node* newHead = 0;
+			MergeWithRule(nodeA1, nodeB1, &newHead);
+		}
+
+		{
+			Node* nodeA1 = new Node();
+			Node* nodeA2 = new Node();
+			Node* nodeA3 = new Node();
+			Node* nodeA4 = new Node();
+			Node* nodeA5 = new Node();
+			nodeA1->data = 1;
+			nodeA2->data = 2;
+			nodeA3->data = 3;
+			nodeA4->data = 4;
+			nodeA5->data = 5;
+			nodeA1->next = nodeA2;
+			nodeA2->next = nodeA3;
+			nodeA3->next = nodeA4;
+			nodeA4->next = nodeA5;
+			nodeA5->next = 0;
+
+
+			float median = FindMedianInSortedLinkedList(nodeA1);
 			int i = 0;
 			i++;
-
 		}
+
 	}
 }
