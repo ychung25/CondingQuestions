@@ -34,7 +34,7 @@ namespace HashTable
 			}
 		}
 
-		void Insert(unsigned long long key, void* value)
+		void insert(unsigned long long key, void* value)
 		{
 			KeyValuePair* keyValuePair = new KeyValuePair();
 			keyValuePair->key = key;

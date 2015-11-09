@@ -945,7 +945,7 @@ namespace LinkedListQuestions
 	/* Assume that Node has
 	- 'next' pointer which points to next
 	- 'prev' pointer which points to random node
-	  This one has O(c) space complexity!!!
+	  This one has O(c) space complexity :-)
 	*/
 	void CloneListWithRandomPointerV2(Node* head, Node** newHead)
 	{
