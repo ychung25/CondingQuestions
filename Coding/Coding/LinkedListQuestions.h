@@ -1156,6 +1156,33 @@ namespace LinkedListQuestions
 		*node = hereNode;
 	}
 
+	void FindRootOfNodeV2(Node* head, Node** node)
+	{
+		*node = 0;
+		if (!head) { return; }
+
+		Node* current = head;
+		Node* rootOfNode = 0;
+
+		int i = 0;
+		int j = 1;
+		while (current)
+		{
+			i++;
+			if (j*j == i)
+			{
+				j++;
+				if (!rootOfNode)
+					rootOfNode = head;
+				else
+					rootOfNode = rootOfNode->next;
+			}
+			current = current->next;
+		}
+
+		*node = rootOfNode;
+	}
+
 	/* Merge L1 and L1 so that is becomes
 	a1, b1, a2, b2, a3, a4 ...  if length of a > b
 	a1, b1, a2, b2, b3, b4 ... if lenth of a < b*/
@@ -1550,6 +1577,8 @@ namespace LinkedListQuestions
 
 			FindFractionNodeV2(nodeA1, 3, &newHead);
 
+			FindRootOfNodeV2(nodeA1, &newHead);
+
 			FindRootOfNode(nodeA1, &newHead);
 		}
 
@@ -1597,8 +1626,6 @@ namespace LinkedListQuestions
 
 
 			float median = FindMedianInSortedLinkedList(nodeA1);
-			int i = 0;
-			i++;
 		}
 
 	}
