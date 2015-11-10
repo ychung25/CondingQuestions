@@ -52,6 +52,14 @@ public:
 		return data;
 	}
 
+	void* peek()
+	{
+		if (!m_tail) { return nullptr; }
+
+		void* data = m_tail->data;
+		return data;
+	}
+
 	int Size()
 	{
 		return size;
