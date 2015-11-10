@@ -54,6 +54,9 @@
     <ClInclude Include="HashTable.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="StackQuestions.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

@@ -11,6 +11,7 @@
 #include "HashTable.h"
 
 #include "LinkedListQuestions.h"
+#include "StackQuestions.h"
 
 int main()
 {
@@ -37,6 +38,8 @@ int main()
 	DoXORDoublyLinkedList();
 
 	LinkedListQuestions::DoLinkedListQuestions();
+
+	StackQuestions::DoStackQuestions();
 
 	return 0;
 }

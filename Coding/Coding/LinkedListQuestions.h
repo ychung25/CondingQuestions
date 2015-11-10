@@ -251,6 +251,8 @@ namespace LinkedListQuestions
 		*head = node1;
 	}
 
+	/* Know how to mathematically prove why cycle will happen and why cycle starting
+	   point find algorithm works. */
 	bool DetectCycle(Node* start, Node** cycleStartPoint)
 	{
 		bool result = false;
