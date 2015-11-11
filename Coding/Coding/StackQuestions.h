@@ -439,44 +439,69 @@ namespace StackQuestions
 		printf("\n\n");
 	}
 
+	// This is FUCKING AWESOME!! Inplace algorithm
+	// Space O(c)
+	// Time  O(n)
+	// len = # of chars exlcuding the '\0'
 	void RemoveAdjacentDuplicatesV2(char* string, int len)
 	{
-		int currentIndex = 0;
-		int prevIndex = 0;
+		int c = 0;
+		int p = -1;
 
-		while (currentIndex < len)
+		while (c < len)
 		{
-			if (currentIndex != prevIndex && string[currentIndex] == string[prevIndex])
+			if (p == -1 || string[p] != string[c])
 			{
-				string[currentIndex] = '\0';
-				string[prevIndex] = '\0';
-
-				if (prevIndex > 0)
+				p++;
+				string[p] = string[c];
+				c++;
+			}
+			else if (string[p] == string[c])
+			{
+				c++;
+				while (c < len)
 				{
-					prevIndex--;
+					if (string[c] == string[p])
+						c++;
+					else
+						break;
 				}
-				else
-				{
-					prevIndex = currentIndex + 1;
-				}
-				
-				currentIndex++;
+				p--;
+			}
+		}
+		string[++p] = '\0';
+	}
 
+	void NearestLargerNumberToRight(int* ar, int len)
+	{
+		Stack stack;
+		for (int i = len - 1; i >= 0; i--)
+		{
+			if (stack.Size() == 0)
+			{
+				stack.push((void*)ar[i]);
 			}
 			else
 			{
-				prevIndex = currentIndex;
-				currentIndex++;
+				unsigned long long peek = (unsigned long long)stack.peek();
+				if (peek > ar[i])
+				{
+					stack.push((void*)ar[i]);
+					ar[i] = peek;
+				}
+				else
+				{
+					while (stack.Size() > 0 && (unsigned long long)stack.peek() <= ar[i])
+					{
+						stack.pop();
+					}
+					int temp = ar[i];
+					if (stack.Size() > 0)
+						ar[i] = (unsigned long long)stack.peek();
+					stack.push((void*)temp);
+				}
 			}
 		}
-
-		printf("\n---RemoveAdjacentDuplicatesV2---\n");
-		for (int i = 0; i < len; i++)
-		{
-			if(string[i] != '\0')
-				printf("%c", string[i]);
-		}
-		printf("\n\n");
 	}
 
 	void DoStackQuestions()
@@ -528,11 +553,16 @@ namespace StackQuestions
 
 		{
 			char str[] = "mississippi";
+			char str2[] = "careermonk";
 			RemoveAdjacentDuplicates(str, stringLength(str));
-			char str2[] = "mississippiabc";
+			RemoveAdjacentDuplicatesV2(str, stringLength(str));
 			RemoveAdjacentDuplicatesV2(str2, stringLength(str2));
+		}
 
-			int size = sizeof(str2) / sizeof(str2[0]);
+		{
+			int ar[] = { 1, 8, 2, 3, 12, 4, 7, 9};
+			NearestLargerNumberToRight(ar, 8);
+
 			printf("");
 		}
 	}
