@@ -138,6 +138,13 @@ void Alias()
 	}
 }
 
+void StringArray()
+{
+	char explicitString[] = { 's', 't', 'r', 'i', 'n', 'g', '\0' };
+	char* readOnlyString = "string"; // The same as - char readOnlyString[] = {'s' 't' 'r' 'i' 'n' 'g' '\0'} but immutable.
+	char readWriteString[] = "string"; // The same as - char readOnlyString[] = {'s' 't' 'r' 'i' 'n' 'g' '\0'}
+}
+
 void DoArraysAndPointers()
 {
 	CreateArray();
@@ -148,4 +155,5 @@ void DoArraysAndPointers()
 	TwoDimensionArray();
 	ArrayOfArrays();
 	Alias();
+	StringArray();
 }
