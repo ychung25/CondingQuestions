@@ -54,22 +54,64 @@ namespace QueueQuestions
 		class MyQueue
 		{
 		public:
-			void Enqueue(int item)
+			MyQueue() : h(0), t(0){}
+			bool Enqueue(int item)
 			{
-
+				int next = (t + 1) % 4;
+				if (next == h)
+				{
+					return false; // queue is full you can't enqueue
+				}
+				else
+				{
+					data[t] = item;
+					t = next;
+				}
+				return true;
 			}
-			int Dequeue()
+			int Dequeue(int* item)
 			{
-
+				if (h == t)
+				{
+					return false; // queue is empty you can't dequeue
+				}
+				else
+				{
+					*item = data[h];
+					h = (h + 1) % 4;
+					return true;
+				}
 			}
 
 		private:
-			int data[100];
+			int h;
+			int t;
+			int data[4];
 		};
+
+		MyQueue queue;
+		int x = 0;
+		bool result = queue.Dequeue(&x);
+		result = queue.Enqueue(1);
+		result = queue.Enqueue(2);
+		result = queue.Enqueue(3);
+		result = queue.Enqueue(4); // you shoudn't be able to queue this.
+		result = queue.Dequeue(&x);
+		result = queue.Dequeue(&x);
+		result = queue.Enqueue(5);
+		result = queue.Enqueue(6);
+		result = queue.Dequeue(&x);
+		result = queue.Dequeue(&x);
+		result = queue.Dequeue(&x);
+		result = queue.Dequeue(&x);  // queue should be empty
+
+		printf("");
+
 	}
 
 	void DoQueueQuestions()
 	{
 		QueueMadeFromTwoStacks();
+		QueueMadeFromArray();
 	}
 }
