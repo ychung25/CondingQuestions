@@ -362,7 +362,7 @@ void BreathFirstSearch(Queue* queue)
 		return;
 
 	Node* node;
-	queue->Deqeue((void**)&node);
+	node = (Node*)queue->Deqeue();
 
 	std::wcout << node->data;
 

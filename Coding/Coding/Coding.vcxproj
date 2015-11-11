@@ -151,6 +151,7 @@
     <ClInclude Include="HashTable.h" />
     <ClInclude Include="LinkedListQuestions.h" />
     <ClInclude Include="Queue.h" />
+    <ClInclude Include="QueueQuestions.h" />
     <ClInclude Include="Recursion.h" />
     <ClInclude Include="SinglyLinkedList.h" />
     <ClInclude Include="Stack.h" />

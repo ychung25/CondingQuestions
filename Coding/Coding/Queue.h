@@ -31,9 +31,12 @@ public:
 		}
 		m_size++;
 	}
-	void Deqeue(void** data)
+	void* Deqeue()
 	{
-		*data = m_head->data;
+		if (!m_head)
+			return 0;
+
+		void* data = m_head->data;
 		QueueNode* head = m_head;
 
 		if (m_head == m_tail)
@@ -48,12 +51,25 @@ public:
 
 		delete head;
 		m_size--;
+
+		return data;
+	}
+	void* Peek()
+	{
+		if (m_head = 0)
+			return 0;
+		else
+			m_head->data;
 	}
 	bool IsEmpty()
 	{
 		if (m_size == 0)
 			return true;
 		return false;
+	}
+	int Size()
+	{
+		return m_size;
 	}
 
 private:
