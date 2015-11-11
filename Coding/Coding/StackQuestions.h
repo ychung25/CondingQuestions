@@ -397,6 +397,7 @@ namespace StackQuestions
 		}
 	}
 
+	// replace adjacent duplicates using stack
 	void RemoveAdjacentDuplicates(char* string, int len)
 	{
 		Stack stack;
@@ -438,7 +439,45 @@ namespace StackQuestions
 		printf("\n\n");
 	}
 
+	void RemoveAdjacentDuplicatesV2(char* string, int len)
+	{
+		int currentIndex = 0;
+		int prevIndex = 0;
 
+		while (currentIndex < len)
+		{
+			if (currentIndex != prevIndex && string[currentIndex] == string[prevIndex])
+			{
+				string[currentIndex] = '\0';
+				string[prevIndex] = '\0';
+
+				if (prevIndex > 0)
+				{
+					prevIndex--;
+				}
+				else
+				{
+					prevIndex = currentIndex + 1;
+				}
+				
+				currentIndex++;
+
+			}
+			else
+			{
+				prevIndex = currentIndex;
+				currentIndex++;
+			}
+		}
+
+		printf("\n---RemoveAdjacentDuplicatesV2---\n");
+		for (int i = 0; i < len; i++)
+		{
+			if(string[i] != '\0')
+				printf("%c", string[i]);
+		}
+		printf("\n\n");
+	}
 
 	void DoStackQuestions()
 	{
@@ -488,8 +527,13 @@ namespace StackQuestions
 		}
 
 		{
-			char* str = "mississippi";
+			char str[] = "mississippi";
 			RemoveAdjacentDuplicates(str, stringLength(str));
+			char str2[] = "mississippiabc";
+			RemoveAdjacentDuplicatesV2(str2, stringLength(str2));
+
+			int size = sizeof(str2) / sizeof(str2[0]);
+			printf("");
 		}
 	}
 }
