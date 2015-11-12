@@ -54,48 +54,58 @@ namespace QueueQuestions
 		class MyQueue
 		{
 		public:
-			MyQueue() : h(0), t(0){}
-			bool Enqueue(int item)
+			MyQueue(int _size) : h(0), t(0), count(0), size(_size)
 			{
-				int next = (t + 1) % 4;
-				if (next == h)
-				{
-					return false; // queue is full you can't enqueue
-				}
-				else
-				{
-					data[t] = item;
-					t = next;
-				}
-				return true;
+				array = new int[size]();
 			}
-			int Dequeue(int* item)
+			~MyQueue()
 			{
-				if (h == t)
+				delete[] array;
+			}
+			bool Enqueue(int data)
+			{
+				if (count <= size)
 				{
-					return false; // queue is empty you can't dequeue
+					array[t] = data;
+					t = (t + 1) % size;
+					count++;
+					return true;
 				}
 				else
 				{
-					*item = data[h];
-					h = (h + 1) % 4;
+					return false; // queue is full
+				}
+			}
+			bool Dequeue(int* data)
+			{
+				if (count > 0)
+				{
+					*data = array[h];
+					h = (h + 1) % size;
+					count--;
 					return true;
+				}
+				else
+				{
+					return false; // queue is empty
 				}
 			}
 
 		private:
 			int h;
 			int t;
-			int data[4];
+			int count;
+			int size;
+			int* array;
 		};
 
-		MyQueue queue;
+		MyQueue queue(4);
 		int x = 0;
 		bool result = queue.Dequeue(&x);
 		result = queue.Enqueue(1);
 		result = queue.Enqueue(2);
 		result = queue.Enqueue(3);
-		result = queue.Enqueue(4); // you shoudn't be able to queue this.
+		result = queue.Enqueue(4);
 		result = queue.Dequeue(&x);
 		result = queue.Dequeue(&x);
 		result = queue.Enqueue(5);
@@ -103,7 +113,7 @@ namespace QueueQuestions
 		result = queue.Dequeue(&x);
 		result = queue.Dequeue(&x);
 		result = queue.Dequeue(&x);
-		result = queue.Dequeue(&x);  // queue should be empty
+		result = queue.Dequeue(&x);
 
 		printf("");
 

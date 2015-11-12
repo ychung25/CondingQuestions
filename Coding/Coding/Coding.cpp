@@ -13,6 +13,7 @@
 #include "LinkedListQuestions.h"
 #include "StackQuestions.h"
 #include "QueueQuestions.h"
+#include "TreeQuestions.h"
 
 int main()
 {
@@ -43,6 +44,8 @@ int main()
 	StackQuestions::DoStackQuestions();
 
 	QueueQuestions::DoQueueQuestions();
+
+	TreeQuestions::DoTreeQuestions();
 
 	return 0;
 }

@@ -158,6 +158,7 @@
     <ClInclude Include="StackQuestions.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TreeQuestions.h" />
     <ClInclude Include="Trees.h" />
     <ClInclude Include="XORDoublyLinkedList.h" />
   </ItemGroup>
