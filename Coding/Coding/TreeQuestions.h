@@ -112,6 +112,63 @@ namespace TreeQuestions
 		}
 	}
 
+	void FillNextSibling(Node* n)
+	{
+		Queue queue;
+		queue.Enqueue(n);
+		queue.Enqueue(0);
+		Node* prev = 0;
+		while (queue.Size() > 0)
+		{
+			Node* current = (Node*)queue.Deqeue();
+			if (current == 0)
+			{
+				//prev->nextSibling = 0;
+				prev = 0;
+				if (queue.Size() > 0)
+					queue.Enqueue(0);
+			}
+
+			if (prev == 0)
+			{
+				prev = current;
+			}
+			else
+			{
+				//prev->nextSibling = current;
+				prev = current;
+			}
+
+			if (n->l)
+				queue.Enqueue(n->l);
+			if (n->r)
+				queue.Enqueue(n->r);
+			
+		}
+
+	}
+
+	// This only works if binary tree always have either no child or two children.
+	void FillNextSiblingV2(Node* n)
+	{
+		if (n->l)
+		{
+			//n->l->nextSibling = n->r;
+		}
+		if (n->r)
+		{
+			//if (n->nextSibling)
+			{
+				//n->r->nextSibling = n->nextSibling->l;
+			}
+		}
+
+		if (n->l)
+			FillNextSiblingV2(n->l);
+		if (n->r)
+			FillNextSiblingV2(n->r);
+	}
+
 
 	// Find the node with the max value in binary tree recursively
 	int FindMaxInBinaryTreeRecursively(Node* n)
@@ -329,6 +386,24 @@ max = maxL;
 		}
 	}
 
+	Node* CreateTreeWithILPreorder(int* preorder, int* index)
+	{
+		Node* n = new Node();
+		n->data = preorder[*index];
+		n->l = 0;
+		n->r = 0;
+		*index = *index + 1;
+
+		if (n->data == 0)
+			return n;
+
+		Node* l = CreateTreeWithILPreorder(preorder, index);
+		Node* r = CreateTreeWithILPreorder(preorder, index);
+		n->l = l;
+		n->r = r;
+		return n;
+	}
+	
 	void DoTreeQuestions()
 	{
 		Node* n6 = createNode(6, 0, 0);
@@ -389,7 +464,11 @@ max = maxL;
 		printf("\n---ZigZagTraverse---\n");
 		ZigZagTraverse(n1);
 
+		{
+			int preorder[] = { 1,1,0,0,1,0,1,0,0 };
+			printf("\n---CreateTreeWithILPreorder---\n");
+			index = 0;
+			Node* tree = CreateTreeWithILPreorder(preorder, &index);
+		}
 
-		printf("");
-	}
 }
