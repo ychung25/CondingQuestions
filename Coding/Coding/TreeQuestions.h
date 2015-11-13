@@ -34,7 +34,7 @@ namespace TreeQuestions
 			if(n->r)
 				s.push(n->r);
 			if(n->l)
-			s.push(n->l);
+				s.push(n->l);
 		}
 	}
 
@@ -176,8 +176,8 @@ namespace TreeQuestions
 		int max = n->data;
 		if (n->l)
 		{
-int maxL = FindMaxInBinaryTreeRecursively(n->l);
-max = maxL;
+			int maxL = FindMaxInBinaryTreeRecursively(n->l);
+			max = maxL;
 		}
 		if (n->r)
 		{
@@ -185,6 +185,228 @@ max = maxL;
 			max = maxR;
 		}
 		return max;
+	}
+
+	// Find the node with the max value in binary tree iteratively
+	int FindMaxInBinaryTreeIteratively(Node* n)
+	{
+		Stack s;
+		s.push(n);
+		int max = 0;
+		while (s.Size())
+		{
+			Node* n = (Node*)s.pop();
+			if (n->data > max)
+				max = n->data;
+
+			if (n->l)
+				s.push(n->l);
+			if (n->r)
+				s.push(n->r);
+		}
+
+		return max;
+	}
+
+	// Find the numer of nodes in tree recursively
+	int FindTheNumberOfNodesRecursively(Node* n)
+	{
+		if (n->l == 0 && n->r == 0)
+			return 1;
+		
+		int l = 0;
+		int r = 0;
+		if (n->l)
+			l = FindTheNumberOfNodesRecursively(n->l);
+		if (n->r)
+			r = FindTheNumberOfNodesRecursively(n->r);
+
+		return l + r + 1;
+	}
+
+	// Fine the number of nodes in tree iteratively
+	int FindTheNumberOfNodesIteratively(Node* n)
+	{
+		Queue queue;
+		queue.Enqueue(n);
+		int i = 0;
+		while (queue.Size())
+		{
+			i++;
+			Node* n = (Node*)queue.Deqeue();
+			if (n->l)
+				queue.Enqueue(n->l);
+			if (n->r)
+				queue.Enqueue(n->r);
+		}
+
+		return i;
+	}
+
+	void PrintLevelsFromBottomToTop(Node* n)
+	{
+		Queue q;
+		Stack s;
+		q.Enqueue(n);
+		while (q.Size())
+		{
+			Node* n = (Node*)q.Deqeue();
+			s.push(n);
+			if (n->r)
+				q.Enqueue(n->r);
+			if (n->l)
+				q.Enqueue(n->l);
+		}
+
+		printf("\n---PrintLevelsFromBottomToTop--\n");
+		while(s.Size() > 0)
+		{
+			printf("%d ", ((Node*)s.pop())->data);
+		}
+	}
+
+	int FindTreeLevelIterative(Node* n)
+	{
+		int l = 0;
+		int r = 0;
+		if (n->l)
+			l = FindTreeLevelIterative(n->l);
+		if (n->r)
+			r = FindTreeLevelIterative(n->r);
+
+		if (l > r)
+			return l + 1;
+		return r + 1;
+	}
+
+	void FindTreeLevelRecursively(Queue* q, int* height)
+	{
+		if (q->Size() == 0)
+			return;
+
+		Node* n = (Node*)q->Deqeue();
+		if (n == 0)
+		{
+			*height = *height + 1;
+			if (q->Size() > 0)
+				q->Enqueue(0);
+		}
+		else
+		{
+			if (n->l)
+				q->Enqueue(n->l);
+			if (n->r)
+				q->Enqueue(n->r);
+		}
+
+		FindTreeLevelRecursively(q, height);
+
+	}
+
+	int MaxSumLevel(Node* n)
+	{
+		int sum = 0;
+		int maxSum = 0;
+		int level = 0;
+		int maxLevel = 0;
+		Queue q;
+		q.Enqueue(n);
+		q.Enqueue(0);
+		while (q.Size())
+		{
+			Node* n = (Node*)q.Deqeue();
+			if (n == 0)
+			{
+				level++;
+
+				if (sum > maxSum)
+				{
+					maxSum = sum;
+					maxLevel = level;
+				}
+				sum = 0;
+
+				if (q.Size())
+					q.Enqueue(0);
+			}
+			else
+			{
+				sum += n->data;
+				if (n->l)
+					q.Enqueue(n->l);
+				if (n->r)
+					q.Enqueue(n->r);
+			}
+		}
+
+		return maxLevel;
+	}
+ 
+	// Given a node in a tree, find its parent.
+	Node* GetParentNode(Node* n, Node* child)
+	{
+		if (n->l == child)
+			return n;
+		if (n->r == child)
+			return n;
+
+		Node* l = 0;
+		Node* r = 0;
+		if (n->l)
+			l = GetParentNode(n->l, child);
+		if (n->r)
+			r = GetParentNode(n->r, child);
+
+		if (l)
+			return l;
+		if (r)
+			return r;
+
+		return 0;
+	}
+
+	// Remove a node from a binary tree (not a Binary search tree)
+	void RemoveNodeInBinaryTree(Node* root, Node* toDelete)
+	{
+		Stack s;
+
+		Node* toDeleteTemp = 0;
+		s.push(root);
+		while (s.Size())
+		{
+			Node* n = (Node*)s.pop();
+			if (n == toDelete)
+				toDeleteTemp = toDelete;
+			if (n->r)
+				s.push(n->r);
+			if (n->l)
+				s.push(n->l);
+		}
+
+		Node* leafNode = 0;
+		s.push(root);
+		while (s.Size())
+		{
+			Node* n = (Node*)s.pop();
+			if (n->l == 0 && n->r == 0)
+				leafNode = n;
+			if (n->r)
+				s.push(n->r);
+			if (n->l)
+				s.push(n->l);
+		}
+
+		Node* leafNodeParent = GetParentNode(root, leafNode);
+		bool isLeftChild = (leafNodeParent->l == leafNode);
+
+		toDeleteTemp->data = leafNode->data;
+
+		if (isLeftChild)
+			leafNodeParent->l = 0;
+		else
+			leafNodeParent->r = 0;
+
+		delete leafNode;
 	}
 
 	Node* LCA(Node* n, Node* x, Node* y)
@@ -204,6 +426,27 @@ max = maxL;
 			return l;
 
 		return r;
+	}
+
+	bool IsTreesIdentical(Node* n1, Node* n2)
+	{
+
+		if (n1 == 0 && n2 == 0)
+			return true;
+
+		if ((n1 == 0 && n2 != 0) ||
+			(n2 != 0 && n2 == 0))
+		{
+			return false;
+		}
+
+		if (n1->data != n2->data)
+			return false;
+
+		bool bl = IsTreesIdentical(n1->l, n2->l);
+		bool br = IsTreesIdentical(n1->r, n2->r);
+
+		return bl && br;
 	}
 
 	// Given inorder traversal and preorder traversal, create a treee
@@ -324,6 +567,98 @@ max = maxL;
 
 	}
 
+	Node* CreateTreeWithILPreorder(int* preorder, int* index)
+	{
+		Node* n = new Node();
+		n->data = preorder[*index];
+		n->l = 0;
+		n->r = 0;
+		*index = *index + 1;
+
+		if (n->data == 0)
+			return n;
+
+		Node* l = CreateTreeWithILPreorder(preorder, index);
+		Node* r = CreateTreeWithILPreorder(preorder, index);
+		n->l = l;
+		n->r = r;
+		return n;
+	}
+
+	void PathOfSumExists(Node* n, int sum, bool* exists)
+	{
+		sum = sum - n->data;
+		if (sum == 0)
+			*exists = true;
+		if (n->l)
+			PathOfSumExists(n->l, sum, exists);
+		if (n->r)
+			PathOfSumExists(n->r, sum, exists);
+	}
+
+	void CreateMirrorTree(Node* n, Node* m)
+	{
+		Node* a = 0;
+		Node* b = 0;
+		if (n->l)
+			a = createNode(n->l->data, 0, 0);
+		if (n->r)
+			b = createNode(n->r->data, 0, 0);
+
+		m->l = b;
+		m->r = a;
+
+		if (n->l)
+			CreateMirrorTree(n->l, m->r);
+		if (n->r)
+			CreateMirrorTree(n->r, m->l);
+	}
+
+	void AreTwoTreesMirrorOfEachOther(Node* n, Node* m, bool* isMirror)
+	{
+		if (n == 0 || m == 0)
+			return;
+
+		Node* nL = n->l;
+		Node* nR = n->r;
+		Node* mL = m->l;
+		Node* mR = m->r;
+		AreTwoTreesMirrorOfEachOther(nL, mR, isMirror);
+		AreTwoTreesMirrorOfEachOther(nR, mL, isMirror);
+
+		if ((nL == 0 && mR != 0) ||
+			(nR == 0 && mL != 0) ||
+			(mL == 0 && nR != 0) ||
+			(mR == 0 && nL != 0))
+		{
+			*isMirror = false;
+		}
+
+		if (nL != 0)
+		{
+			if (nL->data != mR->data)
+				*isMirror = false;
+		}
+		if (nR != 0)
+		{
+			if (nR->data != mL->data)
+				*isMirror = false;
+		}
+
+	}
+
+	void MakeMirrorInPlace(Node* n)
+	{
+		if (n->l)
+			MakeMirrorInPlace(n->l);
+		if (n->r)
+			MakeMirrorInPlace(n->r);
+
+		Node* temp = n->r;
+		n->r = n->l;
+		n->l = temp;
+	}
+
 	bool PrintfPathToX(Node* n, int x)
 	{
 		if (x == n->data)
@@ -343,6 +678,35 @@ max = maxL;
 		if (bl | br)
 			printf("%d", n->data);
 		return (bl | br);
+	}
+
+	void PrintAllPathsFromRoot(Node* n, Stack* s)
+	{
+		if (n == 0)
+			return;
+
+		if (n->l == 0 && n->r == 0)
+		{
+			printf("%d ", n->data);
+			Stack s2;
+			while (s->Size())
+			{
+				Node* n = (Node*)s->pop();
+				printf("%d ", n->data);
+				s2.push(n);
+			}
+			while (s2.Size())
+			{
+				s->push(s2.pop());
+			}
+			printf("\n");
+			return;
+		}
+
+		s->push(n);
+		PrintAllPathsFromRoot(n->l, s);
+		PrintAllPathsFromRoot(n->r, s);
+		s->pop();
 	}
 
 	void ZigZagTraverse(Node* n)
@@ -386,24 +750,6 @@ max = maxL;
 		}
 	}
 
-	Node* CreateTreeWithILPreorder(int* preorder, int* index)
-	{
-		Node* n = new Node();
-		n->data = preorder[*index];
-		n->l = 0;
-		n->r = 0;
-		*index = *index + 1;
-
-		if (n->data == 0)
-			return n;
-
-		Node* l = CreateTreeWithILPreorder(preorder, index);
-		Node* r = CreateTreeWithILPreorder(preorder, index);
-		n->l = l;
-		n->r = r;
-		return n;
-	}
-	
 	void DoTreeQuestions()
 	{
 		Node* n6 = createNode(6, 0, 0);
@@ -429,6 +775,89 @@ max = maxL;
 
 		int max = FindMaxInBinaryTreeRecursively(n1);
 
+		max = FindMaxInBinaryTreeIteratively(n1);
+
+		int numnberOfNodes = FindTheNumberOfNodesRecursively(n1);
+
+		numnberOfNodes = FindTheNumberOfNodesIteratively(n1);
+
+		PrintLevelsFromBottomToTop(n1);
+
+		Node* parentNode = GetParentNode(n1, n7);
+
+		int level = FindTreeLevelIterative(n1);
+
+		level = 0;
+		Queue qLevel;
+		qLevel.Enqueue(n1);
+		qLevel.Enqueue(0);
+		FindTreeLevelRecursively(&qLevel, &level);
+
+		int maxSumLevel = MaxSumLevel(n1);
+
+		printf("\n---PrintAllPathsFromRoot---\n");
+		Stack sAllPath;
+		PrintAllPathsFromRoot(n1, &sAllPath);
+
+		bool pathOfSumExists = false;
+		PathOfSumExists(n1, 4, &pathOfSumExists);
+
+		Node* mirror = createNode(n1->data, 0, 0);
+		CreateMirrorTree(n1, mirror);
+
+		bool isMirror = true;
+		AreTwoTreesMirrorOfEachOther(n1, mirror, &isMirror);
+		printf("");
+
+		{
+
+			Node* n6 = createNode(6, 0, 0);
+			Node* n7 = createNode(7, 0, 0);
+			Node* n4 = createNode(4, n6, 0);
+			Node* n5 = createNode(5, 0, n7);
+			Node* n9 = createNode(9, 0, 0);
+			Node* n2 = createNode(2, n4, n5);
+			Node* n3 = createNode(3, 0, n9);
+			Node* n1 = createNode(1, n2, n3);
+
+			printf("\n\n---Remove a node---\n\n");
+			RemoveNodeInBinaryTree(n1, n5);
+			printf("\n\n---PreorderTraversalIterative---\n\n");
+			PreorderTraversalIterative(n1);
+
+			printf("\n\n---InorderTraversalIterative---\n\n");
+			InorderTraversalIterative(n1);
+
+			printf("\n\n---PostOrderTraversalIterative---\n\n");
+			PostOrderTraversalIterative(n1);
+
+			printf("\n\n---BFSIterative---\n\n");
+			BFSIterative(n1);
+		}
+
+		{
+			Node* n6 = createNode(6, 0, 0);
+			Node* n7 = createNode(7, 0, 0);
+			Node* n4 = createNode(4, n6, 0);
+			Node* n5 = createNode(5, 0, n7);
+			Node* n9 = createNode(9, 0, 0);
+			Node* n2 = createNode(2, n4, n5);
+			Node* n3 = createNode(3, 0, n9);
+			Node* n1 = createNode(1, n2, n3);
+
+			Node* m6 = createNode(6, 0, 0);
+			Node* m7 = createNode(7, 0, 0);
+			Node* m4 = createNode(4, m6, 0);
+			Node* m5 = createNode(5, 0, m7);
+			Node* m9 = createNode(9, 0, 0);
+			Node* m2 = createNode(2, m4, m5);
+			Node* m3 = createNode(3, 0, m9);
+			Node* m1 = createNode(1, m2, m3);
+
+			bool result = IsTreesIdentical(n1, m1);
+			printf("");
+		}
+
 		Node* lca = LCA(n1, n6, n7);
 
 		int index = 0;
@@ -451,7 +880,7 @@ max = maxL;
 		InorderTraversalIterative(newTree);
 		PostOrderTraversalIterative(newTree);
 
-		newTree = CreateTreev3(levelorder, inorder, 0, (sizeof(inorder) / sizeof(inorder[0]))-1, (sizeof(inorder) / sizeof(inorder[0])));
+		newTree = CreateTreev3(levelorder, inorder, 0, (sizeof(inorder) / sizeof(inorder[0])) - 1, (sizeof(inorder) / sizeof(inorder[0])));
 
 		printf("\nnew tree3\n");
 		PreorderTraversalIterative(newTree);
@@ -470,5 +899,6 @@ max = maxL;
 			index = 0;
 			Node* tree = CreateTreeWithILPreorder(preorder, &index);
 		}
+	}
 
 }
