@@ -169,7 +169,6 @@ namespace TreeQuestions
 			FillNextSiblingV2(n->r);
 	}
 
-
 	// Find the node with the max value in binary tree recursively
 	int FindMaxInBinaryTreeRecursively(Node* n)
 	{
@@ -340,6 +339,25 @@ namespace TreeQuestions
 		}
 
 		return maxLevel;
+	}
+
+	// find the number of nodes between two deepest nodes
+	int FindLongestPath(Node* n, int* longest)
+	{
+		if (n == 0)
+			return 0;
+
+		int lLength = FindLongestPath(n->l, longest);
+		int rLength = FindLongestPath(n->r, longest);
+
+		if (lLength + rLength + 1 > *longest)
+		{
+			*longest = lLength + rLength + 1;
+		}
+
+		if (lLength > rLength)
+			return lLength + 1;
+		return rLength + 1;		
 	}
  
 	// Given a node in a tree, find its parent.
@@ -750,6 +768,21 @@ namespace TreeQuestions
 		}
 	}
 
+	// This is FUCKING COOL! This shows the unique characteristic of inorder traversal.
+	void FindSumOfVerticies(Node* n, int column, HashTable::HashTable* hash)
+	{
+		if (n == 0) { return; }
+
+		FindSumOfVerticies(n->l, column-1, hash);
+
+		void* value = hash->remove(column);
+		unsigned long long sum = (unsigned long long)value;
+		sum +=  n->data;
+		hash->insert(column, (void*)sum);
+
+		FindSumOfVerticies(n->r, column+1, hash);
+	}
+
 	void DoTreeQuestions()
 	{
 		Node* n6 = createNode(6, 0, 0);
@@ -807,6 +840,14 @@ namespace TreeQuestions
 
 		bool isMirror = true;
 		AreTwoTreesMirrorOfEachOther(n1, mirror, &isMirror);
+
+		int longest = 0;
+		FindLongestPath(n1, &longest);
+
+		HashTable::HashTable verticalSumHash;
+		FindSumOfVerticies(n1, 0, &verticalSumHash);
+		verticalSumHash.print();
+
 		printf("");
 
 		{

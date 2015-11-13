@@ -124,6 +124,25 @@ namespace HashTable
 			return nullptr;
 		}
 
+		void print()
+		{
+			printf("---Content of Hash Table---\n");
+			for (int i = 0; i < arraySize; i++)
+			{
+				Node* head = array[i];
+				if (head)
+				{
+					KeyValuePair* keyValuePair = head->data;
+					printf("Key: [%d] \n", keyValuePair->key);
+				}
+				while (head)
+				{
+					KeyValuePair* keyValuePair = head->data;
+					printf("    value: [%d] \n", (unsigned long long)keyValuePair->value);
+					head = head->next;
+				}
+			}
+		}
 	private:
 		int arraySize;
 		Node** array;
