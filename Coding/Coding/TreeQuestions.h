@@ -267,6 +267,68 @@ max = maxL;
 
 	}
 
+	bool PrintfPathToX(Node* n, int x)
+	{
+		if (x == n->data)
+		{
+			printf("%d", n->data);
+			return true;
+		}
+
+		bool bl = false;
+		bool br = false;
+
+		if (n->l)
+			bl = PrintfPathToX(n->l, x);
+		if (n->r)
+			br = PrintfPathToX(n->r, x);
+
+		if (bl | br)
+			printf("%d", n->data);
+		return (bl | br);
+	}
+
+	void ZigZagTraverse(Node* n)
+	{
+		Stack* s1 = new Stack();
+		s1->push(n);
+		Stack* s2 = new Stack();
+		bool pushLeftFirst = true;
+
+		while (1)
+		{
+			if (s1->Size() == 0 && s2->Size() == 0)
+				break;
+
+			if (s1->Size() == 0)
+			{
+				Stack* temp;
+				temp = s1;
+				s1 = s2;
+				s2 = temp;
+				pushLeftFirst = !pushLeftFirst;
+			}
+
+			Node* n = (Node*)s1->pop();
+			printf("%d ", n->data);
+
+			if (pushLeftFirst)
+			{
+				if (n->l)
+					s2->push(n->l);
+				if (n->r)
+					s2->push(n->r);
+			}
+			else
+			{
+				if (n->r)
+					s2->push(n->r);
+				if (n->l)
+					s2->push(n->l);
+			}
+		}
+	}
+
 	void DoTreeQuestions()
 	{
 		Node* n6 = createNode(6, 0, 0);
@@ -320,6 +382,12 @@ max = maxL;
 		PreorderTraversalIterative(newTree);
 		InorderTraversalIterative(newTree);
 		PostOrderTraversalIterative(newTree);
+
+		printf("\n---PrintfPathToX---\n");
+		PrintfPathToX(n1, 9);
+
+		printf("\n---ZigZagTraverse---\n");
+		ZigZagTraverse(n1);
 
 
 		printf("");
