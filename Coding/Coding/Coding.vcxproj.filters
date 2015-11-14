@@ -66,6 +66,9 @@
     <ClInclude Include="TreeQuestions.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="GenericTreeQuestions.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

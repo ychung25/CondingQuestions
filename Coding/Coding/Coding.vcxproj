@@ -148,6 +148,7 @@
     <ClInclude Include="ArrayAndPointer.h" />
     <ClInclude Include="CircularLinkedList.h" />
     <ClInclude Include="DoublyLinkedList.h" />
+    <ClInclude Include="GenericTreeQuestions.h" />
     <ClInclude Include="HashTable.h" />
     <ClInclude Include="LinkedListQuestions.h" />
     <ClInclude Include="Queue.h" />

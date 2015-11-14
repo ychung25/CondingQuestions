@@ -4,7 +4,7 @@
 #include "Stack.h"
 #include "Queue.h"
 
-namespace TreeQuestions
+namespace BinaryTreeQuestions
 {
 	struct Node
 	{
@@ -93,6 +93,27 @@ namespace TreeQuestions
 				s.push(n);
 				n = n->l;
 			}
+		}
+	}
+
+	void TestPostOrderIterative(Node *n)
+	{
+		Stack s;
+
+		if (!n)
+		{
+			n = ((Node*)s.peek())->r;
+		}
+		
+		if (n->r != 0)
+		{
+
+			n = (Node*)s.peek();
+		}
+	
+		if (n)
+		{
+			s.push(n);
 		}
 	}
 
@@ -783,7 +804,7 @@ namespace TreeQuestions
 		FindSumOfVerticies(n->r, column+1, hash);
 	}
 
-	void DoTreeQuestions()
+	void DoBinaryTreeQuestions()
 	{
 		Node* n6 = createNode(6, 0, 0);
 		Node* n7 = createNode(7, 0, 0);

@@ -14,6 +14,7 @@
 #include "StackQuestions.h"
 #include "QueueQuestions.h"
 #include "TreeQuestions.h"
+#include "GenericTreeQuestions.h"
 
 int main()
 {
@@ -45,7 +46,9 @@ int main()
 
 	QueueQuestions::DoQueueQuestions();
 
-	TreeQuestions::DoTreeQuestions();
+	BinaryTreeQuestions::DoBinaryTreeQuestions();
+
+	GenericTreeQuestions::DoGenericTreeQuestions();
 
 	return 0;
 }
