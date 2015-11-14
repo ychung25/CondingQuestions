@@ -96,27 +96,6 @@ namespace BinaryTreeQuestions
 		}
 	}
 
-	void TestPostOrderIterative(Node *n)
-	{
-		Stack s;
-
-		if (!n)
-		{
-			n = ((Node*)s.peek())->r;
-		}
-		
-		if (n->r != 0)
-		{
-
-			n = (Node*)s.peek();
-		}
-	
-		if (n)
-		{
-			s.push(n);
-		}
-	}
-
 	void BFSIterative(Node* n)
 	{
 		Queue queue;
