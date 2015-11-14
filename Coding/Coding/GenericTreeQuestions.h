@@ -22,13 +22,17 @@ namespace GenericTreeQuestions
 		return n;
 	}
 
-	void DFS(Node* n)
+	void DFS(Node* n, int level, int* maxLevel)
 	{
 		if (!n) { return; }
+
+		if (level > *maxLevel)
+			*maxLevel = level;
+
 		//preorder
-		DFS(n->child);
+		DFS(n->child, level+1, maxLevel);
 		//postorder
-		DFS(n->sibling);
+		DFS(n->sibling, level, maxLevel);
 	}
 
 	void BFS(Queue* q, int* level)
@@ -57,6 +61,28 @@ namespace GenericTreeQuestions
 		BFS(q, level);
 	}
 
+	void CreateGenericTreeFromArrayInfo(int* array, int len, Node* p)
+	{
+		if (!p) { return; }
+
+		Node* prev = 0;
+		for (int i = 0; i < len; i++)
+		{
+			if (array[i] == p->data)
+			{
+				Node* n = CreateNode(i, 0, 0);
+				if (prev)
+					prev->sibling = n;
+				else
+					p->child = n;
+				prev = n;
+			}
+		}
+
+		CreateGenericTreeFromArrayInfo(array, len, p->child);
+		CreateGenericTreeFromArrayInfo(array, len, p->sibling);
+	}
+
 	void DoGenericTreeQuestions()
 	{
 		Node* n11 = CreateNode(11, 0, 0);
@@ -71,7 +97,8 @@ namespace GenericTreeQuestions
 		Node* n2 = CreateNode(2, n5, n3);
 		Node* n1 = CreateNode(1, n2, 0);
 
-		DFS(n1);
+		int treeLevel = 0;
+		DFS(n1, 0, &treeLevel);
 
 		printf("\n---Generic tree BFS---\n");
 		Queue BFSQueue;
@@ -80,6 +107,13 @@ namespace GenericTreeQuestions
 		BFSQueue.Enqueue(0);
 		BFS(&BFSQueue, &BFSLevel);
 
+
+		int treeAsArray[] = { -1,0,1,6,6,0,0,2,7 };
+		Node* root = CreateNode(0, 0, 0);
+		CreateGenericTreeFromArrayInfo(treeAsArray, sizeof(treeAsArray) / sizeof(treeAsArray[0]), root);
+		DFS(root, 0, &treeLevel);
+
 		printf("");
+
 	}
 }
