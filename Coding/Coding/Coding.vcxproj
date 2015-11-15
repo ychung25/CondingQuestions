@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArrayAndPointer.h" />
+    <ClInclude Include="BinarySearchTreeQuestions.h" />
     <ClInclude Include="CircularLinkedList.h" />
     <ClInclude Include="DoublyLinkedList.h" />
     <ClInclude Include="GenericTreeQuestions.h" />
