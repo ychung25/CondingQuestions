@@ -83,6 +83,70 @@ namespace GenericTreeQuestions
 		CreateGenericTreeFromArrayInfo(array, len, p->sibling);
 	}
 
+	void FindHeightFromTreeArrayInfoRecursive(int * p, int len, int num, int level, int* maxLevel)
+	{
+		if (level > *maxLevel)
+			*maxLevel = level;
+		for (int i = 0; i < len; i++)
+		{
+			if (p[i] == num)
+				FindHeightFromTreeArrayInfoRecursive(p, len, i, level + 1, maxLevel);
+		}
+	}
+
+	int FindHeightFromTreeArrayInfoIterative(int* p, int len)
+	{
+		int maxLevel = 0;
+		for (int i = 0; i < len; i++)
+		{
+			int level = 0;
+			int x = p[i];
+			while (x != -1)
+			{
+				x = p[x];
+				level++;
+			}
+			if (level > maxLevel)
+				maxLevel = level;
+		}
+
+		return maxLevel;
+	}
+
+	int FindHeightFromTreeArrayInfoIterativeWithHash(int* p, int len)
+	{
+		int maxLevel = 0;
+		HashTable::HashTable hash;
+
+		for (int i = 0; i < len; i++)
+		{
+			int level = 0;
+			int x = p[i];
+			while (x != -1)
+			{
+				void* value = hash.get(x);
+				if (value)
+				{
+					level = (unsigned long long)value;
+					x = -1;
+				}
+				else
+				{
+					x = p[x];
+				}
+
+				level++;
+			}
+
+			if (level > maxLevel)
+				maxLevel = level;
+
+			hash.insert(i, (void*)level);
+		}
+
+		return maxLevel;
+	}
+
 	void DoGenericTreeQuestions()
 	{
 		Node* n11 = CreateNode(11, 0, 0);
@@ -109,9 +173,17 @@ namespace GenericTreeQuestions
 
 
 		int treeAsArray[] = { -1,0,1,6,6,0,0,2,7 };
-		Node* root = CreateNode(0, 0, 0);
+		Node* root = CreateNode(0, 0, 0); // let's assume you know where the root node is at
 		CreateGenericTreeFromArrayInfo(treeAsArray, sizeof(treeAsArray) / sizeof(treeAsArray[0]), root);
 		DFS(root, 0, &treeLevel);
+
+		
+		FindHeightFromTreeArrayInfoRecursive(treeAsArray, sizeof(treeAsArray) / sizeof(treeAsArray[0]), -1, 0, &treeLevel);
+		treeLevel -= 1; // since the above function assumes root is height of 1
+
+		treeLevel= FindHeightFromTreeArrayInfoIterative(treeAsArray, sizeof(treeAsArray) / sizeof(treeAsArray[0]));
+
+		treeLevel = FindHeightFromTreeArrayInfoIterativeWithHash(treeAsArray, sizeof(treeAsArray) / sizeof(treeAsArray[0]));
 
 		printf("");
 
