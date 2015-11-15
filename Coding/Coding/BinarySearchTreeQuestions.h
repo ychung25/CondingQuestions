@@ -195,12 +195,13 @@ namespace BinarySearchTreeQuestions
 		while (fast && fast != t && fast->r && fast->r != t)
 		{
 			fast = fast->r->r;
-
+			if (!fast)
+				break;
 			slow = slow->r;
 		}
 		return slow;
 	}
-	Node* SortedFullBST2DLL(Node* h, Node* t)
+	Node* SortedDLL2BST(Node* h, Node* t)
 	{
 		if (h == t)
 		{
@@ -209,11 +210,70 @@ namespace BinarySearchTreeQuestions
 			return h;
 		}
 		Node* mid = FindMid(h, t);
-		Node* l = SortedFullBST2DLL(h, mid->l);
-		Node* r = SortedFullBST2DLL(mid->r, t);
+
+		Node* l = 0;
+		if(h != mid)
+			l = SortedDLL2BST(h, mid->l);
+		Node* r = SortedDLL2BST(mid->r, t);
 		mid->l = l;
 		mid->r = r;
 		return mid;
+	}
+	Node* SortedDLL2BSTv2(Node* n)
+	{
+		if (!n)
+			return n;
+
+		Node* mid = FindMid(n, 0);
+
+		Node* midR = mid->r;
+		Node* midL = mid->l;
+		if (midL)
+			midL->r = 0;
+		if (midR)
+			midR->l = 0;
+
+		Node* l = 0;
+		if(midL)
+			l = SortedDLL2BSTv2(n);
+		Node* r = SortedDLL2BSTv2(midR);
+		mid->l = l;
+		mid->r = r;
+		return mid;
+	}
+
+	Node* SortedArray2BST(int* ar, int h, int t)
+	{
+		if (h > t)
+			return 0;
+		Node* n = createNode(0, 0, 0);
+		if (h == t)
+		{
+			n->data = ar[h];
+		}
+		else
+		{
+			int mid = ((t - h) / 2) + h;
+			n->data = ar[mid];
+			Node* l = SortedArray2BST(ar, h, mid - 1);
+			Node* r = SortedArray2BST(ar, mid + 1, t);
+			n->l = l;
+			n->r = r;
+		}
+
+		return n;
+	}
+
+	void NodeBetweenAB(Node*n, int A, int B)
+	{
+		if (!n)
+			return;
+		if (n->data >= A && n->data <= B)
+		{
+			printf("%d ", n->data);
+			NodeBetweenAB(n->l, A, B);
+			NodeBetweenAB(n->r, A, B);
+		}
 	}
 
 	void DoBinarySearchTreeQuestions()
@@ -241,6 +301,9 @@ namespace BinarySearchTreeQuestions
 		int ilcd = findLCD(n20, 21, 40);
 
 		bool bBST = isBST(n20, n20->data);
+
+		printf("\n---NodeBetweenAB---\n");
+		NodeBetweenAB(n20, 5, 50);
 	
 
 		{
@@ -259,30 +322,44 @@ namespace BinarySearchTreeQuestions
 		}
 
 		{
+			Node* n1 = createNode(1, 0, 0);
+			Node* n2 = createNode(2, 0, 0);
+			Node* n3 = createNode(3, 0, 0);
+			Node* n4 = createNode(4, 0, 0);
 			Node* n5 = createNode(5, 0, 0);
-			Node* n15 = createNode(15, 0, 0);
-			Node* n25 = createNode(25, 0, 0);
-			Node* n35 = createNode(35, 0, 0);
-			Node* n10 = createNode(10, 0, 0);
-			Node* n30 = createNode(30, 0, 0);
-			Node* n20 = createNode(20, 0, 0);
-			n5->l = 0;
-			n5->r = n10;
-			n10->l = n5;
-			n10->r = n15;
-			n15->l = n10;
-			n15->r = n20;
-			n20->l = n15;
-			n20->r = n25;
-			n25->l = n20;
-			n25->r = n30;
-			n30->l = n25;
-			n30->r = n35;
-			n35->l = n30;
-			n35->r = 0;
+			Node* n6 = createNode(6, 0, 0);
+			Node* n7 = createNode(7, 0, 0);
+			Node* n8 = createNode(8, 0, 0);
+			Node* n9 = createNode(9, 0, 0);
 
-			Node* bst = SortedFullBST2DLL(n5, n35);
-			printf("");
+			n1->l = 0;
+			n1->r = n2;
+			n2->l = n1;
+			n2->r = n3;
+			n3->l = n2;
+			n3->r = n4;
+			n4->l = n3;
+			n4->r = n5;
+			n5->l = n4;
+			n5->r = n6;
+			n6->l = n5;
+			n6->r = n7;
+			n7->l = n6;
+			n7->r = n8;
+			n8->l = n7;
+			n8->r = n9;
+			n9->l = n8;
+			n9->r = 0;
+
+			//Node* bst = SortedDLL2BST(n1, n9); //Only enable one of them to see the result.
+			Node* bst = SortedDLL2BSTv2(n1);
+		}
+
+
+
+		{
+			int ar[] = {1,2,3,4,5,6,7,8,9};
+			Node* bst = SortedArray2BST(ar, 0, 8);
 		}
 
 		
