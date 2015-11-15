@@ -147,6 +147,31 @@ namespace GenericTreeQuestions
 		return maxLevel;
 	}
 
+	void AreTreesIsomorphic(Node* n1, Node* n2, bool* isIsomorphic)
+	{
+		if (!n1 && !n2)
+			return;
+		if (!n1 && n2 || n1 && !n2)
+		{
+			*isIsomorphic = false;
+			return;
+		}
+		AreTreesIsomorphic(n1->child, n2->child, isIsomorphic);
+		AreTreesIsomorphic(n1->sibling, n2->sibling, isIsomorphic);
+	}
+
+	void AreTreesMirror(Node* n1, Node* n2, bool* isMirror)
+	{
+		if (!n1 && !n2) { return; }
+		if (!n1 && n2 || n1 && !n2)
+		{
+			*isMirror = false;
+			return;
+		}
+		AreTreesMirror(n1->child, n2->sibling, isMirror);
+		AreTreesMirror(n1->sibling, n2->child, isMirror);
+	}
+
 	void DoGenericTreeQuestions()
 	{
 		Node* n11 = CreateNode(11, 0, 0);
@@ -184,6 +209,30 @@ namespace GenericTreeQuestions
 		treeLevel= FindHeightFromTreeArrayInfoIterative(treeAsArray, sizeof(treeAsArray) / sizeof(treeAsArray[0]));
 
 		treeLevel = FindHeightFromTreeArrayInfoIterativeWithHash(treeAsArray, sizeof(treeAsArray) / sizeof(treeAsArray[0]));
+
+		bool isIsomorphic = true;
+
+		Node* isomorphicRoot = CreateNode(0, 0, 0); // let's assume you know where the root node is at
+		CreateGenericTreeFromArrayInfo(treeAsArray, sizeof(treeAsArray) / sizeof(treeAsArray[0]), isomorphicRoot);
+		AreTreesIsomorphic(root, isomorphicRoot, &isIsomorphic);
+
+		{
+			Node* n3 = CreateNode(3, 0, 0);
+			Node* n5 = CreateNode(5, 0, 0);
+			Node* n4 = CreateNode(4, 0, n5);
+			Node* n2 = CreateNode(2, n4, n3);
+			Node* n1 = CreateNode(1, n2, 0);
+
+
+			Node* m2 = CreateNode(2, 0, 0);
+			Node* m5 = CreateNode(5, 0, 0);
+			Node* m4 = CreateNode(4, m5, 0);
+			Node* m3 = CreateNode(3, m2, m4);
+			Node* m1 = CreateNode(1, 0, m3);
+
+			bool isMirror = true;
+			AreTreesMirror(n1, m1, &isMirror);
+		}
 
 		printf("");
 
