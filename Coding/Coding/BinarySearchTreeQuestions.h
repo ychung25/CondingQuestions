@@ -187,6 +187,35 @@ namespace BinarySearchTreeQuestions
 		return rightTail;
 	}
 
+	Node* FindMid(Node* h, Node* t)
+	{
+		Node* slow = h;
+		Node* fast = h;
+
+		while (fast && fast != t && fast->r && fast->r != t)
+		{
+			fast = fast->r->r;
+
+			slow = slow->r;
+		}
+		return slow;
+	}
+	Node* SortedFullBST2DLL(Node* h, Node* t)
+	{
+		if (h == t)
+		{
+			h->l = 0;
+			h->r = 0;
+			return h;
+		}
+		Node* mid = FindMid(h, t);
+		Node* l = SortedFullBST2DLL(h, mid->l);
+		Node* r = SortedFullBST2DLL(mid->r, t);
+		mid->l = l;
+		mid->r = r;
+		return mid;
+	}
+
 	void DoBinarySearchTreeQuestions()
 	{
 		Node* n2 = createNode(2, 0, 0);
@@ -227,8 +256,35 @@ namespace BinarySearchTreeQuestions
 			Node* n20 = createNode(20, n15, n30);
 
 			Node* dll = BST2DLL(n20);
+		}
+
+		{
+			Node* n5 = createNode(5, 0, 0);
+			Node* n15 = createNode(15, 0, 0);
+			Node* n25 = createNode(25, 0, 0);
+			Node* n35 = createNode(35, 0, 0);
+			Node* n10 = createNode(10, 0, 0);
+			Node* n30 = createNode(30, 0, 0);
+			Node* n20 = createNode(20, 0, 0);
+			n5->l = 0;
+			n5->r = n10;
+			n10->l = n5;
+			n10->r = n15;
+			n15->l = n10;
+			n15->r = n20;
+			n20->l = n15;
+			n20->r = n25;
+			n25->l = n20;
+			n25->r = n30;
+			n30->l = n25;
+			n30->r = n35;
+			n35->l = n30;
+			n35->r = 0;
+
+			Node* bst = SortedFullBST2DLL(n5, n35);
 			printf("");
 		}
+
 		
 		printf("");
 
