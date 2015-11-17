@@ -164,6 +164,7 @@ namespace Trees
 				return a;
 			return b;
 		}
+
 		int Height(Node* n)
 		{
 			if (!n)
