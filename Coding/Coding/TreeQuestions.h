@@ -940,6 +940,27 @@ namespace BinaryTreeQuestions
 			index = 0;
 			Node* tree = CreateTreeWithILPreorder(preorder, &index);
 		}
+
+
+		{
+			Trees::AVLTree avlTree;
+			avlTree.Insert(10);
+			avlTree.Insert(9);
+			avlTree.Insert(1);
+			avlTree.Insert(8);
+			avlTree.Insert(4);
+			avlTree.Insert(7);
+			avlTree.Insert(3);
+			avlTree.Insert(5);
+			avlTree.Insert(6);
+			avlTree.Insert(2);
+			printf("");
+
+			avlTree.Remove(4);
+			avlTree.Remove(5);
+			avlTree.Remove(8);
+			printf("");
+		}
 	}
 
 }
