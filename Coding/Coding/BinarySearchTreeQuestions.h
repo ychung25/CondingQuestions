@@ -21,6 +21,13 @@ namespace BinarySearchTreeQuestions
 		return n;
 	}
 
+	int abs(int x)
+	{
+		if (x < 0)
+			return x*-1;
+		return x;
+	}
+
 	bool FindRecursive(Node* n, int key)
 	{
 		if (!n)
@@ -276,6 +283,144 @@ namespace BinarySearchTreeQuestions
 		}
 	}
 
+	Node* CreateFullBinarySearchTreeofHeightH(int h, int* count)
+	{
+		if (h == 0)
+			return 0;
+
+		Node* n = new Node();
+
+		Node* l = CreateFullBinarySearchTreeofHeightH(h - 1, count);
+		n->data = *count;
+		*count = *count + 1;
+		Node* r = CreateFullBinarySearchTreeofHeightH(h - 1, count);
+
+		n->l = l;
+		n->r = r;
+		return n;
+	}
+	// if h is 4 then 2^(h+1)-1 = 31. start = 0 and end 31.
+	Node* CreateFullBinarySearchTreeofHeight(int start, int end)
+	{
+		Node* n = new Node();
+		if (start == end)
+		{
+			n->data = start;
+			n->l = 0;
+			n->r = 0;
+			return n;
+		}
+
+		int mid = start + ((end - start) / 2);
+		n->data = mid;
+		n->l = CreateFullBinarySearchTreeofHeight(start, mid - 1);
+		n->r = CreateFullBinarySearchTreeofHeight(mid + 1, end);
+		return n;
+	}
+
+	int isBSTanAVL(Node* n, bool* BSTanAVL)
+	{
+		if (!n)
+			return 0;
+
+		int lHeight = isBSTanAVL(n->l, BSTanAVL);
+		int rHeight = isBSTanAVL(n->r, BSTanAVL);
+
+		int diff = lHeight - rHeight;
+		if (diff < 0)
+			diff = diff * -1;
+
+		if (diff == 2)
+		{
+			*BSTanAVL = false;
+		}
+
+		int max = lHeight;
+		if (rHeight > max)
+			max = rHeight;
+
+		return max + 1;
+	}
+
+	Node* CreateMinNumberAVLOfHeightH(int h)
+	{
+		if (h < 0)
+			return 0;
+
+		Node* n = new Node();
+
+		n->l = CreateMinNumberAVLOfHeightH(h - 1);
+		n->r = CreateMinNumberAVLOfHeightH(h - 2);
+
+		return n;
+	}
+
+	int CountNumberOfNodesBetweenAandBInBST(Node* n, int a, int b)
+	{
+		if (!n)
+			return 0;
+
+		if (n->data >= a && n->data <= b)
+		{
+			int l = CountNumberOfNodesBetweenAandBInBST(n->l, a, b);
+			int r = CountNumberOfNodesBetweenAandBInBST(n->r, a, b);
+			return l + r + 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
+	// if key is 4, the node containing 4 is returned or the one that has the closest value.
+	Node* FindTheClosestNodeOfGivenKey(Node* n, int key)
+	{
+		if (n->data == key)
+			return n;
+
+		if (key < n->data)
+		{
+			if (n->l)
+			{
+				Node* temp = FindTheClosestNodeOfGivenKey(n->l, key);
+				if (abs(temp->data - key) < abs(n->data - key))
+					return temp;
+			}
+			return n;
+		}
+		if (n->data < key)
+		{
+			if (n->r)
+			{
+				Node* temp = FindTheClosestNodeOfGivenKey(n->r, key);
+				if (abs(temp->data - key) < abs(n->data - key))
+					return temp;
+			}
+			return n;
+		}
+	}
+
+	// Remove all the nodes with only one child from a given tree.
+	Node* RemoveHalfNodes(Node* n)
+	{
+		if (!n)
+			return 0;
+
+		n->l = RemoveHalfNodes(n->l);
+		n->r = RemoveHalfNodes(n->r);
+
+		if ((n->l && n->r) || (!n->l && !n->r))
+			return n;
+
+		Node* l = n->l;
+		Node* r = n->r;
+		delete n;
+
+		if (l)
+			return l;
+		return r;
+	}
+
 	void DoBinarySearchTreeQuestions()
 	{
 		Node* n2 = createNode(2, 0, 0);
@@ -363,7 +508,59 @@ namespace BinarySearchTreeQuestions
 		}
 
 		
-		printf("");
+		{
+			int count = 1;
+			Node* fullBST = CreateFullBinarySearchTreeofHeightH(4, &count);
+
+			Node* node7 = FindTheClosestNodeOfGivenKey(fullBST, 7);
+
+			Node* fullBST2 = CreateFullBinarySearchTreeofHeight(1, 31);
+
+			Node* current = fullBST2;
+			while (current->r)
+			{
+				current = current->r;
+			}
+
+			Node* temp1 = createNode(100, 0, 0);
+			Node* temp2 = createNode(200, 0, 0);
+			temp1->r = temp2;
+			current->r = temp1;
+
+			bool BSTanAVL = true;
+			isBSTanAVL(fullBST2, &BSTanAVL);
+
+			Node* minAVL = CreateMinNumberAVLOfHeightH(3);
+
+			int num = CountNumberOfNodesBetweenAandBInBST(fullBST, 3, 10);
+
+			printf("");
+		}
+
+
+		{
+			Node* n10 = createNode(10, 0, 0);
+			Node* n5 = createNode(5, 0, 0);
+			Node* n3 = createNode(3, 0, 0);
+			Node* n7 = createNode(7, 0, 0);
+			Node* n8 = createNode(8, 0, 0);
+			Node* n20 = createNode(20, 0, 0);
+			Node* n15 = createNode(15, 0, 0);
+			Node* n25 = createNode(25, 0, 0);
+			Node* n30 = createNode(30, 0, 0);
+
+			n10->l = n5;
+			n5->l = n3;
+			n5->r = n7;
+			n7->r = n8;
+			n10->r = n20;
+			n20->l = n15;
+			n20->r = n25;
+			n25->r = n30;
+
+			Node* removedNodes = RemoveHalfNodes(n10);
+			printf("");
+		}
 
 	}
 }
