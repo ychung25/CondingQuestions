@@ -355,22 +355,97 @@ namespace BinarySearchTreeQuestions
 		return n;
 	}
 
-	int CountNumberOfNodesBetweenAandBInBST(Node* n, int a, int b)
+	// Brute force. (a & b inclusive)
+	void CountNumberOfNodesBetweenAandBInBSTv1(Node* n, int a, int b, int* count)
+	{
+		if (!n)
+			return;
+
+		if (a <= n->data && n->data <= b)
+		{
+			*count = *count + 1;
+		}
+
+		CountNumberOfNodesBetweenAandBInBSTv1(n->l, a, b, count);
+		CountNumberOfNodesBetweenAandBInBSTv1(n->r, a, b, count);
+	}
+	// More efficient version.
+	int CountNumberOfNodesBetweenAandBInBSTv2(Node* n, int a, int b)
 	{
 		if (!n)
 			return 0;
 
-		if (n->data >= a && n->data <= b)
+		int l = 0;
+		int r = 0;
+
+		if (a < n->data && n->data < b)
 		{
-			int l = CountNumberOfNodesBetweenAandBInBST(n->l, a, b);
-			int r = CountNumberOfNodesBetweenAandBInBST(n->r, a, b);
+			l = CountNumberOfNodesBetweenAandBInBSTv2(n->l, a, b);
+			r = CountNumberOfNodesBetweenAandBInBSTv2(n->r, a, b);
+		}
+		else if (n->data <= a)
+		{
+			r = CountNumberOfNodesBetweenAandBInBSTv2(n->r, a, b);
+		}
+		else if (n->data >= b) 
+		{
+			l = CountNumberOfNodesBetweenAandBInBSTv2(n->l, a, b);
+		}
+
+		if (a <= n->data && n->data <= b)
+		{
 			return l + r + 1;
+		}
+		return l + r;
+	}
+	// (a & b inclusive)
+	Node* RemoveNodesThatAreNotWithinRangeOfAandB(Node* n, int a, int b)
+	{
+		if (!n)
+			return 0;
+		Node* l = RemoveNodesThatAreNotWithinRangeOfAandB(n->l, a, b);
+		Node* r  = RemoveNodesThatAreNotWithinRangeOfAandB(n->r, a, b);
+
+		bool isInRange = (a <= n->data && n->data <= b);
+		
+		if (isInRange)
+		{
+			n->l = l;
+			n->r = r;
+			return n;
 		}
 		else
 		{
-			return 0;
+			delete n;
+			if (l)
+				return l;
+			return r;
 		}
+
+
 	}
+
+	// Remove all the nodes with only one child from a given tree.
+	Node* RemoveHalfNodes(Node* n)
+	{
+		if (!n)
+			return 0;
+
+		n->l = RemoveHalfNodes(n->l);
+		n->r = RemoveHalfNodes(n->r);
+
+		if ((n->l && n->r) || (!n->l && !n->r))
+			return n;
+
+		Node* l = n->l;
+		Node* r = n->r;
+		delete n;
+
+		if (l)
+			return l;
+		return r;
+	}
+
 
 	// if key is 4, the node containing 4 is returned or the one that has the closest value.
 	Node* FindTheClosestNodeOfGivenKey(Node* n, int key)
@@ -400,26 +475,7 @@ namespace BinarySearchTreeQuestions
 		}
 	}
 
-	// Remove all the nodes with only one child from a given tree.
-	Node* RemoveHalfNodes(Node* n)
-	{
-		if (!n)
-			return 0;
 
-		n->l = RemoveHalfNodes(n->l);
-		n->r = RemoveHalfNodes(n->r);
-
-		if ((n->l && n->r) || (!n->l && !n->r))
-			return n;
-
-		Node* l = n->l;
-		Node* r = n->r;
-		delete n;
-
-		if (l)
-			return l;
-		return r;
-	}
 
 	void DoBinarySearchTreeQuestions()
 	{
@@ -532,7 +588,10 @@ namespace BinarySearchTreeQuestions
 
 			Node* minAVL = CreateMinNumberAVLOfHeightH(3);
 
-			int num = CountNumberOfNodesBetweenAandBInBST(fullBST, 3, 10);
+			int num = CountNumberOfNodesBetweenAandBInBSTv2(fullBST, 3, 10);
+
+			num = 0;
+			CountNumberOfNodesBetweenAandBInBSTv1(fullBST, 3, 10, &num);
 
 			printf("");
 		}
@@ -559,6 +618,20 @@ namespace BinarySearchTreeQuestions
 			n25->r = n30;
 
 			Node* removedNodes = RemoveHalfNodes(n10);
+			printf("");
+		}
+
+		{
+			Node* n16 = createNode(16, 0, 0);
+			Node* n5 = createNode(5, 0, 0);
+			Node* n15 = createNode(15, 0, n16);
+			Node* n10 = createNode(10, n5, n15);
+			Node* n25 = createNode(25, 0, 0);
+			Node* n35 = createNode(35, 0, 0);
+			Node* n30 = createNode(30, n25, n35);
+			Node* n20 = createNode(20, n10, n30);
+
+			Node * smallTree = RemoveNodesThatAreNotWithinRangeOfAandB(n20, 15, 25);
 			printf("");
 		}
 

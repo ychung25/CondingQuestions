@@ -5,7 +5,6 @@ void DontDoThis(int n, int data[])
 {
 	// int data[n]; <-the size must be constant value.
 	// sizeof(data); <-this return the size of a pointer in byte not the size of an array.
-
 }
 
 // Creating arrays
