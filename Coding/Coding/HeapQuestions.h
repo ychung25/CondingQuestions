@@ -11,7 +11,7 @@ namespace HeapQuestions
 		int data[] = { 5,3,2,4,1,7,6 };
 		int dataSize = 7;
 
-		for (int i = dataSize-1; i >= 0; i--)
+		for (int i = dataSize - 1; i >= 0; i--)
 		{
 			Heap::HeapifyUp(i, data);
 		}
@@ -63,9 +63,9 @@ namespace HeapQuestions
 		for (int i = 0; i < size; i++)
 		{
 			int temp = data[0];
-			data[0] = data[size -1 -i];
+			data[0] = data[size - 1 - i];
 			data[size - 1 - i] = temp;
-			Heap::HeapifyDown(0, data, size -1 - i);
+			Heap::HeapifyDown(0, data, size - 1 - i);
 		}
 
 		printf("");

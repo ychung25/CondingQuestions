@@ -79,7 +79,7 @@ namespace Heap
 			{
 				int temp = ar[0];
 				ar[0] = ar[size - 1];
-				ar[size -1] = temp;
+				ar[size - 1] = temp;
 				size--;
 				HeapifyDown(0, ar, size);
 				return temp;
