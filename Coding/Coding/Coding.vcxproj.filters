@@ -72,6 +72,12 @@
     <ClInclude Include="BinarySearchTreeQuestions.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Heap.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HeapQuestions.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
