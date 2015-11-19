@@ -11,11 +11,29 @@ namespace Heap
 			lastElement = 0;
 		}
 
-		MinHeap(int data[], int size)
+		//MinHeap(int data[], int size)
+		//{
+		//	ar = new int[1000]();
+		//	lastElement = 0;
+		//	for (int i = 0; i < size; i++)
+		//	{
+		//		Insert(data[i]);
+		//	}
+		//}
+
+		MinHeap(int data[], int size) // This is supposed to be more efficient than the above
 		{
-			for (int i = 0; i < size; i++)
+			ar = new int[1000]();
+			lastElement = 0;
+
+			for (lastElement = 0; lastElement < size; lastElement++)
 			{
-				Insert(data[i]);
+				ar[lastElement] = data[lastElement];
+			}
+
+			for (int i = ((lastElement - 1) - 1) / 2; i >= 0; i--)
+			{
+				HeapifyDown(i);
 			}
 		}
 
@@ -53,6 +71,14 @@ namespace Heap
 		int GetSize()
 		{
 			return lastElement;
+		}
+
+		void Print()
+		{
+			for (int i = 0; i < lastElement; i++)
+			{
+				printf("%d ", ar[i]);
+			}
 		}
 
 	private:

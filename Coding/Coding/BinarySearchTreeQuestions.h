@@ -446,7 +446,6 @@ namespace BinarySearchTreeQuestions
 		return r;
 	}
 
-
 	// if key is 4, the node containing 4 is returned or the one that has the closest value.
 	Node* FindTheClosestNodeOfGivenKey(Node* n, int key)
 	{
