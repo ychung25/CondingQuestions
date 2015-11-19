@@ -96,6 +96,5 @@ namespace HeapQuestions
 
 		HeapSortClassic();
 		HeapSortInPlace();
-
 	}
 }
