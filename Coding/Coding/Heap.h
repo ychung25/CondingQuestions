@@ -2,44 +2,86 @@
 
 namespace Heap
 {
+	void HeapifyUp(int index, int data[])
+	{
+		if (index == 0)
+			return;
+
+		int parent = (index - 1) / 2;
+		if (parent < 0)
+			parent = 0;
+
+		if (data[parent] > data[index])
+		{
+			int temp = data[parent];
+			data[parent] = data[index];
+			data[index] = temp;
+			HeapifyUp(parent, data);
+		}
+	}
+
+	void HeapifyDown(int index, int data[], int size)
+	{
+		int lIndex = 2 * index + 1;
+		int rIndex = 2 * index + 2;
+
+		if (lIndex < size && rIndex < size)
+		{
+			if (data[lIndex] < data[rIndex])
+			{
+				if (data[index] > data[lIndex])
+				{
+					int temp = data[index];
+					data[index] = data[lIndex];
+					data[lIndex] = temp;
+					HeapifyDown(lIndex, data, size);
+				}
+			}
+			else
+			{
+				if (data[index] > data[rIndex])
+				{
+					int temp = data[index];
+					data[index] = data[rIndex];
+					data[rIndex] = temp;
+					HeapifyDown(rIndex, data, size);
+				}
+			}
+		}
+		else if (lIndex < size && data[index] > data[lIndex])
+		{
+			int temp = data[index];
+			data[index] = data[lIndex];
+			data[lIndex] = temp;
+			HeapifyDown(lIndex, data, size);
+		}
+	}
+
 	class MinHeap
 	{
 	public:
 		MinHeap()
 		{
 			ar = new int[1000]();
-			lastElement = 0;
-		}
-
-		MinHeap(int data[], int size)
-		{
-			for (int i = 0; i < size; i++)
-			{
-				Insert(data[i]);
-			}
-		}
-
-		void DoHeapSort()
-		{
-
+			size = 0;
 		}
 
 		void Insert(int data)
 		{
-			ar[lastElement] = data;
-			HeapifyUp(lastElement);
-			lastElement++;
+			ar[size] = data;
+			HeapifyUp(size, ar);
+			size++;
 		}
 
 		int GetMin()
 		{
-			if (lastElement > 0)
+			if (size > 0)
 			{
 				int temp = ar[0];
-				ar[0] = ar[lastElement - 1];
-				ar[lastElement] = temp;
-				lastElement--;
-				HeapifyDown(0);
+				ar[0] = ar[size - 1];
+				ar[size -1] = temp;
+				size--;
+				HeapifyDown(0, ar, size);
 				return temp;
 			}
 			return -1; //error
@@ -52,68 +94,20 @@ namespace Heap
 
 		int GetSize()
 		{
-			return lastElement;
+			return size;
+		}
+
+		void Print()
+		{
+			for (int i = 0; i < size; i++)
+			{
+				printf("%d ", ar[i]);
+			}
 		}
 
 	private:
 
-		void HeapifyUp(int index)
-		{
-			if (index == 0)
-				return;
-
-			int parent = (index - 1) / 2;
-			if (parent < 0)
-				parent = 0;
-
-			if (ar[parent] > ar[index])
-			{
-				int temp = ar[parent];
-				ar[parent] = ar[index];
-				ar[index] = temp;
-			}
-
-			HeapifyUp(parent);
-		}
-
-		void HeapifyDown(int index)
-		{
-			int lIndex = 2 * index + 1;
-			int rIndex = 2 * index + 2;
-
-			if (lIndex < lastElement && rIndex < lastElement)
-			{
-				if (ar[lIndex] < ar[rIndex])
-				{
-					if (ar[index] > ar[lIndex])
-					{
-						int temp = ar[index];
-						ar[index] = ar[lIndex];
-						ar[lIndex] = temp;
-						HeapifyDown(lIndex);
-					}
-				}
-				else
-				{
-					if (ar[index] > ar[rIndex])
-					{
-						int temp = ar[index];
-						ar[index] = ar[rIndex];
-						ar[rIndex] = temp;
-						HeapifyDown(rIndex);
-					}
-				}
-			}
-			else if (lIndex < lastElement && ar[index] > ar[lIndex])
-			{
-				int temp = ar[index];
-				ar[index] = ar[lIndex];
-				ar[lIndex] = temp;
-				HeapifyDown(lIndex);
-			}
-		}
-
 		int* ar;
-		int lastElement;
+		int size;
 	};
 }
