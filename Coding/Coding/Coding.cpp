@@ -17,6 +17,7 @@
 #include "GenericTreeQuestions.h"
 #include "BinarySearchTreeQuestions.h"
 #include "HeapQuestions.h"
+#include "SortQuestions.h"
 
 int main()
 {
@@ -55,6 +56,8 @@ int main()
 	BinarySearchTreeQuestions::DoBinarySearchTreeQuestions();
 
 	HeapQuestions::DoHeapQuestions();
+
+	SortQuestions::DoSortQuestions();
 
 	return 0;
 }
