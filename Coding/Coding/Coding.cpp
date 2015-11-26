@@ -25,19 +25,9 @@ int main()
 	DoArraysAndPointers();
 
 	// [Recursion]
-	DoFactorial();
-	DoFibonacci();
-	DoBinarySearch();
-	DoMergeSort();
-	DoQuickSort();
-	DoPreInPostOrderTraveral();
-	DoBreathFirstSearch();
-	DoHanoi();
-	DoBinaryString();
-	DoKString();
+	DoRecursionQuestions();
 
 	// [Linked List]
-	// Becareful with head & tail edge cases
 	DoSinglyLinkedList();
 	DoDoublyLinkedList();
 	DoCircularLinkedList();
