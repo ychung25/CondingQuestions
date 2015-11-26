@@ -1,4 +1,5 @@
 #pragma once
+#include "Recursion.h"
 namespace SortQuestions
 {
 	struct Node
@@ -379,6 +380,69 @@ namespace SortQuestions
 		}
 	}
 
+	int MostFrequentNumber(int data[], int size)
+	{
+		HeapSort(data, size);
+
+		int max = 0;
+		int frequent = data[0];
+		int x = 0;
+		for (int i = 1; i < size; i++)
+		{
+			int datai = data[i];
+			int datai1 = data[i - 1];
+			if (data[i - 1] == data[i])
+			{
+				x++;
+				if (x > max)
+				{
+					max = x;
+					frequent = data[i - 1];
+				}
+			}
+			else
+			{
+				x = 0;
+			}
+		}
+		return frequent;
+	}
+
+	// Given two sorted arrays A and B (both has the same size). Find a in A and b in B, that sums up to be K.
+	void FindAandBThatMakesK(int A[], int B[], int size, int k)
+	{
+		for (int i = 0; i < size; i++)
+		{
+			int toFind = k - A[i];
+			bool bFound = BinarySearch(0, size - 1, toFind, B);
+			if (bFound)
+			{
+				printf("\n%d in A + %d in B = %d\n", A[i], toFind, k);
+			}
+		}
+	}
+
+	// Given a sorted array B of size n and a sorted array A of size n + x = m,
+	// put all elements into the array A and keep it sorted.
+	void MergeTwoSortedArray(int A[], int m, int B[], int n)
+	{
+		int x = m - n - 1;
+		int y = n - 1;
+		for (int i = m - 1; i >= 0; i--)
+		{
+			if (A[x] > B[y])
+			{
+				A[i] = A[x];
+				x--;
+			}
+			else
+			{
+				A[i] = B[y];
+				y--;
+			}
+		}
+	}
+
 	void DoSortQuestions()
 	{
 		int data[] = { 9, 2, 1, 8, 5, 4, 6, 3, 7, 10 };
@@ -422,6 +486,30 @@ namespace SortQuestions
 		{
 			int data = current->data;
 			current = current->next;
+		}
+
+		{
+			int data[] = { 10,10,9,1,2,10,3,1,9,10,4,5,10,5,6,7,9,9,8,10 };
+			int size = sizeof(data) / sizeof(data[0]);
+			int frequent = MostFrequentNumber(data, size);
+			printf("");
+		}
+
+		{
+			printf("\n");
+			int A[] = { 2, 4, 5, 6, 7 };
+			int B[] = { 4, 9, 15, 20, 30 };
+			int size = sizeof(A) / sizeof(A[0]);
+			FindAandBThatMakesK(A, B, size, 37);
+		}
+
+		{
+			int A[] = { 2, 4, 5, 6, 7 , 0, 0};
+			int B[] = { 3, 9 };
+			int m = sizeof(A) / sizeof(A[0]);
+			int n = sizeof(B) / sizeof(B[0]);
+			MergeTwoSortedArray(A, m, B, n);
+			printf("");
 		}
 
 		printf("");

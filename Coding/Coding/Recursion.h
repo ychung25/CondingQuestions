@@ -62,7 +62,7 @@ void DoFibonacci()
 }
 
 // BinarySearch example
-bool BinarySearch(unsigned int start, unsigned int end, int find, const int const data[])
+bool BinarySearch(unsigned int start, unsigned int end, int find, int data[])
 {
 	if (data == nullptr || find < data[start] || data[end] < find)
 		return false;
