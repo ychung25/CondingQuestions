@@ -1,6 +1,31 @@
 #pragma once
 namespace SortQuestions
 {
+	struct Node
+	{
+		int data;
+		Node* next;
+		Node* prev;
+	};
+
+	Node* FindMidNode(Node *n)
+	{
+		Node* slow = n;
+		Node* fast = n;
+		while (1)
+		{
+			fast = fast->next;
+			if (!fast)
+				break;
+			fast = fast->next;
+			if (!fast)
+				break;
+
+			slow = slow->next;
+		}
+		return slow;
+	}
+
 	void BubbleSort(int data[], int size)
 	{
 		for (int i = 1; i < size; i++)
@@ -14,6 +39,32 @@ namespace SortQuestions
 					data[j + 1] = temp;
 				}
 			}
+		}
+	}
+	void BubbleSortLL(Node* n, int size)
+	{
+		Node* start = n;
+		Node* end;
+		while (n)
+		{
+			end = n;
+			n = n->next;
+		}
+
+		while (start != end)
+		{
+			n = start;
+			while (n != end)
+			{
+				if (n->next->data < n->data)
+				{
+					int temp = n->next->data;
+					n->next->data = n->data;
+					n->data = temp;
+				}
+				n = n->next;
+			}
+			end = end->prev;
 		}
 	}
 
@@ -33,6 +84,34 @@ namespace SortQuestions
 			int temp = data[min];
 			data[min] = data[i];
 			data[i] = temp;
+		}
+	}
+	void SelectionSortLL(Node* n, int size)
+	{
+		Node* start = n;
+		while (start)
+		{
+			Node* minNode = 0;
+			int min = start->data;
+			Node* x = start->next;
+			while (x)
+			{
+				if (x->data < min)
+				{
+					min = x->data;
+					minNode = x;
+				}
+				x = x->next;
+			}
+
+			if (minNode)
+			{
+				int temp = start->data;
+				start->data = minNode->data;
+				minNode->data = temp;
+			}
+			
+			start = start->next;
 		}
 	}
 
@@ -105,6 +184,74 @@ namespace SortQuestions
 		}
 
 		delete[] temp;
+	}
+	Node* MergeSortLL(Node* n)
+	{
+		if (!n->next)
+			return n;
+
+		Node* x = FindMidNode(n);
+		Node* y = x->next;
+		x->next = 0;
+		y->prev = 0;
+
+		Node* l = MergeSortLL(n);
+		Node* r = MergeSortLL(y);
+
+		Node* current = 0;
+		Node* head = 0;
+		while (l && r)
+		{
+			if (l->data < r->data)
+			{
+				if (!current)
+				{
+					current = l;
+					if (!head)
+						head = l;
+				}
+				else
+				{
+					current->next = l;
+					l->prev = current;
+					current = l;
+				}
+				l = l->next;
+
+			}
+			else
+			{
+				if (!current)
+				{
+					current = r;
+					if (!head)
+						head = r;
+				}
+				else
+				{
+					current->next = r;
+					r->prev = current;
+					current = r;
+				}
+				r = r->next;
+			}
+		}
+		while (l)
+		{
+			current->next = l;
+			l->prev = current;
+			current = l;
+			l = l->next;
+		}
+		while (r)
+		{
+			current->next = r;
+			r->prev = current;
+			current = r;
+			r = r->next;
+		}
+
+		return head;
 	}
 
 	void QuickSort(int data[], int l, int r)
@@ -244,6 +391,38 @@ namespace SortQuestions
 		//QuickSort(data, 0, size - 1);
 		//HeapSort(data, size);
 		BucketSort(data, size, 10);
+
+		Node n1;
+		n1.data = 1;
+		Node n2;
+		n2.data = 2;
+		Node n3;
+		n3.data = 3;
+		Node n4;
+		n4.data = 4;
+		Node n5;
+		n5.data = 5;
+
+		n2.prev = 0;
+		n2.next = &n1;
+		n1.prev = &n2;
+		n1.next = &n3;
+		n3.prev = &n1;
+		n3.next = &n5;
+		n5.prev = &n3;
+		n5.next = &n4;
+		n4.prev = &n5;
+		n4.next = 0;
+		//BubbleSortLL(&n2, 5);
+		//SelectionSortLL(&n2, 5);
+		Node* sorted = MergeSortLL(&n2);
+
+		Node* current = sorted;
+		while (current)
+		{
+			int data = current->data;
+			current = current->next;
+		}
 
 		printf("");
 		
