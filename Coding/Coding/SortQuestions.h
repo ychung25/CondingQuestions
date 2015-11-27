@@ -389,6 +389,8 @@ namespace SortQuestions
 		}
 	}
 
+
+
 	int MostFrequentNumber(int data[], int size)
 	{
 		HeapSort(data, size);
@@ -446,25 +448,22 @@ namespace SortQuestions
 		HeapSort(data, size);
 		for (int i = 0; i < size; i++)
 		{
-			// a = data[i]
-			int rest = k - data[i];
-
 			int start = 0;
 			int end = size - 1;
 			while (start <= end)
 			{
-				int sum = data[start] + data[end];
-				if (sum == rest)
+				int sum = data[start] + data[end] + data[i];
+				if (sum == k)
 				{
 					//found. b = data[start] and c = data[end]
 					printf("\na=%d, b=%d, c=%d\n k=%d\n", data[i], data[start], data[end], k);
 					return;
 				}
-				else if (sum < rest)
+				else if (sum < k)
 				{
 					start++;
 				}
-				else if (sum > rest)
+				else if (sum > k)
 				{
 					end--;
 				}
@@ -568,8 +567,11 @@ namespace SortQuestions
 			{
 				break;
 			}
-
-			if (sum > 0)
+			if (sum == 0)
+			{
+				break;
+			}
+			else if (sum > 0)
 			{
 				end--;
 			}
@@ -581,6 +583,50 @@ namespace SortQuestions
 
 		printf("\n %d + %d is closest to 0\n", data[startKeep], data[endKeep]);
 
+	}
+	// An array contains negative and positive integers, find a, b and c that are closest to 0 when added up.
+	void ClosestToZeroABC(int data[], int size)
+	{
+		HeapSort(data, size);
+
+		int start = 0;
+		int end = size - 1;
+
+		int a = start;
+		int b = start;
+		int c = end;
+		int closest = data[start] + data[end] + data[start];
+
+		for (int i = 0; i < size; i++)
+		{
+			start = 0;
+			end = size - 1;
+			while (start <= end)
+			{
+				int sum = data[start] + data[end] + data[i];
+				if (abs(sum) <= abs(closest))
+				{
+					a = start;
+					b = end;
+					c = i;
+					closest = sum;
+				}
+				if (sum == 0)
+				{
+					break;
+				}
+				else if (sum < 0)
+				{
+					start++;
+				}
+				else if (sum > 0)
+				{
+					end--;
+				}
+			}
+		}
+
+		printf("\n %d + %d + %d = %d\n", data[a], data[b], data[c], data[a] + data[b] + data[c]);
 	}
 
 	void DoSortQuestions()
@@ -644,7 +690,7 @@ namespace SortQuestions
 		{
 			int A[] = { 2, 4, 5, 6, 7, 10, 34, 5, 43 };
 			int size = sizeof(A) / sizeof(A[0]);
-			//FindAandBandCThatMakesKInSingleArray(A, size, 84);
+			FindAandBandCThatMakesKInSingleArray(A, size, 84);
 			printf("");
 		}
 
@@ -669,6 +715,13 @@ namespace SortQuestions
 			int data[] = { -16, -25, -10, 14, 17, 35, -50, 0 };
 			int size = sizeof(data) / sizeof(data[0]);
 			ClosestToZero(data, size);
+		}
+
+		{
+			int data[] = { -16, -25, -10, 14, 17, 37, -56, 36 };
+			int size = sizeof(data) / sizeof(data[0]);
+			ClosestToZeroABC(data, size);
+			printf("");
 		}
 		 
 		{
