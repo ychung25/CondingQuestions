@@ -398,8 +398,6 @@ namespace SortQuestions
 		int x = 0;
 		for (int i = 1; i < size; i++)
 		{
-			int datai = data[i];
-			int datai1 = data[i - 1];
 			if (data[i - 1] == data[i])
 			{
 				x++;
@@ -442,16 +440,34 @@ namespace SortQuestions
 		}
 	}
 
-	// Given two sorted arrays A and B (both has the same size). Find a in A and b in B, that sums up to be K.
-	void FindAandBThatMakesKInTwoArrays(int A[], int B[], int size, int k)
+	// Given one array, find a, b and c that make up k. (a+b+c=k).
+	void FindAandBandCThatMakesKInSingleArray(int data[], int size, int k)
 	{
+		HeapSort(data, size);
 		for (int i = 0; i < size; i++)
 		{
-			int toFind = k - A[i];
-			bool bFound = BinarySearch(0, size - 1, toFind, B);
-			if (bFound)
+			// a = data[i]
+			int rest = k - data[i];
+
+			int start = 0;
+			int end = size - 1;
+			while (start <= end)
 			{
-				printf("\n%d in A + %d in B = %d\n", A[i], toFind, k);
+				int sum = data[start] + data[end];
+				if (sum == rest)
+				{
+					//found. b = data[start] and c = data[end]
+					printf("\na=%d, b=%d, c=%d\n k=%d\n", data[i], data[start], data[end], k);
+					return;
+				}
+				else if (sum < rest)
+				{
+					start++;
+				}
+				else if (sum > rest)
+				{
+					end--;
+				}
 			}
 		}
 	}
@@ -491,6 +507,20 @@ namespace SortQuestions
 		}
 
 		return false;
+	}
+
+	// Given two sorted arrays A and B (both has the same size). Find a in A and b in B, that sums up to be K.
+	void FindAandBThatMakesKInTwoArrays(int A[], int B[], int size, int k)
+	{
+		for (int i = 0; i < size; i++)
+		{
+			int toFind = k - A[i];
+			bool bFound = BinarySearch(0, size - 1, toFind, B);
+			if (bFound)
+			{
+				printf("\n%d in A + %d in B = %d\n", A[i], toFind, k);
+			}
+		}
 	}
 
 	// Given a sorted array B of size n and a sorted array A of size n + x = m,
@@ -609,6 +639,13 @@ namespace SortQuestions
 			int A[] = { 2, 4, 5, 6, 7, 10, 34, 5, 43 };
 			int size = sizeof(A) / sizeof(A[0]);
 			FindAandBThatMakesKInSingleArray(A, size, 6);
+		}
+
+		{
+			int A[] = { 2, 4, 5, 6, 7, 10, 34, 5, 43 };
+			int size = sizeof(A) / sizeof(A[0]);
+			//FindAandBandCThatMakesKInSingleArray(A, size, 84);
+			printf("");
 		}
 
 		{
