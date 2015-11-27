@@ -629,6 +629,58 @@ namespace SortQuestions
 		printf("\n %d + %d + %d = %d\n", data[a], data[b], data[c], data[a] + data[b] + data[c]);
 	}
 
+	// Given a sorted array of negative and positive numbers, find the first positive number in O(logn)
+	void FindTheFirstPositive(int data[], int start, int end)
+	{
+		if (start > end)
+		{
+			return;
+		}
+
+		int mid = (start + end) / 2;
+
+		if (data[mid] >= 0)
+		{
+			if ((mid - 1) >= 0)
+			{
+				if (data[mid - 1] < 0)
+				{
+					printf("\n the first positive number %d\n", data[mid]);
+				}
+			}
+			FindTheFirstPositive(data, start, mid - 1);
+		}
+		else if (data[mid] < 0)
+		{
+			FindTheFirstPositive(data, mid+1, end);
+		}
+	}
+	// Given an array that as number sorted increasing order and then decreasing order, find the first number that decreases. e.g. 1,2,3,4,3,2,1 = 4.
+	void FindTheFisrtDecreasing(int data[], int size, int start, int end)
+	{
+		if (start > end)
+			return;
+
+		int mid = (start + end) / 2;
+		if ((mid - 1) >= 0 && (mid + 1) < size)
+		{
+			if (data[mid] > data[mid + 1] &&
+				data[mid] < data[mid - 1])
+			{
+				printf("\n FindTheFisrtDecreasing = %d\n", data[mid]);
+			}
+			else if (data[mid-1] > data[mid])
+			{
+				FindTheFisrtDecreasing(data, size, start, mid - 1);
+			}
+			else if (data[mid-1] < data[mid])
+			{
+				FindTheFisrtDecreasing(data, size, mid + 1, end);
+			}
+		}
+		
+	}
+
 	void DoSortQuestions()
 	{
 		int data[] = { 9, 2, 1, 8, 5, 4, 6, 3, 7, 10 };
@@ -728,6 +780,19 @@ namespace SortQuestions
 			int data[] = { 16, 5, 25, 3, 10, 14, 2, 17, 35, 50, 4 };
 			int size = sizeof(data) / sizeof(data[0]);
 			bool bIJKExist = VerifyIJKInSingleArray(data, size);
+			printf("");
+		}
+
+		{
+			int data[] = { -34, -23, -15, 0, 3, 5, 7, 10, 17, 35, 50};
+			int size = sizeof(data) / sizeof(data[0]);
+			FindTheFirstPositive(data, 0, size - 1);
+			printf("");
+		}
+		{
+			int data[] = { 1, 3, 2, 1, 0, -3, -4, -5, -17, -35, -50 };
+			int size = sizeof(data) / sizeof(data[0]);
+			FindTheFisrtDecreasing(data, size, 0, size - 1);
 			printf("");
 		}
 
