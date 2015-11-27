@@ -9,6 +9,15 @@ namespace SortQuestions
 		Node* prev;
 	};
 
+	int abs(int x)
+	{
+		if (x < 0)
+		{
+			return x*-1;
+		}
+		return x;
+	}
+
 	Node* FindMidNode(Node *n)
 	{
 		Node* slow = n;
@@ -408,8 +417,33 @@ namespace SortQuestions
 		return frequent;
 	}
 
+	// Given one array, find a and b that makes up k (a+b=k).
+	void FindAandBThatMakesKInSingleArray(int data[], int size, int k)
+	{
+		HeapSort(data, size);
+		int start = 0;
+		int end = size - 1;
+		while (start <= end)
+		{
+			int sum = data[start] + data[end];
+			if (sum == k)
+			{
+				printf("\n found %d + %d = %d\n", data[start], data[end], k);
+				return;
+			}
+			else if (sum < k)
+			{
+				start++;
+			}
+			else if (sum > k)
+			{
+				end--;
+			}
+		}
+	}
+
 	// Given two sorted arrays A and B (both has the same size). Find a in A and b in B, that sums up to be K.
-	void FindAandBThatMakesK(int A[], int B[], int size, int k)
+	void FindAandBThatMakesKInTwoArrays(int A[], int B[], int size, int k)
 	{
 		for (int i = 0; i < size; i++)
 		{
@@ -420,6 +454,43 @@ namespace SortQuestions
 				printf("\n%d in A + %d in B = %d\n", A[i], toFind, k);
 			}
 		}
+	}
+
+	// In an array, verify if there are i, j and k such that data[i]^2 + data[j]^2 = data[k]^2
+	bool VerifyIJKInSingleArray(int data[], int size)
+	{
+		HeapSort(data, size);
+
+		for (int i = 0; i < size; i++)
+		{
+			data[i] = data[i] * data[i];
+		}
+
+		for (int i = 0; i < size; i++)
+		{
+			int start = 0;
+			int end = size - 1;
+			while (start <= end)
+			{
+				int sum = data[start] + data[end];
+				if (sum == data[i])
+				{
+					printf("\ndata[i]=%d, data[j]=%d, data[k]=%d\n", data[start], data[end], data[i]);
+					return true;
+				}
+				else if (sum < data[i])
+				{
+					start++;
+				}
+				else if (sum > data[i])
+				{
+					end--;
+				}
+
+			}
+		}
+
+		return false;
 	}
 
 	// Given a sorted array B of size n and a sorted array A of size n + x = m,
@@ -441,6 +512,45 @@ namespace SortQuestions
 				y--;
 			}
 		}
+	}
+
+	// An array contains negative and positive integers, find the pair that is closest to 0 when added up.
+	void ClosestToZero(int data[], int size)
+	{
+		HeapSort(data, size);
+		int start = 0;
+		int end = size - 1;
+
+		int startKeep = start;
+		int endKeep = end;
+		int closest = data[start] + data[end];
+
+		while (start < end)
+		{
+			int sum = data[start] + data[end];
+			if (abs(sum) <= abs(closest))
+			{
+				startKeep = start;
+				endKeep = end;
+				closest = sum;
+			}
+			else
+			{
+				break;
+			}
+
+			if (sum > 0)
+			{
+				end--;
+			}
+			else if (sum < 0)
+			{
+				start++;
+			}
+		}
+
+		printf("\n %d + %d is closest to 0\n", data[startKeep], data[endKeep]);
+
 	}
 
 	void DoSortQuestions()
@@ -496,11 +606,17 @@ namespace SortQuestions
 		}
 
 		{
+			int A[] = { 2, 4, 5, 6, 7, 10, 34, 5, 43 };
+			int size = sizeof(A) / sizeof(A[0]);
+			FindAandBThatMakesKInSingleArray(A, size, 6);
+		}
+
+		{
 			printf("\n");
 			int A[] = { 2, 4, 5, 6, 7 };
 			int B[] = { 4, 9, 15, 20, 30 };
 			int size = sizeof(A) / sizeof(A[0]);
-			FindAandBThatMakesK(A, B, size, 37);
+			FindAandBThatMakesKInTwoArrays(A, B, size, 37);
 		}
 
 		{
@@ -509,6 +625,19 @@ namespace SortQuestions
 			int m = sizeof(A) / sizeof(A[0]);
 			int n = sizeof(B) / sizeof(B[0]);
 			MergeTwoSortedArray(A, m, B, n);
+			printf("");
+		}
+
+		{
+			int data[] = { -16, -25, -10, 14, 17, 35, -50, 0 };
+			int size = sizeof(data) / sizeof(data[0]);
+			ClosestToZero(data, size);
+		}
+		 
+		{
+			int data[] = { 16, 5, 25, 3, 10, 14, 2, 17, 35, 50, 4 };
+			int size = sizeof(data) / sizeof(data[0]);
+			bool bIJKExist = VerifyIJKInSingleArray(data, size);
 			printf("");
 		}
 
