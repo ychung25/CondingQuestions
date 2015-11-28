@@ -934,6 +934,64 @@ namespace SortQuestions
 		return lonely;
 	}
 
+	// Given an array of even and odd numbers, make array contain even numbers first and then odd numbers.
+	void EvenFirstThenOdd(int data[], int size)
+	{
+		int start = 0;
+		int end = size - 1;
+		while (start < end)
+		{
+			while (data[start] % 2 == 0)
+			{
+				start++;
+			}
+			while (data[end] % 2 == 1)
+			{
+				end--;
+			}
+
+			if (start < end)
+			{
+				int temp = data[start];
+				data[start] = data[end];
+				data[end] = temp;
+			}
+		}
+	}
+	// Given an array of 0,1,2 make 0s come first then 1s and then 2s.
+	void ZeroOneTwoArray(int data[], int size)
+	{
+		int l = 0;
+		int h = size - 1;
+		for (int m = 0; m <= h; m++)
+		{
+			while (data[h] == 2)
+			{
+				h--;
+			}
+
+			if (m > h)
+				break;
+
+			if (data[m] == 2)
+			{
+				int temp = data[m];
+				data[m] = data[h];
+				data[h] = temp;
+			}
+
+			if (data[m] == 0)
+			{
+				int temp = data[m];
+				data[m] = data[l];
+				data[l] = temp;
+			}
+
+			if (data[l] == 0)
+				l++;
+		}
+	}
+
 	// Given a 2D array where numbers in rows and colums ascend, find k.
 	// e.g |1  2  4  5 |
 	//     |7  10 12 15|
@@ -1170,6 +1228,41 @@ namespace SortQuestions
 			bool found = FindKIn2DArrayOfAccendingRowAndColum(twoDimension, 4, 4, 21);
 			printf("");
 		}
+
+		{
+			int data[] = { 5,7,2,8,9,12,16,15 };
+			int size = sizeof(data) / sizeof(data[0]);
+			EvenFirstThenOdd(data, size);
+			printf("");
+		}
+
+		{
+			srand(time(NULL));
+
+			int size = 50;
+			for (int i = 0; i < size; i++)
+			{
+				int* data = new int[size]();
+				for (int i = 0; i < size; i++)
+				{
+					int x = rand() % 3;
+					data[i] = x;
+				}
+				ZeroOneTwoArray(data, size);
+				for (int i = 1; i < size; i++)
+				{
+					if (data[i - 1] > data[i])
+					{
+						printf("\nsomething is wrong...\n");
+					}
+				}
+			}
+
+
+
+		}
+
+		printf("done");
 		
 	}
 }
