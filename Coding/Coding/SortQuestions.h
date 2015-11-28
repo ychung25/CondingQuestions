@@ -389,7 +389,29 @@ namespace SortQuestions
 		}
 	}
 
+	bool BinarySearch(int data[], int start, int end, int k, int* foundIndex)
+	{
+		if (start > end)
+		{
+			return false;
+		}
 
+		unsigned int mid = (start + end) / 2;
+		if (data[mid] == k)
+		{
+			if(foundIndex)
+				*foundIndex = mid;
+			return true;
+		}
+		else if (data[mid] < k)
+		{
+			return BinarySearch(data, mid + 1, end, k, foundIndex);
+		}
+		else
+		{
+			return BinarySearch(data, start, mid - 1, k, foundIndex);
+		}
+	}
 
 	int MostFrequentNumber(int data[], int size)
 	{
@@ -514,7 +536,7 @@ namespace SortQuestions
 		for (int i = 0; i < size; i++)
 		{
 			int toFind = k - A[i];
-			bool bFound = BinarySearch(0, size - 1, toFind, B);
+			bool bFound = BinarySearch(B, 0, size - 1, toFind, 0);
 			if (bFound)
 			{
 				printf("\n%d in A + %d in B = %d\n", A[i], toFind, k);
@@ -655,8 +677,8 @@ namespace SortQuestions
 			FindTheFirstPositive(data, mid+1, end);
 		}
 	}
-	// Given an array that as number sorted increasing order and then decreasing order, find the first number that decreases. e.g. 1,2,3,4,3,2,1 = 4.
-	void FindTheFisrtDecreasing(int data[], int size, int start, int end)
+	// Given an array that as number sorted increasing order and then decreasing order, find the first number that decreases. e.g. 1,2,3,4,3,2,1 = 4. Finding local minima is similar.
+	void FindLocalMaxia(int data[], int size, int start, int end)
 	{
 		if (start > end)
 			return;
@@ -665,20 +687,296 @@ namespace SortQuestions
 		if ((mid - 1) >= 0 && (mid + 1) < size)
 		{
 			if (data[mid] > data[mid + 1] &&
-				data[mid] < data[mid - 1])
+				data[mid] > data[mid - 1])
 			{
-				printf("\n FindTheFisrtDecreasing = %d\n", data[mid]);
+				printf("\n FindLocalMaxia = %d\n", data[mid]);
 			}
 			else if (data[mid-1] > data[mid])
 			{
-				FindTheFisrtDecreasing(data, size, start, mid - 1);
+				FindLocalMaxia(data, size, start, mid - 1);
 			}
 			else if (data[mid-1] < data[mid])
 			{
-				FindTheFisrtDecreasing(data, size, mid + 1, end);
+				FindLocalMaxia(data, size, mid + 1, end);
 			}
 		}
 		
+	}
+	// Given a sorted array that has been rotated unknown times, find the rotated pivot. e.g 10,20,4,6,10,11 = 4
+	void FindRotatedPivot(int data[], int start, int end, int* pivot)
+	{
+		if (start > end)
+			return;
+
+		int mid = (start + end) / 2;
+		if ((mid - 1) >= 0)
+		{
+
+			if ((mid - 1) >= 0 && 
+				data[mid] < data[mid - 1])
+			{
+				*pivot = mid;
+				return;
+			}
+			else if (data[mid] < data[end])
+			{
+				FindRotatedPivot(data, start, mid - 1, pivot);
+			}
+			else if(data[mid] > data[end])
+			{
+				FindRotatedPivot(data, mid + 1, end, pivot);
+			}
+		}
+	}
+	// THESE ARE AWESOME! Given a sorted array that has been rotated unknown times, find k.
+	void FindKInRotatesPrivot(int data[], int size, int start, int end, int pivot, int k)
+	{
+		bool doPivotCalc = false;
+		if (start > end)
+		{
+			if (start >= pivot && end < pivot)
+			{
+				doPivotCalc = true;
+			}
+			else
+			{
+				return;
+			}
+		}
+
+		int mid;
+		if (doPivotCalc)
+		{
+			mid = (start + ((size - start + end) / 2)) % size;
+		}
+		else
+		{
+			mid = (start + end) / 2;
+		}
+
+		if (data[mid] == k)
+		{
+			printf("\nFindKInRotatesPrivot = %dth index\n", mid);
+			return;
+		}
+		else if (data[mid] < k)
+		{
+			FindKInRotatesPrivot(data, size, mid + 1, end, pivot, k);
+		}
+		else if (data[mid] > k)
+		{
+			FindKInRotatesPrivot(data, size, start, mid - 1, pivot, k);
+		}
+	}
+	void FindKInRotatesPrivotV2(int data[], int size, int k)
+	{
+		int pivot = -999;
+		FindRotatedPivot(data, 0, size - 1, &pivot);
+
+		int foundIndex;
+		bool bFound;
+		bFound = BinarySearch(data, 0, pivot - 1, k, &foundIndex);
+		if (bFound)
+			printf("\nFindKInRotatesPrivotV2 = %dth index\n", foundIndex);
+		bFound = BinarySearch(data, pivot, size-1, k, &foundIndex);
+		if (bFound)
+			printf("\nFindKInRotatesPrivotV2 = %dth index\n", foundIndex);
+
+	}
+	void FindKInRotatesPrivotV3(int data[], int start, int end, int k)
+	{
+		if (start > end)
+			return;
+
+		int mid = (start + end) / 2;
+		if (data[mid] == k)
+		{
+			printf("\nFindKInRotatesPrivotV3 = %dth index\n", mid);
+			return;
+		}
+		
+		if (data[mid] < data[end])
+		{
+			if (k > data[mid] && k <= data[end])
+				FindKInRotatesPrivotV3(data, mid + 1, end, k);
+			else
+				FindKInRotatesPrivotV3(data, start, mid - 1, k);
+		}
+		else if (data[start] < data[mid])
+		{
+			if (k >= data[start] && k < data[mid])
+				FindKInRotatesPrivotV3(data, start, mid - 1, k);
+			else
+				FindKInRotatesPrivotV3(data, mid + 1, end, k);
+
+		}
+
+
+	}
+
+	// Given a sorted array with duplicates, find the first occurence of k.
+	void FindTheFirstOccurenceOfK(int data[], int start, int end, int k)
+	{
+		if (start > end)
+			return;
+
+		int mid = (start + end) / 2;
+		if (data[mid] == k)
+		{
+			if (mid - 1 >= 0)
+			{
+				if (data[mid - 1] == data[mid])
+				{
+					FindTheFirstOccurenceOfK(data, start, mid - 1, k);
+				}
+				else
+				{
+					printf("\n FindTheFirstOccurenceOfK = %dith index\n", mid);
+					return;
+				}
+			}
+			else
+			{
+				printf("\n FindTheFirstOccurenceOfK = %dith index\n", mid);
+				return;
+			}
+		}
+		else if (data[mid] < k)
+		{
+			FindTheFirstOccurenceOfK(data, mid + 1, end, k);
+		}
+		else if (data[mid] > k)
+		{
+			FindTheFirstOccurenceOfK(data, start, mid-1, k);
+		}
+	}
+	// Given a sorted array with duplicates, find the totla number of occurence of k.
+	void FindTheNumberOfOccurencesOfK(int data[], int start, int end, int k, int* occurence)
+	{
+		if (start > end)
+			return;
+
+		int mid = (start + end) / 2;
+		if (data[mid] == k)
+		{
+			(*occurence)++;
+			int left = mid - 1;
+			while (left >= start)
+			{
+				if (data[left] == data[mid])
+				{
+					(*occurence)++;
+					left = left - 1;
+				}
+				else
+				{
+					break;
+				}
+			}
+			int right = mid + 1;
+			while (mid <= end)
+			{
+				if (data[right] == data[mid])
+				{
+					(*occurence)++;
+					right = right + 1;
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+		else if (data[mid] > k)
+		{
+			FindTheNumberOfOccurencesOfK(data, start, mid - 1, k, occurence);
+		}
+		else if (data[mid] < k)
+		{
+			FindTheNumberOfOccurencesOfK(data, mid + 1, end, k, occurence);
+		}
+	}
+
+	// Given an array, find the second smallest element.
+	int FindSecondSmallest(int data[], int size)
+	{
+		int lastElement = size - 1;
+		int firstParent = (lastElement - 1) / 2;
+		for (int i = firstParent; i >= 0; i--)
+		{
+			HeapifyDown(data, size, i);
+		}
+
+		if (size == 2)
+		{
+			return data[1];
+		}
+		else
+		{
+			int l = data[1];
+			int r = data[2];
+			if (l < r)
+				return l;
+			return r;
+		}
+
+	}
+
+	// This shows hany property of XOR. Given an array where there is single lonely element and others are pairs, find the lonley one.
+	// e.g {3,4,5,5,3,4,2,6,6} = 2
+	int FindLonleyOne(int data[], int size)
+	{
+		int lonely = data[0];
+		for (int i = 1; i < size; i++)
+		{
+			lonely = lonely ^ data[i];
+		}
+		return lonely;
+	}
+
+	// Given a 2D array where numbers in rows and colums ascend, find k.
+	// e.g |1  2  4  5 |
+	//     |7  10 12 15|
+	//     |19 20 24 26|
+	//     |30 32 34 36| 
+	// find K=24.
+	bool FindKIn2DArrayOfAccendingRowAndColum(int data[], int width, int height, int k)
+	{
+		for (int y = 0; y < height; y++)
+		{
+			if (k < data[width - 1 + (y*width)])
+			{
+				for (int x = 0; x < width; x++)
+				{
+					if (k == data[x + (y*width)])
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+		}
+		return false;
+	}
+	// Given a 2D array, each row is filled with consecutive 0s followed by 1s. Find the row that has max 0s.
+	// e.g |1 1 1 0|
+	//     |1 1 0 0|
+	//     |1 0 0 0|
+	//     |1 1 1 0| 
+	// row 3.
+	int FindRowWithMaxZero(int data[][4], int width, int height)
+	{
+		int x = width - 1;
+		int maxRow = 0;
+		for (int y = 0; y < height; y++)
+		{
+			while (data[y][x] == 0)
+			{
+				x--;
+				maxRow = y;
+			}
+		}
+		return maxRow;
 	}
 
 	void DoSortQuestions()
@@ -790,13 +1088,88 @@ namespace SortQuestions
 			printf("");
 		}
 		{
-			int data[] = { 1, 3, 2, 1, 0, -3, -4, -5, -17, -35, -50 };
+			int data[] = { 1,2,3,4,3,2,1 };
 			int size = sizeof(data) / sizeof(data[0]);
-			FindTheFisrtDecreasing(data, size, 0, size - 1);
+			FindLocalMaxia(data, size, 0, size - 1);
+			printf("");
+		}
+		{
+			int data[] = { 3, 4, 5, 6, 8, 12, 13, 1};
+			int size = sizeof(data) / sizeof(data[0]);
+			int pivot = -999;
+			FindRotatedPivot(data, 0, size - 1, &pivot);
 			printf("");
 		}
 
-		printf("");
+		{
+			int data[] = { 10,12,15,1,3,4,7,9 };
+			int size = sizeof(data) / sizeof(data[0]);
+			int pivot = -999;
+			FindRotatedPivot(data, 0, size - 1, &pivot);
+			FindKInRotatesPrivot(data, size, pivot, pivot - 1, pivot, 12);
+			FindKInRotatesPrivotV2(data, size, 12);
+			FindKInRotatesPrivotV3(data, 0, size-1, 12);
+			printf("");
+		}
+
+		{
+			int data[] = { 1,2,3,3,4,5,6,7,8,9,10,11,11,12,13,14,15 };
+			int size = sizeof(data) / sizeof(data[0]);
+			for (int i = 0; i < size; i++)
+			{
+				int k = data[i];
+				FindTheFirstOccurenceOfK(data,0,size-1,k);
+			}
+		}
+
+		{
+			int data[] = { 1,1,2,3,3,3,3,3,3,3,3,4,5,6,7,8,9,10,11,11,11,11,12,13,14,15,15 };
+			int size = sizeof(data) / sizeof(data[0]);
+
+			int prev = -1;
+			for (int i = 0; i < size; i++)
+			{
+				int k = data[i];
+				if (k != prev)
+				{
+					prev = k;
+					int occurence = 0;
+					FindTheNumberOfOccurencesOfK(data, 0, size - 1, k, &occurence);
+					printf("");
+				}
+			}
+		}
+
+		{
+			int data[] = { 3,5,9,10,23,43 };
+			int size = sizeof(data) / sizeof(data[0]);
+			int secondSmallest = FindSecondSmallest(data, size);
+			printf("");
+		}
+
+		{
+			int data[] = { 3,4,5,5,3,4,2,6,6 };
+			int size = sizeof(data) / sizeof(data[0]);
+			int lonely = FindLonleyOne(data, size);
+			printf("");
+		}
+
+		{
+			int twoDimension[4][4] = { { 1,1,1,0 },{ 1,1,0,0 } ,{ 1,0,0,0 } ,{ 1,1,1,0 } };
+			int maxRow = FindRowWithMaxZero(twoDimension, 4, 4);
+			printf("");
+		}
+
+		{
+			// e.g |1  2  4  5 |
+			//     |7  10 12 15|
+			//     |19 20 24 26|
+			//     |30 32 34 36| 
+
+			int twoDimension[] = { 1,2,4,5, 7,10,12,15, 19,20,24,16, 30,32,34,36 };
+			bool found = FindKIn2DArrayOfAccendingRowAndColum(twoDimension, 4, 4, 21);
+			printf("");
+		}
 		
 	}
 }
