@@ -992,6 +992,28 @@ namespace SortQuestions
 		}
 	}
 
+	// Given an array find the max diff of between data[j] - data[i], where j > i.
+	// e.g. { 4, 3, 19, 1, 14, 7 }  19-3=16
+	int FindMaxDiff(int data[], int size)
+	{
+		if (size < 2)
+			return -1;
+
+		int maxDiff = data[1] - data[0];
+		int min = data[0];
+
+		for (int i = 1; i < size; i++)
+		{
+			int diff = data[i] - min;
+			if (diff > maxDiff)
+				maxDiff = diff;
+			if (data[i] < min)
+				min = data[i];
+		}
+
+		return maxDiff;
+	}
+
 	// Given a 2D array where numbers in rows and colums ascend, find k.
 	// e.g |1  2  4  5 |
 	//     |7  10 12 15|
@@ -1257,11 +1279,30 @@ namespace SortQuestions
 					}
 				}
 			}
-
-
-
 		}
 
+		{
+			srand(time(NULL));
+
+			int size = 10;
+			for (int i = 0; i < size; i++)
+			{
+				int* data = new int[size]();
+				for (int i = 0; i < size; i++)
+				{
+					int x = rand() % 20;
+					data[i] = x;
+				}
+				printf("\n");
+				for (int i = 0; i < size; i++)
+				{
+					printf("%d ", data[i]);
+				}
+				int maxDiff = FindMaxDiff(data, size);
+				printf("\n   maxaDiff = %d\n", maxDiff);
+			}
+			printf("");
+		}
 		printf("done");
 		
 	}
