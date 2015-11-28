@@ -1013,6 +1013,27 @@ namespace SortQuestions
 
 		return maxDiff;
 	}
+	
+	// Given an array like this a1,a2,a3,a4,b1,b2,b3,b4. Make the array 
+	// a1,b1,a2,b2,a3,b3,a4,b4.
+	void AlternatingOrder(int data[], int size)
+	{
+		int m = size / 2;
+		int i = 1;
+		while (m <= size)
+		{
+			int temp = data[m];
+			int x = m;
+			while (x > i)
+			{
+				data[x] = data[x - 1];
+				x--;
+			}
+			data[i] = temp;
+			i += 2;
+			m++;
+		}
+	}
 
 	// Given a 2D array where numbers in rows and colums ascend, find k.
 	// e.g |1  2  4  5 |
@@ -1301,6 +1322,13 @@ namespace SortQuestions
 				int maxDiff = FindMaxDiff(data, size);
 				printf("\n   maxaDiff = %d\n", maxDiff);
 			}
+			printf("");
+		}
+
+		{
+			int data[] = { 1,2,3,4,5,10,20,30,40,50 };
+			int size = sizeof(data) / sizeof(data[0]);
+			AlternatingOrder(data, size);
 			printf("");
 		}
 		printf("done");
