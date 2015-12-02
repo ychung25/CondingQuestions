@@ -1,6 +1,7 @@
 #pragma once
 #include "Recursion.h"
-namespace SortQuestions
+#include "Trees.h"
+namespace SortAndSearchQuestions
 {
 	struct Node
 	{
@@ -1080,7 +1081,55 @@ namespace SortQuestions
 		return maxRow;
 	}
 
-	void DoSortQuestions()
+
+	// The most optimized way to find the kth smallest
+	int FindKthSmallestV1(int data[], int size, int kth)
+	{
+		// O(nlogn)
+		HeapSort(data, size);
+		for (int i = 0; i < size; i++)
+		{
+			if (i == kth)
+				return data[i];
+		}
+
+		return data[size - 1];
+	}
+	int FindKthSmallestV2(int data[], int size, int kth)
+	{
+		// O(klogn)
+		Heap::MinHeap minHeap(data, size); //O(n)
+
+		int min = minHeap.PeekMin(); 
+		for (int i = 0; i <= kth; i++) //O(klogn)
+		{
+			min = minHeap.GetMin();
+		}
+		return min;
+	}
+	int FindKthSmallestV3(int data[], int size, int kth)
+	{
+		// O(nlogk)
+		Trees::AVLTree avlTree;
+		for (int i = 0; i <= kth; i++)
+		{
+			avlTree.Insert(data[i]); //O(klogk)
+		}
+
+		for (int i = kth + 1; i < size; i++)
+		{
+			int max = avlTree.GetMax();
+			if (data[i] < max)
+			{
+				avlTree.Remove(max);
+				avlTree.Insert(data[i]);
+			}
+		}
+
+		return avlTree.GetMax();
+	}
+
+	void DoSortAndSearchQuestions()
 	{
 		int data[] = { 9, 2, 1, 8, 5, 4, 6, 3, 7, 10 };
 		int size = sizeof(data) / sizeof(data[0]);
@@ -1331,7 +1380,16 @@ namespace SortQuestions
 			AlternatingOrder(data, size);
 			printf("");
 		}
-		printf("done");
+
+		{
+			int data[] = { 0,5,20,4,1,2,9,3,17,15 };
+			int size = sizeof(data) / sizeof(data[0]);
+			//int result = FindKthSmallestV1(data, size, 3);
+			//int result = FindKthSmallestV2(data, size, 5);
+			int result = FindKthSmallestV3(data, size, 6);
+			printf("");
+
+		}
 		
 	}
 }

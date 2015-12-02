@@ -56,6 +56,21 @@ namespace Heap
 	class MinHeap
 	{
 	public:
+		MinHeap(int data[], int dataSize)
+		{
+			int lastParent = ((dataSize - 1) - 1) / 2;
+			for (int i = lastParent; i >= 0; i--)
+			{
+				HeapifyDown(i, data, dataSize);
+			}
+
+			ar = new int[1000]();
+			size = dataSize;
+			for (int i = 0; i < dataSize; i++)
+			{
+				ar[i] = data[i];
+			}
+		}
 		MinHeap()
 		{
 			ar = new int[1000]();
@@ -162,6 +177,21 @@ namespace Heap
 	class MaxHeap
 	{
 	public:
+		MaxHeap(int data[], int dataSize)
+		{
+			int lastParent = ((dataSize - 1) - 1) / 2;
+			for (int i = lastParent; i >= 0; i--)
+			{
+				HeapifyDownMax(i, data, dataSize);
+			}
+
+			ar = new int[1000]();
+			size = dataSize;
+			for (int i = 0; i < dataSize; i++)
+			{
+				ar[i] = data[i];
+			}
+		}
 		MaxHeap()
 		{
 			ar = new int[1000]();

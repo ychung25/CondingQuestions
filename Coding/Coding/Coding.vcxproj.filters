@@ -78,7 +78,7 @@
     <ClInclude Include="HeapQuestions.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="SortQuestions.h">
+    <ClInclude Include="SortAndSearchQuestions.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

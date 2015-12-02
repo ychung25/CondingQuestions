@@ -23,6 +23,30 @@ namespace Trees
 		{
 			root = _Remove(root, data);
 		}
+
+		int GetMin()
+		{
+			int min = 0;
+			Node* current = root;
+			while (current)
+			{
+				min = current->data;
+				current = current->left;
+			}
+			return min;
+		}
+
+		int GetMax()
+		{
+			int max = 0;
+			Node* current = root;
+			while (current)
+			{
+				max = current->data;
+				current = current->right;
+			}
+			return max;
+		}
 	private:
 		Node* _Insert(Node*n, int data)
 		{
