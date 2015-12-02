@@ -414,6 +414,7 @@ namespace SortAndSearchQuestions
 		}
 	}
 
+	// Find the mode.
 	int MostFrequentNumber(int data[], int size)
 	{
 		HeapSort(data, size);
@@ -1129,6 +1130,67 @@ namespace SortAndSearchQuestions
 		return avlTree.GetMax();
 	}
 
+	// Find the K nearest neighbours of median
+	void FindKNearestFromMedian(int data[], int size, int k)
+	{
+		printf("\nFindKNearestFromMedian\n");
+		HeapSort(data, size);
+
+		int medianLeftIndex = 0;
+		int medianRightIndex = 0;
+		if (size % 2 == 0)
+		{
+			medianLeftIndex = (size / 2) - 1;
+			medianRightIndex = size / 2;
+		}
+		else
+		{
+			medianLeftIndex = size / 2;
+			medianRightIndex = size / 2;
+		}
+
+		int medianValue = (data[medianLeftIndex] + data[medianRightIndex]) / 2;
+
+		medianLeftIndex--;
+		medianRightIndex++;
+		while (medianLeftIndex >= 0 && medianRightIndex < size)
+		{
+			if (k == 0)
+				return;
+			if (abs(medianValue - data[medianLeftIndex]) < abs(medianValue - data[medianRightIndex]))
+			{
+				printf("%d ", data[medianLeftIndex]);
+				medianLeftIndex--;
+			}
+			else
+			{
+				printf("%d ", data[medianRightIndex]);
+				medianRightIndex++;
+			}
+
+			k--;
+		}
+
+	}
+
+	// Given an array, find a value K that produces the smallest sum of |K-data[1]| + ... + |K-data[n]|
+	void FindKThatProducesSmallestDiff(int data[], int size)
+	{
+		HeapSort(data, size);
+		// Median represent center value better than mean, since means is effected easily by extreme values.
+		int k = 0;
+		if (size % 2 == 0)
+		{
+			k = (data[size / 2] + data[(size - 1) / 2]) / 2;
+		}
+		else
+		{
+			k = data[size / 2];
+		}
+
+		return;
+	}
+
 	void DoSortAndSearchQuestions()
 	{
 		int data[] = { 9, 2, 1, 8, 5, 4, 6, 3, 7, 10 };
@@ -1388,7 +1450,13 @@ namespace SortAndSearchQuestions
 			//int result = FindKthSmallestV2(data, size, 5);
 			int result = FindKthSmallestV3(data, size, 6);
 			printf("");
+		}
 
+		{
+			int data[] = { 0,5,20,4,1,2,9,3,17,15 };
+			int size = sizeof(data) / sizeof(data[0]);
+			FindKNearestFromMedian(data, size, 4);
+			printf("");
 		}
 		
 	}
