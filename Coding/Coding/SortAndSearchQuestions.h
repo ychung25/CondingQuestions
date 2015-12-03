@@ -1173,6 +1173,52 @@ namespace SortAndSearchQuestions
 
 	}
 
+	float FindTheMedianFromTwoArrayOfSameSize(int A[], int B[], int size)
+	{
+		int i = 0;
+		int j = 0;
+		int m1 = -1;
+		int m2 = -1;
+		int m1Value = 0;
+		int m2Value = 0;
+		int c = 0;
+
+		while (m1 == -1 || m2 == -1)
+		{
+			if (j == size || (i < size && A[i] < B[j]) )
+			{
+				if (c == size - 1)
+				{
+					m1 = i;
+					m1Value = A[m1];
+				}
+				if (c == size)
+				{
+					m2 = i;
+					m2Value = A[m2];
+				}
+				i++;
+			}
+			else if (i == size || (j < size && A[i] > B[j]))
+			{
+				if (c == size - 1)
+				{
+					m1 = j;
+					m1Value = B[m1];
+				}
+				if (c == size)
+				{
+					m2 = j;
+					m2Value = B[m2];
+				}
+				j++;
+			}
+			c++;
+		}
+
+		return ((float)m1Value + (float)m2Value) / 2.0;
+	}
+
 	// Given an array, find a value K that produces the smallest sum of |K-data[1]| + ... + |K-data[n]|
 	void FindKThatProducesSmallestDiff(int data[], int size)
 	{
@@ -1190,6 +1236,8 @@ namespace SortAndSearchQuestions
 
 		return;
 	}
+
+	
 
 	void DoSortAndSearchQuestions()
 	{
@@ -1456,6 +1504,14 @@ namespace SortAndSearchQuestions
 			int data[] = { 0,5,20,4,1,2,9,3,17,15 };
 			int size = sizeof(data) / sizeof(data[0]);
 			FindKNearestFromMedian(data, size, 4);
+			printf("");
+		}
+
+		{
+			int A[] = { 2,8,14,15 };
+			int B[] = { 4,7,11,13 };
+			int size = sizeof(A) / sizeof(A[0]);
+			float median = FindTheMedianFromTwoArrayOfSameSize(A, B, size);
 			printf("");
 		}
 		
