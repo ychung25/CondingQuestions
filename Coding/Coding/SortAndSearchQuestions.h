@@ -465,6 +465,30 @@ namespace SortAndSearchQuestions
 			}
 		}
 	}
+	void FindAllPairsThatMakesKInSingleArray(int data[], int size, int k)
+	{
+		HeapSort(data, size);
+		int start = 0;
+		int end = size - 1;
+		while (start <= end)
+		{
+			if (data[start] + data[end] > k)
+			{
+				end--;
+			}
+			else if (data[start] + data[end] < k)
+			{
+				start++;
+			}
+			else if (data[start] + data[end] == k)
+			{
+				printf("\n(%d,%d)=%d\n", data[start], data[end], k);
+				printf("\n(%d,%d)=%d\n", data[end], data[start], k);
+				end--;
+				start++;
+			}
+		}
+	}
 
 	// Given one array, find a, b and c that make up k. (a+b+c=k).
 	void FindAandBandCThatMakesKInSingleArray(int data[], int size, int k)
@@ -1295,6 +1319,12 @@ namespace SortAndSearchQuestions
 			int A[] = { 2, 4, 5, 6, 7, 10, 34, 5, 43 };
 			int size = sizeof(A) / sizeof(A[0]);
 			FindAandBThatMakesKInSingleArray(A, size, 6);
+		}
+	
+		{
+			int A[] = { 2, 4, 5, 7, 3, 10, 8, 11, 13, 1};
+			int size = sizeof(A) / sizeof(A[0]);
+			FindAllPairsThatMakesKInSingleArray(data, size, 14);
 		}
 
 		{
