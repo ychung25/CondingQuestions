@@ -144,6 +144,29 @@ void StringArray()
 	char readWriteString[] = "string"; // The same as - char readOnlyString[] = {'s' 't' 'r' 'i' 'n' 'g' '\0'}
 }
 
+void RemoveCharFromStringInPlace(char str[], char x)
+{
+	int read = 0;
+	int write = 0;
+	while (1)
+	{
+		if (str[read] == '\0')
+		{
+			str[write++] = str[read++];
+			break;
+		}
+		else if (str[read] != x)
+		{
+			str[write++] = str[read++];
+		}
+		else
+		{
+			read++;
+		}
+	}
+}
+
+
 void DoArraysAndPointers()
 {
 	CreateArray();
@@ -155,4 +178,8 @@ void DoArraysAndPointers()
 	ArrayOfArrays();
 	Alias();
 	StringArray();
+	
+	char str[] = "hello from the other side";
+	RemoveCharFromStringInPlace(str, 'o');
+	printf("\n%s\n", str);
 }
