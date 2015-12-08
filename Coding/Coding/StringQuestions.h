@@ -320,6 +320,49 @@ namespace StringQuestions
 		}
 	}
 
+	// e.g abc => abc, acb, bac, bca, cab, cba
+	void _PrintAllPermutation(char s[], char p[], bool used[], int len, int depth)
+	{
+		if (depth == len)
+		{
+			printf("%s\n", p);
+			return;
+		}
+
+		for (int i = 0; i < len; i++)
+		{
+			if (used[i] == false)
+			{
+				p[depth] = s[i];
+				used[i] = true;
+				_PrintAllPermutation(s, p, used, len, depth + 1);
+				used[i] = false;
+			}
+		}
+	}
+
+	void PrintAllPermutation(char s[])
+	{
+		int length = 0;
+		char* temp = s;
+		while (*temp)
+		{
+			length++;
+			temp++;
+		}
+
+		char* p = new char[length+1]();
+		p[length] = '\0';
+		bool* used = new bool[length]();
+		for (int i = 0; i < length; i++)
+		{
+			used[i] = false;
+		}
+
+		_PrintAllPermutation(s, p, used, length, 0);
+	}
+
+
 
 	void DoStringQuestions()
 	{
@@ -377,6 +420,12 @@ namespace StringQuestions
 			char s[] = "Never cannot belive what you say";
 			int length = sizeof(s) / sizeof(s[0]);
 			ReverseSetence(s, length-1);
+			printf("");
+		}
+
+		{
+			char str[] = "abc";
+			PrintAllPermutation(str);
 			printf("");
 		}
 	}
