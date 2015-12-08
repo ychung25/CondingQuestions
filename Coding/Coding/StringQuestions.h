@@ -389,6 +389,39 @@ namespace StringQuestions
 		_PrintAllCombination(s, p, 0, length, 0);
 	}
 
+	// e.g ABCCBCDA => ABBCDA => ACDA
+	void RemoveDuplicates(char s[])
+	{
+		char* temp = s;
+		int length = 0;
+		while (*temp)
+		{
+			length++;
+			temp++;
+		}
+
+		int i = 0;
+		int j = 1;
+
+		while (j < length)
+		{
+			if (s[i] == s[j])
+			{
+				i--;
+				j++;
+			}
+			else
+			{
+				s[i+1] = s[j];
+
+				i++;
+				j++;
+			}
+		}
+
+		s[i + 1] = '\0';
+	}
+
 	void DoStringQuestions()
 	{
 		{
@@ -458,6 +491,12 @@ namespace StringQuestions
 			printf("\n----Combination----\n");
 			char str[] = "abc";
 			PrintAllCombination(str);
+			printf("");
+		}
+
+		{
+			char str[] = "ABCCBCDABB";
+			RemoveDuplicates(str);
 			printf("");
 		}
 	}
