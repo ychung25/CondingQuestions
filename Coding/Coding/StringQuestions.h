@@ -259,6 +259,36 @@ namespace StringQuestions
 		}
 	}
 
+	// 'p' is a regex that can contain ? and *. Does 'p' exists in the string 's'?
+	bool PatternMatching(char s[], char p[])
+	{
+		if (!*s)
+		{
+			return *p ? false : true;
+		}
+		if (!*p)
+		{
+			return true;
+		}
+
+		if (*p == *s)
+		{
+			return PatternMatching(++s, ++p);
+		}
+		else if (*p == '?')
+		{
+			return PatternMatching(++s, ++p) || PatternMatching(s, ++p);
+		}
+		else if (*p == '*')
+		{
+			return PatternMatching(++s, p) || PatternMatching(s, ++p);
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	void DoStringQuestions()
 	{
 		{
@@ -301,6 +331,13 @@ namespace StringQuestions
 		{
 			char str[100] = "a bce f g";
 			ReplaceSpaceWithOtherCharsInPlace(str);
+			printf("");
+		}
+
+		{
+			char s[] = "abcde";
+			char p[] = "?a";
+			bool patternMatches = PatternMatching(s, p);
 			printf("");
 		}
 	}
