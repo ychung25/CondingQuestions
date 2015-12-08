@@ -218,6 +218,47 @@ namespace StringQuestions
 		TernaryNode* root;
 	};
 
+	// Given a string, replace every space char with '%20' in place.
+	// Assume the string is big enough for expansion.
+	void ReplaceSpaceWithOtherCharsInPlace(char str[])
+	{
+		int length = 0;
+		int numberOfSpaces = 0;
+		char* temp = str;
+		while (*temp)
+		{
+			if (*temp == ' ')
+				numberOfSpaces++;
+			length++;
+			temp++;
+		}
+
+		int newLength = length + (2 * numberOfSpaces);
+		str[newLength] = '\0';
+
+		int w = newLength - 1;
+		int r = newLength - 1;
+
+		while (r >= 0)
+		{
+			if (str[r] == ' ')
+			{
+				str[w] = '0';
+				w--;
+				str[w] = '2';
+				w--;
+				str[w] = '%';
+				w--;
+			}
+			else if (str[r])
+			{
+				str[w] = str[r];
+				w--;
+			}
+			r--;
+		}
+	}
+
 	void DoStringQuestions()
 	{
 		{
@@ -255,6 +296,12 @@ namespace StringQuestions
 			isSubString = ternaryTree.IsSubString("what");
 
 			ternaryTree.PrintAllStrings();
+		}
+
+		{
+			char str[100] = "a bce f g";
+			ReplaceSpaceWithOtherCharsInPlace(str);
+			printf("");
 		}
 	}
 }
