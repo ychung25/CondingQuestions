@@ -82,7 +82,7 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="StringQuestions.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
