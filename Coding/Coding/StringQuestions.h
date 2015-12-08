@@ -289,6 +289,38 @@ namespace StringQuestions
 		}
 	}
 
+	// e.g. flip this man => man this flip
+	void FlipString(char s[], int start, int end)
+	{
+		while (start < end)
+		{
+			char temp = s[start];
+			s[start] = s[end];
+			s[end] = temp;
+			start++;
+			end--;
+		}
+	}
+	void ReverseSetence(char s[], int length)
+	{
+		FlipString(s, 0, length-1);
+
+		int start = 0;
+		int end = 0;
+
+		while (start < length && end < length)
+		{
+			while (s[end] != ' ' && s[end])
+			{
+				end++;
+			}
+			FlipString(s, start, end - 1);
+			start = end + 1;
+			end = end + 1;
+		}
+	}
+
+
 	void DoStringQuestions()
 	{
 		{
@@ -338,6 +370,13 @@ namespace StringQuestions
 			char s[] = "abcde";
 			char p[] = "?a";
 			bool patternMatches = PatternMatching(s, p);
+			printf("");
+		}
+
+		{
+			char s[] = "Never cannot belive what you say";
+			int length = sizeof(s) / sizeof(s[0]);
+			ReverseSetence(s, length-1);
 			printf("");
 		}
 	}
