@@ -340,7 +340,6 @@ namespace StringQuestions
 			}
 		}
 	}
-
 	void PrintAllPermutation(char s[])
 	{
 		int length = 0;
@@ -362,7 +361,33 @@ namespace StringQuestions
 		_PrintAllPermutation(s, p, used, length, 0);
 	}
 
+	void _PrintAllCombination(char s[], char p[], int start, int len, int depth)
+	{
+		if (depth == len)
+			return;
 
+		for (int i = start; i < len; i++)
+		{
+			p[depth] = s[i];
+			p[depth + 1] = '\0';
+			printf("%s\n", p);
+			_PrintAllCombination(s, p, i+1, len, depth+1);
+		}
+	}
+	void PrintAllCombination(char s[])
+	{
+		int length = 0;
+		char* temp = s;
+		while (*temp)
+		{
+			length++;
+			temp++;
+		}
+
+        char* p = new char[length + 1]();
+
+		_PrintAllCombination(s, p, 0, length, 0);
+	}
 
 	void DoStringQuestions()
 	{
@@ -426,6 +451,13 @@ namespace StringQuestions
 		{
 			char str[] = "abc";
 			PrintAllPermutation(str);
+			printf("");
+		}
+
+		{
+			printf("\n----Combination----\n");
+			char str[] = "abc";
+			PrintAllCombination(str);
 			printf("");
 		}
 	}
