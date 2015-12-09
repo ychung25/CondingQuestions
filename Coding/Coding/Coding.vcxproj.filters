@@ -84,6 +84,9 @@
     <ClInclude Include="StringQuestions.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="GraphQuestions.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

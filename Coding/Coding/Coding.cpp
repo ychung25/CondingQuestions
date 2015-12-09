@@ -19,6 +19,7 @@
 #include "HeapQuestions.h"
 #include "SortAndSearchQuestions.h"
 #include "StringQuestions.h"
+#include "GraphQuestions.h"
 
 int main()
 {
@@ -51,6 +52,8 @@ int main()
 	SortAndSearchQuestions::DoSortAndSearchQuestions();
 
 	StringQuestions::DoStringQuestions();
+
+	GraphQuestions::DoGraphQuestions();
 
 	return 0;
 }

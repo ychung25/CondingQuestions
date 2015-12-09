@@ -150,6 +150,7 @@
     <ClInclude Include="CircularLinkedList.h" />
     <ClInclude Include="DoublyLinkedList.h" />
     <ClInclude Include="GenericTreeQuestions.h" />
+    <ClInclude Include="GraphQuestions.h" />
     <ClInclude Include="HashTable.h" />
     <ClInclude Include="Heap.h" />
     <ClInclude Include="HeapQuestions.h" />

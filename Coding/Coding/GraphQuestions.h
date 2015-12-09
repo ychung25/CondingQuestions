@@ -1,0 +1,74 @@
+#pragma once
+#include "Queue.h"
+
+namespace GraphQuestions
+{
+	const int row = 5;
+	const int column = 5;
+
+	void DFS(int G[], int node, int Visited[])
+	{
+		Visited[node] = 1;
+		printf("Visiting %d\n", node);
+		for (int i = 0; i < column; i++)
+		{
+			if (G[(row*node) + i] && !Visited[i])
+			{
+				DFS(G, i, Visited);
+			}
+		}
+	}
+
+	void BFS(int G[], Queue* q, int Visited[])
+	{
+		int node = (int)q->Deqeue();
+		if (Visited[node])
+			return;
+
+		printf("Visiting %d\n", node);
+		Visited[node] = 1;
+		for (int i = 0; i < column; i++)
+		{
+			if (G[(row*node) + i] && !Visited[i])
+			{
+				q->Enqueue((void*)i);
+			}
+		}
+		BFS(G, q, Visited);
+	}
+
+	void DoGraphQuestions()
+	{
+		const int row = 5;
+		const int column = 5;
+		int G[row * column];
+		for (int i = 0; i < row * column; i++)
+		{
+			G[i] = 0;
+		}
+
+		G[(row * 0) + 1] = 1;
+		G[(row * 0) + 4] = 1;
+		G[(row * 1) + 3] = 1;
+		G[(row * 2) + 3] = 1;
+		G[(row * 2) + 4] = 1;
+		G[(row * 3) + 2] = 1;
+		G[(row * 4) + 1] = 1;
+
+		int Visited[] = { 0, 0, 0, 0, 0 };
+
+		printf("---DFS Traversal of Graph---\n");
+		DFS(G, 0, Visited);
+		printf("");
+
+		Queue q;
+		for (int i = 0; i < 5; i++)
+		{
+			Visited[i] = 0;
+		}
+
+		printf("---BFS Traversal of Graph---\n");
+		BFS(G, &q, Visited);
+		printf("");
+	}
+}
