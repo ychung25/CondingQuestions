@@ -422,6 +422,40 @@ namespace StringQuestions
 		s[i + 1] = '\0';
 	}
 
+	// e.g str1 = {A,B} str2 = {C,D} => ABCD, ACDB, ACBD, CDAB, CABD, CADB
+	void _PrintIntervening(char A[], int a, char B[], int b, char D[], char depth)
+	{
+		if (A[a])
+		{
+			D[depth] = A[a];
+			if (depth == 3)
+			{
+				printf("%s\n", D);
+			}
+			else if (depth < 3)
+			{
+				_PrintIntervening(A, a + 1, B, b, D, depth + 1);
+				_PrintIntervening(B, b, A, a + 1, D, depth + 1);
+			}
+		}
+	}
+	void PrintIntervening(char A[], char B[])
+	{
+		int length = 0;
+		char* temp = A;
+		while (*temp)
+		{
+			temp++;
+			length++;
+		}
+
+		char* D = new char[(2*length) + 1]();
+		D[(2 * length)] = '\0';
+
+		_PrintIntervening(A, 0, B, 0, D, 0);
+		_PrintIntervening(B, 0, A, 0, D, 0);
+	}
+
 	void DoStringQuestions()
 	{
 		{
@@ -497,6 +531,13 @@ namespace StringQuestions
 		{
 			char str[] = "ABCCBCDABB";
 			RemoveDuplicates(str);
+			printf("");
+		}
+
+		{
+			char str1[] = "AB";
+			char str2[] = "CD";
+			PrintIntervening(str1, str2);
 			printf("");
 		}
 	}
