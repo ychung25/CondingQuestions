@@ -19,20 +19,51 @@ namespace GraphQuestions
 		}
 	}
 	// Application of DFS
+	void PrintAllPathsToFromAtoBInNonCyclicGraph(int G[], int A, int B, Stack* s)
+	{
+		s->push((void*)A);
+
+		if (A == B)
+		{
+			printf("\n");
+			Stack temp;
+			int size = s->Size();
+			for (int i = 0; i < size; i++)
+			{
+				int x = (int)s->pop();
+				printf("%d ", x);
+				temp.push((void*)x);
+			}
+			for (int i = 0; i < size; i++)
+			{
+				s->push(temp.pop());
+			}
+		}
+
+		for (int i = 0; i < column; i++)
+		{
+			if (G[(row*A) + i])
+			{
+				PrintAllPathsToFromAtoBInNonCyclicGraph(G, i, B, s);
+			}
+		}
+		s->pop();
+	}
 
 
 	void BFS(int G[], Queue* q, int Visited[])
 	{
-		int node = (int)q->Deqeue();
-		if (Visited[node])
+		if (q->Size() == 0)
 			return;
 
+		int node = (int)q->Deqeue();
+
 		printf("Visiting %d\n", node);
-		Visited[node] = 1;
 		for (int i = 0; i < column; i++)
 		{
 			if (G[(row*node) + i] && !Visited[i])
 			{
+				Visited[i] = 1;
 				q->Enqueue((void*)i);
 			}
 		}
@@ -90,6 +121,7 @@ namespace GraphQuestions
 		int Visited[] = { 0, 0, 0, 0, 0 };
 
 		printf("---DFS Traversal of Graph---\n");
+		Visited[0] = 1;
 		DFS(G, 0, Visited);
 		printf("");
 
@@ -130,6 +162,27 @@ namespace GraphQuestions
 			printf("");
 		}
 
-		
+		{
+			const int row = 5;
+			const int column = 5;
+			int G[row * column];
+			for (int i = 0; i < row * column; i++)
+			{
+				G[i] = 0;
+			}
+
+			G[(row * 0) + 1] = 1;
+			G[(row * 0) + 4] = 1;
+			G[(row * 0) + 2] = 1;
+			G[(row * 1) + 3] = 1;
+			G[(row * 2) + 4] = 1;
+			G[(row * 3) + 4] = 1;
+
+
+			Stack s;
+			printf("\n---PrintAllPathsToFromAtoBInNonCyclicGraph---\n");
+			PrintAllPathsToFromAtoBInNonCyclicGraph(G, 0, 4, &s);
+			printf("");
+		}
 	}
 }
