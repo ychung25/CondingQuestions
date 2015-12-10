@@ -41,6 +41,11 @@ namespace GraphQuestions
 		BFS(G, q, Distances, Parents);
 	}
 
+	void ShortestPathsOfWeightedGraph()
+	{
+		// Be able to explain dihkstra's algorithm.
+	}
+
 	void DoGraphQuestions()
 	{
 		{
