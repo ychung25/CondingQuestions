@@ -2,6 +2,8 @@
 //
 
 #include "stdafx.h"
+#include "Solve.h"
+
 #include "Recursion.h"
 #include "ArrayAndPointer.h"
 #include "SinglyLinkedList.h"
@@ -20,6 +22,7 @@
 #include "SortAndSearchQuestions.h"
 #include "StringQuestions.h"
 #include "GraphQuestions.h"
+
 
 int main()
 {
@@ -54,6 +57,8 @@ int main()
 	StringQuestions::DoStringQuestions();
 
 	GraphQuestions::DoGraphQuestions();
+
+	Solve::Solve();
 
 	return 0;
 }

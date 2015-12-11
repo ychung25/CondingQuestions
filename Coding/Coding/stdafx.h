@@ -10,6 +10,10 @@
 #include <stdio.h>
 #include <tchar.h>
 
+#include <stdio.h>
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 
 // TODO: reference additional headers your program requires here

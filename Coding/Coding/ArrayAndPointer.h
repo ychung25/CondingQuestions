@@ -154,6 +154,8 @@ void RemoveCharFromStringInPlace(char str[], char x)
 
 void CommonErrorsUsingString(char str[])
 {
+	return;
+
 	while (str) // NO! you meant while(*str)
 	{
 		str++;

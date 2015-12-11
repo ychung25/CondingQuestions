@@ -159,6 +159,7 @@
     <ClInclude Include="QueueQuestions.h" />
     <ClInclude Include="Recursion.h" />
     <ClInclude Include="SinglyLinkedList.h" />
+    <ClInclude Include="Solve.h" />
     <ClInclude Include="SortAndSearchQuestions.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="StackQuestions.h" />

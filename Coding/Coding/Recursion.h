@@ -1,10 +1,4 @@
 #pragma once
-#include <stdio.h>
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
-#include "Stack.h"
-#include "Queue.h"
 
 // Factorial example
 int FactorialLoop(int n)
