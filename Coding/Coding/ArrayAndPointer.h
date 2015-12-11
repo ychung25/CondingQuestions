@@ -15,8 +15,6 @@ void CreateArray()
 // Using arrays
 void UseArray()
 {
-	int data;
-
 	int stackArray[] = { 1,2 };
 	stackArray[1] = 1;
 	*(stackArray + 1) = 1;
@@ -41,14 +39,8 @@ void SizeOfArray()
 	int sizeOfElementInByte = sizeof(stackArray[0]);
 	int numberOfElementInArray = sizeof(stackArray) / sizeof(stackArray[0]);
 
-	int* heapArray = new int[3];
-
-	int* heapArray2 = (int*)malloc(3 * sizeof(int));
-
-	// these all return the size of pointer because they are now pointer type.
+	// This returns size of int pointer
 	sizeof(pStackArray);
-	sizeof(heapArray);
-	sizeof(heapArray2);
 }
 
 // Pointer arithmetic
