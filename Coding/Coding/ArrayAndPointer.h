@@ -1,27 +1,15 @@
 #pragma once
 #include <memory>
 
-void DontDoThis(int n, int data[])
-{
-	// int data[n]; <-the size must be constant value.
-	// sizeof(data); <-this return the size of a pointer in byte not the size of an array.
-}
-
 // Creating arrays
 void CreateArray()
 {
 	int stackArray[] = { 1,2 };
 	int stackArray2[3];
 
-	int* heapArray = new int[10]; // 	int* heapArray = new int[10](); initializes with 0
+	// putting () at the end initializes the array with 0s. Very useful.
+	int* heapArray = new int[10]();
 	delete[] heapArray;
-
-	int* heapArray2 = (int*)malloc(3 * sizeof(int));
-	free(heapArray2);
-
-	int n = 10;
-	int data[10];
-	DontDoThis(n, data);
 }
 
 // Using arrays
@@ -30,18 +18,16 @@ void UseArray()
 	int data;
 
 	int stackArray[] = { 1,2 };
-	data = stackArray[0];
-	data = *(stackArray + 1);
+	stackArray[1] = 1;
+	*(stackArray + 1) = 1;
 
-	int* heapArray = new int[10];
-	data = heapArray[2];
-	data = *(heapArray + 3);
+	int* heapArray = new int[10]();
+	int i = 0;
+	heapArray[i++] = 10;
+	heapArray[i] = 20;
+	heapArray[++i] = 30;
+
 	delete[] heapArray;
-
-	int* heapArray2 = (int*)malloc(2 * sizeof(int));
-	heapArray2[0] = 1;
-	heapArray2[1] = 2;
-	free(heapArray2);
 }
 
 // Getting size of array
@@ -50,13 +36,14 @@ void SizeOfArray()
 	int stackArray[3];
 	int* pStackArray = stackArray;
 
+	// This only works on stack declared array and sizeof needs to be used within the same function block
+	int sizeOfArrayInByte = sizeof(stackArray);
+	int sizeOfElementInByte = sizeof(stackArray[0]);
+	int numberOfElementInArray = sizeof(stackArray) / sizeof(stackArray[0]);
+
 	int* heapArray = new int[3];
-	delete[] heapArray;
 
 	int* heapArray2 = (int*)malloc(3 * sizeof(int));
-	free(heapArray2);
-
-	int ArrayLength = sizeof(stackArray) / sizeof(stackArray[0]);
 
 	// these all return the size of pointer because they are now pointer type.
 	sizeof(pStackArray);
@@ -68,11 +55,14 @@ void SizeOfArray()
 void PointerArithmetic()
 {
 	int stackArray[10];
-	int* pHeapArray = new int[10];
 
-	int distance;
-    distance = (stackArray + 8) - (stackArray + 2);
-	distance = (pHeapArray + 8) - (pHeapArray + 2);
+	// stackArray++; <- this doesn't work.
+	int* temp = stackArray;
+	// Only * declared pointer can do pointer arithmetic.
+	temp++; 
+
+	int* pHeapArray = new int[10];
+	pHeapArray++;
 }
 
 // In and Out Array
@@ -83,13 +73,11 @@ void InArray(int* inArray, int length)
 		inArray[i];
 	}
 }
-
 void OutArray(int** outArray)
 {
 	int* pArray = new int[10];
 	*outArray = pArray;
 }
-
 void InAndOutArray()
 {
 	int inData[] = { 1,2,3,4 };
@@ -139,9 +127,15 @@ void Alias()
 
 void StringArray()
 {
-	char explicitString[] = { 's', 't', 'r', 'i', 'n', 'g', '\0' };
-	char* readOnlyString = "string"; // The same as - char readOnlyString[] = {'s' 't' 'r' 'i' 'n' 'g' '\0'} but immutable.
-	char readWriteString[] = "string"; // The same as - char readOnlyString[] = {'s' 't' 'r' 'i' 'n' 'g' '\0'}
+	// Don't make string like the below two...
+	//char explicitString[] = { 's', 't', 'r', 'i', 'n', 'g', '\0' };
+	//char* readOnlyString = "string";
+
+	// Do this
+	char readWriteString[] = "string";
+	// readWriteString++; <- this doesn't work so...
+	char* pReadWriteString = readWriteString;
+	pReadWriteString++;
 }
 
 void RemoveCharFromStringInPlace(char str[], char x)
@@ -166,6 +160,15 @@ void RemoveCharFromStringInPlace(char str[], char x)
 	}
 }
 
+void CommonErrorsUsingString(char str[])
+{
+	while (str) // NO! you meant while(*str)
+	{
+		str++;
+	}
+	str[1]; // No str points to null terminator now... 
+}
+
 
 void DoArraysAndPointers()
 {
@@ -182,4 +185,6 @@ void DoArraysAndPointers()
 	char str[] = "hello from the other side";
 	RemoveCharFromStringInPlace(str, 'o');
 	printf("\n%s\n", str);
+
+	CommonErrorsUsingString(str);
 }
