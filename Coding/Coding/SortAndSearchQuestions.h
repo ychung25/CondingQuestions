@@ -926,6 +926,12 @@ namespace SortAndSearchQuestions
 	// Given an array, find the second smallest element.
 	int FindSecondSmallest(int data[], int size)
 	{
+		//!!! this is wrong!!!!! because heap tree can look like
+		//         0
+		//        / \
+		//       1  100
+		//      / \
+		//     2   3
 		int lastElement = size - 1;
 		int firstParent = (lastElement - 1) / 2;
 		for (int i = firstParent; i >= 0; i--)

@@ -285,6 +285,41 @@ namespace Solve
 		return true;
 	}
 
+	Node* Merge(Node* a, Node* b)
+	{
+		if (!a)
+			return b;
+		if (!b)
+			return a;
+		if (a->data < b->data)
+		{
+			a->next = Merge(a->next, b);
+			return a;
+		}
+		else
+		{
+			b->next = Merge(a, b->next);
+			return b;
+		}
+	}
+
+
+	Node* Reverse(Node* a)
+	{
+		if (!a)
+			return 0;
+		Node* b = a->next;
+		if (!b)
+			return a;
+
+		Node* c = b->next;
+		Node* x = Reverse(c);
+
+		a->next = x;
+		b->next = a;
+		return b;
+	}
+
 	void Solve()
 	{
 		Node* head = CreateNode(1);
@@ -298,10 +333,8 @@ namespace Solve
 		tail = InsertEnd(tail, 7);
 
 
-		bool result = IsLenEven(head);
 
-
-
+		Node* newHead = Reverse(head);]\
 
 
 
