@@ -33,16 +33,7 @@
     <ClInclude Include="Stack.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="SinglyLinkedList.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="DoublyLinkedList.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CircularLinkedList.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XORDoublyLinkedList.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="LinkedListQuestions.h">
@@ -91,6 +82,15 @@
       <Filter>Done</Filter>
     </ClInclude>
     <ClInclude Include="Recursion.h">
+      <Filter>Done</Filter>
+    </ClInclude>
+    <ClInclude Include="XORDoublyLinkedList.h">
+      <Filter>Done</Filter>
+    </ClInclude>
+    <ClInclude Include="SinglyLinkedList.h">
+      <Filter>Done</Filter>
+    </ClInclude>
+    <ClInclude Include="CircularLinkedList.h">
       <Filter>Done</Filter>
     </ClInclude>
   </ItemGroup>

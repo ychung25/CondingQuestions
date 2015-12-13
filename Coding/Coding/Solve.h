@@ -1,4 +1,5 @@
 #pragma once
+#include "Stack.h"
 namespace Solve
 {
 	struct Node
@@ -17,6 +18,7 @@ namespace Solve
 		return n;
 	}
 
+	// Returns head
 	Node* InsertFront(Node* h, int data)
 	{
 		if (!h)
@@ -27,6 +29,7 @@ namespace Solve
 		return n;
 	}
 
+	// Returns tail
 	Node* InsertEnd(Node* t, int data)
 	{
 		if (!t)
@@ -48,6 +51,7 @@ namespace Solve
 		return 0;
 	}
 
+	// Resturns head
 	Node* InsertBefore(Node* h, Node* x, int data)
 	{
 		if (!h || !x)
@@ -69,6 +73,7 @@ namespace Solve
 		}
 	}
 	
+	// Returns tail
 	Node* InsertAfter(Node* t, Node* x, int data)
 	{
 		if (!t || !x)
@@ -154,40 +159,153 @@ namespace Solve
 		}
 	}
 
+	bool IsIsCyclic(Node* h)
+	{
+		Node* slow = h;
+		Node* fast = h;
+
+		while (fast)
+		{
+			slow = slow->next;
+			fast = fast->next;
+			if (!fast)
+				return false;
+			fast = fast->next;
+
+			if (slow == fast)
+				return true;
+		}
+
+		return false;
+	}
+
+	Node* FindSplitPoint(Node *h)
+	{
+		Node* slow = h;
+		Node* fast = h;
+
+		Node* a = h;
+		Node* b = 0;
+
+		while (fast)
+		{
+			slow = slow->next;
+			fast = fast->next;
+			if (!fast)
+				break;
+			fast = fast->next;
+
+			if (slow == fast)
+			{
+				b = fast;
+				break;
+			}
+		}
+
+		if (b)
+		{
+			while (a != b)
+			{
+				a = a->next;
+				b = b->next;
+			}
+		}
+
+		return b;
+	}
+
+	Node* FindNthFromEnd(Node* h, int nth)
+	{
+		if (!h)
+			return 0;
+		Node* a = h;
+		Node* b = 0;
+		int i = -1;
+		while (a)
+		{
+			a = a->next;
+			i++;
+			if (i == nth)
+			{
+				b = h;
+			}
+			else
+			{
+				if (b)
+					b = b->next;
+			}
+			
+		}
+		return b;
+	}
+
+
+
+	Node* MeetingPoint(Node* a, Node* b)
+	{
+		Stack s1;
+		Stack s2;
+		while (a)
+		{
+			s1.push(a);
+			a = a->next;
+		}
+		while (b)
+		{
+			s2.push(b);
+			b = b->next;
+		}
+
+		Node* x;
+		Node* y;
+		while (s1.Size() && s2.Size())
+		{
+			if (((Node*)s1.peek())->data == ((Node*)s2.peek())->data)
+			{
+				x = (Node*)s1.pop();
+				y = (Node*)s2.pop();
+			}
+			else
+			{
+				break;
+			}
+		}
+		return x;
+	}
+
+	bool IsLenEven(Node* h)
+	{
+		while (h)
+		{
+			h = h->next;
+			if (!h)
+				return false;
+			h = h->next;
+		}
+		return true;
+	}
+
 	void Solve()
 	{
-		Node* h = CreateNode(3);
-		Node* t = h;
+		Node* head = CreateNode(1);
+		Node* tail = head;
 
-		h = InsertFront(h, 2);
+		tail = InsertEnd(tail, 2);
+		tail = InsertEnd(tail, 3);
+		tail = InsertEnd(tail, 4);
+		tail = InsertEnd(tail, 5);
+		tail = InsertEnd(tail, 6);
+		tail = InsertEnd(tail, 7);
 
-		t = InsertEnd(t, 5);
-		t = InsertEnd(t, 6);
 
-		Node* found = Find(h, 5);
-		h = InsertBefore(h, found, 4);
-		h = InsertBefore(h, h, 1);
-		// 1,2,3,4,5,6
+		bool result = IsLenEven(head);
 
-		found = Find(h, 3);
-		t = InsertAfter(t, found, 30);
-		// 1,2,3,30,4,5,6
 
-		t = InsertAfter(t, t, 7);
-		// 1,2,3,30,4,5,6,7
 
-		Remove(&h, &t, 1);
-		Remove(&h, &t, 7);
-		// 2,3,30,4,5,6
-		Remove(&h, &t, 30);
-		Remove(&h, &t, 4);
-		// 2,3,5,6
 
-		Node* newH;
-		Node* newT;
-		CopyAll(&newH, &newT, h, t);
-		// the new one 2,3,5,6
-		DeleteAll(h);
+
+
+
 
 		printf("");
 
