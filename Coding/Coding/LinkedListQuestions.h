@@ -694,7 +694,7 @@ namespace LinkedListQuestions
 		next->next = current;
 		current->next = ReverseInPairV2(nextNext);
 		return next;
-	}
+	} 
 
 	void GetTwoCyclesFromOneCycleV1(Node* node, Node** Cycle1, Node** Cycle2)
 	{
