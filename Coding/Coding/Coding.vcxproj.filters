@@ -33,12 +33,6 @@
     <ClInclude Include="Stack.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="DoublyLinkedList.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LinkedListQuestions.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="HashTable.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -91,6 +85,12 @@
       <Filter>Done</Filter>
     </ClInclude>
     <ClInclude Include="CircularLinkedList.h">
+      <Filter>Done</Filter>
+    </ClInclude>
+    <ClInclude Include="DoublyLinkedList.h">
+      <Filter>Done</Filter>
+    </ClInclude>
+    <ClInclude Include="LinkedListQuestions.h">
       <Filter>Done</Filter>
     </ClInclude>
   </ItemGroup>

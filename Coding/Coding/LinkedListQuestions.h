@@ -887,25 +887,44 @@ namespace LinkedListQuestions
 			*newHead = h;;
 	}
 
+	// Given a cyclic linked list, continously remove every mth element until one is left.
+	// E.g a->b->c->d->a and m=3. 
+	// a->b->c->a
+	// b->c->b
+	// b
 	Node* JosephusCircle(Node* h, int m)
 	{
-		if (!h || (h == h->next)) { return h; }
+		if (!h || h == h->next || m < 0)
+			return 0;
 
-		Node* c = h;
+		int len = 0;
+		Node*c = h;
+		while (c->next != h)
+		{
+			len++;
+			c = c->next;
+		}
+		if (m == 0)
+			m = len + 1;
+
+		c = h;
+
 		while (1)
 		{
-			Node* p = 0;
-			for (int i = 0; i < m; i++)
+			for (int i = 0; i < (m - 1); i++)
 			{
-				p = c;
 				c = c->next;
-				if (p == c)
-					return c;
 			}
-			p->next = c->next;
-			c->next = 0;
-			c = p->next;
+			Node* n = c->next;
+			Node* nn = n->next;
+			c->next = nn; \
+
+				delete n;
+			if (c == nn)
+				break;
+			c = nn;
 		}
+		return c;
 	}
 
 	/* Assume that Node has 
