@@ -23,7 +23,6 @@
 #include "StringQuestions.h"
 #include "GraphQuestions.h"
 
-
 int main()
 {
 	// [Array and pointer]
