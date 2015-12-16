@@ -42,13 +42,7 @@
     <ClInclude Include="QueueQuestions.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Trees.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="TreeQuestions.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GenericTreeQuestions.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="BinarySearchTreeQuestions.h">
@@ -64,9 +58,6 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="StringQuestions.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphQuestions.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="ArrayAndPointer.h">
@@ -91,6 +82,15 @@
       <Filter>Done</Filter>
     </ClInclude>
     <ClInclude Include="LinkedListQuestions.h">
+      <Filter>Done</Filter>
+    </ClInclude>
+    <ClInclude Include="GenericTreeQuestions.h">
+      <Filter>Done</Filter>
+    </ClInclude>
+    <ClInclude Include="Trees.h">
+      <Filter>Done</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphQuestions.h">
       <Filter>Done</Filter>
     </ClInclude>
   </ItemGroup>

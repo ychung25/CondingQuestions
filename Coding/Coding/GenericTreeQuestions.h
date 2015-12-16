@@ -83,16 +83,19 @@ namespace GenericTreeQuestions
 		CreateGenericTreeFromArrayInfo(array, len, p->sibling);
 	}
 
-	void FindHeightFromTreeArrayInfoRecursive(int * p, int len, int num, int level, int* maxLevel)
-	{
-		if (level > *maxLevel)
-			*maxLevel = level;
-		for (int i = 0; i < len; i++)
-		{
-			if (p[i] == num)
-				FindHeightFromTreeArrayInfoRecursive(p, len, i, level + 1, maxLevel);
-		}
-	}
+    int FindHeightFromTreeArrayInfoRecursive(int tree[], int len, int num, int level, int maxLevel)
+    {
+        for (int i = 0; i < len; i++)
+        {
+            if (tree[i] == num)
+            {
+                maxLevel = FindHeightFromTreeArrayInfoRecursive(tree, len, i, level + 1, maxLevel);
+            }
+        }
+        if (maxLevel > level)
+            return maxLevel;
+        return level;
+    }
 
 	int FindHeightFromTreeArrayInfoIterative(int* p, int len)
 	{
@@ -147,30 +150,33 @@ namespace GenericTreeQuestions
 		return maxLevel;
 	}
 
-	void AreTreesIsomorphic(Node* n1, Node* n2, bool* isIsomorphic)
+    // are the tree structure same?
+    bool AreTreesIsomorphic(Node* a, Node* b)
+    {
+        if ((!a && b) || (a && !b))
+            return false;
+        if (!a && !b)
+            return true;
+
+        bool result = AreTreesIsomorphic(a->child, b->child);
+        if (result)
+            return AreTreesIsomorphic(a->sibling, b->sibling);
+        return false;
+    }
+
+	bool AreTreesMirror(Node* a, Node* b)
 	{
-		if (!n1 && !n2)
-			return;
-		if (!n1 && n2 || n1 && !n2)
-		{
-			*isIsomorphic = false;
-			return;
-		}
-		AreTreesIsomorphic(n1->child, n2->child, isIsomorphic);
-		AreTreesIsomorphic(n1->sibling, n2->sibling, isIsomorphic);
+        if (!a && !b)
+            return true;
+        if ((!a && b) || (a && !b))
+            return false;
+
+        bool result = AreTreesMirror(a->child, b->sibling);
+        if (result)
+            return AreTreesMirror(a->sibling, b->child);
 	}
 
-	void AreTreesMirror(Node* n1, Node* n2, bool* isMirror)
-	{
-		if (!n1 && !n2) { return; }
-		if (!n1 && n2 || n1 && !n2)
-		{
-			*isMirror = false;
-			return;
-		}
-		AreTreesMirror(n1->child, n2->sibling, isMirror);
-		AreTreesMirror(n1->sibling, n2->child, isMirror);
-	}
+    
 
 	void DoGenericTreeQuestions()
 	{
@@ -197,24 +203,23 @@ namespace GenericTreeQuestions
 		BFS(&BFSQueue, &BFSLevel);
 
 
-		int treeAsArray[] = { -1,0,1,6,6,0,0,2,7 };
+		int treeAsArray[] = { -1,0,1,6,6,0,0,2,7 }; // treeAsArray[0] must be -1. Otherwise you run into endless recursion.
 		Node* root = CreateNode(0, 0, 0); // let's assume you know where the root node is at
 		CreateGenericTreeFromArrayInfo(treeAsArray, sizeof(treeAsArray) / sizeof(treeAsArray[0]), root);
 		DFS(root, 0, &treeLevel);
 
-		
-		FindHeightFromTreeArrayInfoRecursive(treeAsArray, sizeof(treeAsArray) / sizeof(treeAsArray[0]), -1, 0, &treeLevel);
+        treeLevel = -1;
+        FindHeightFromTreeArrayInfoRecursive(treeAsArray, sizeof(treeAsArray) / sizeof(treeAsArray[0]), -1, 0, 0);
+
 		treeLevel -= 1; // since the above function assumes root is height of 1
 
 		treeLevel= FindHeightFromTreeArrayInfoIterative(treeAsArray, sizeof(treeAsArray) / sizeof(treeAsArray[0]));
 
 		treeLevel = FindHeightFromTreeArrayInfoIterativeWithHash(treeAsArray, sizeof(treeAsArray) / sizeof(treeAsArray[0]));
 
-		bool isIsomorphic = true;
-
 		Node* isomorphicRoot = CreateNode(0, 0, 0); // let's assume you know where the root node is at
 		CreateGenericTreeFromArrayInfo(treeAsArray, sizeof(treeAsArray) / sizeof(treeAsArray[0]), isomorphicRoot);
-		AreTreesIsomorphic(root, isomorphicRoot, &isIsomorphic);
+        bool isIsomorphic = AreTreesIsomorphic(root, isomorphicRoot);
 
 		{
 			Node* n3 = CreateNode(3, 0, 0);
@@ -230,8 +235,9 @@ namespace GenericTreeQuestions
 			Node* m3 = CreateNode(3, m2, m4);
 			Node* m1 = CreateNode(1, 0, m3);
 
-			bool isMirror = true;
-			AreTreesMirror(n1, m1, &isMirror);
+            bool isMirror = AreTreesMirror(n1, m1);
+
+            printf("");
 		}
 
 		printf("");
