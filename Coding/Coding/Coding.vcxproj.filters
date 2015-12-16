@@ -96,10 +96,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Done</Filter>
     </ClCompile>
     <ClCompile Include="Coding.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Done</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
