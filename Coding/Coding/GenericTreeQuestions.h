@@ -22,7 +22,6 @@ namespace GenericTreeQuestions
 		return n;
 	}
 
-    // check
 	void DFS(Node* n, int level, int* maxLevel)
 	{
 		if (!n) { return; }
