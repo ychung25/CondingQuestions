@@ -467,203 +467,40 @@ namespace BinaryTreeQuestions
 		return bl && br;
 	}
 
-	// Given inorder traversal and preorder traversal, create a treee
-	Node* CreateTree(int* preorder, int* inorder, int start, int end, int* index)
-	{
-		if (start > end)
-			return 0;
-		Node* n = new Node();
-		n->data = preorder[*index];
+    bool SumPathExists(Node* n, int sum)
+    {
+        if (!n)
+            return false;
+        sum = sum - n->data;
+        if (sum == 0)
+            return true;
 
-		int mid;
-		for (int i = start; i <= end; i++)
-		{
-			if (inorder[i] == preorder[*index])
-			{
-				mid = i;
-				break;
-			}
-		}
-		*index = (*index) + 1;
+        return SumPathExists(n->l, sum) || SumPathExists(n->r, sum);
+    }
 
-		Node* l = CreateTree(preorder, inorder, start, mid - 1, index);
-		Node* r = CreateTree(preorder, inorder, mid + 1, end, index);
-		n->l = l;
-		n->r = r;
-		return n;
-	}
+    Node* MakeMirror(Node* n)
+    {
+        if (!n)
+            return 0;
 
-	// Given inorder traversal and postorder traversal, create a tree.
-	Node* CreateTreev2(int* postorder, int* inorder, int start, int end, int* index)
-	{
-		if (start > end) { return 0; }
-		Node* n = new Node();
-		n->data = postorder[*index];
+        Node* m = new Node();
+        m->data = n->data;
+        m->l = MakeMirror(n->r);
+        m->r = MakeMirror(n->l);
+        return m;
+    }
 
-		int mid = 0;
-		for (int i = start; i <= end; i++)
-		{
-			if (inorder[i] == postorder[*index])
-			{
-				mid = i;
-				break;
-			}
-		}
-		*index = *index - 1;
+    bool IsMirror(Node* a, Node* b)
+    {
+        if (!a && !b)
+            return true;
+        if ((!a && b) || (a && !b))
+            return false;
+        if (a->data != b->data)
+            return false;
 
-		Node* r = CreateTreev2(postorder, inorder, mid + 1, end, index);
-		Node* l = CreateTreev2(postorder, inorder, start, mid - 1, index);
-		n->r = r;
-		n->l = l;
-		return n;
-	}
-
-	// Given inorder traversal and levelorder traversal, creete a tree
-	Node* CreateTreev3(int* levelorder, int* inorder, int start, int end, int len)
-	{
-		if (start > end)
-			return 0;
-		Node* n = new Node();
-		n->data = *levelorder;
-
-		int mid = 0;
-		for (int i = start; i <= end; i++)
-		{
-			if (inorder[i] == *levelorder)
-			{
-				mid = i;
-				break;
-			}
-		}
-
-		int* levelorderL = 0;
-		int* levelorderR = 0;
-		int levelorderLLength = ((mid - 1) - start) + 1;
-		int levelorderRLength = (end - (mid + 1)) + 1;
-		if (levelorderLLength > 0)
-		{
-			levelorderL = new int[levelorderLLength]();
-		}
-		if (levelorderRLength > 0)
-		{
-			levelorderR = new int[levelorderRLength]();
-		}
-
-		int* levelorderLTemp = levelorderL;
-		int* levelorderRTemp = levelorderR;
-		for (int i = 1; i < len; i++)
-		{
-			for (int j = start; j <= mid - 1; j++)
-			{
-				if (levelorder[i] == inorder[j])
-				{
-					*levelorderLTemp = inorder[j];
-					levelorderLTemp++;
-				}
-			}
-			for (int j = mid+1; j <= end; j++)
-			{
-				if (levelorder[i] == inorder[j])
-				{
-					*levelorderRTemp = inorder[j];
-					levelorderRTemp++;
-				}
-			}
-		}
-
-		Node* l = CreateTreev3(levelorderL, inorder, start, mid - 1, levelorderLLength);
-		Node* r = CreateTreev3(levelorderR, inorder, mid+1, end, levelorderRLength);
-		n->l = l;
-		n->r = r;
-
-		if (levelorderL)
-			delete[] levelorderL;
-		if (levelorderR)
-			delete[] levelorderR;
-
-		return n;
-
-	}
-
-	Node* CreateTreeWithILPreorder(int* preorder, int* index)
-	{
-		Node* n = new Node();
-		n->data = preorder[*index];
-		n->l = 0;
-		n->r = 0;
-		*index = *index + 1;
-
-		if (n->data == 0)
-			return n;
-
-		Node* l = CreateTreeWithILPreorder(preorder, index);
-		Node* r = CreateTreeWithILPreorder(preorder, index);
-		n->l = l;
-		n->r = r;
-		return n;
-	}
-
-	void PathOfSumExists(Node* n, int sum, bool* exists)
-	{
-		sum = sum - n->data;
-		if (sum == 0)
-			*exists = true;
-		if (n->l)
-			PathOfSumExists(n->l, sum, exists);
-		if (n->r)
-			PathOfSumExists(n->r, sum, exists);
-	}
-
-	void CreateMirrorTree(Node* n, Node* m)
-	{
-		Node* a = 0;
-		Node* b = 0;
-		if (n->l)
-			a = createNode(n->l->data, 0, 0);
-		if (n->r)
-			b = createNode(n->r->data, 0, 0);
-
-		m->l = b;
-		m->r = a;
-
-		if (n->l)
-			CreateMirrorTree(n->l, m->r);
-		if (n->r)
-			CreateMirrorTree(n->r, m->l);
-	}
-
-	void AreTwoTreesMirrorOfEachOther(Node* n, Node* m, bool* isMirror)
-	{
-		if (n == 0 || m == 0)
-			return;
-
-		Node* nL = n->l;
-		Node* nR = n->r;
-		Node* mL = m->l;
-		Node* mR = m->r;
-		AreTwoTreesMirrorOfEachOther(nL, mR, isMirror);
-		AreTwoTreesMirrorOfEachOther(nR, mL, isMirror);
-
-		if ((nL == 0 && mR != 0) ||
-			(nR == 0 && mL != 0) ||
-			(mL == 0 && nR != 0) ||
-			(mR == 0 && nL != 0))
-		{
-			*isMirror = false;
-		}
-
-		if (nL != 0)
-		{
-			if (nL->data != mR->data)
-				*isMirror = false;
-		}
-		if (nR != 0)
-		{
-			if (nR->data != mL->data)
-				*isMirror = false;
-		}
-
-	}
+        return IsMirror(a->l, b->r) || IsMirror(a->r, b->l);
+    }
 
 	void MakeMirrorInPlace(Node* n)
 	{
@@ -773,15 +610,154 @@ namespace BinaryTreeQuestions
 	{
 		if (n == 0) { return; }
 
-		FindSumOfVerticies(n->l, column-1, hash);
+        void* value = hash->remove(column);
+        unsigned long long sum = (unsigned long long)value;
+        sum += n->data;
+        hash->insert(column, (void*)sum);
 
-		void* value = hash->remove(column);
-		unsigned long long sum = (unsigned long long)value;
-		sum +=  n->data;
-		hash->insert(column, (void*)sum);
+		FindSumOfVerticies(n->l, column-1, hash);
 
 		FindSumOfVerticies(n->r, column+1, hash);
 	}
+
+
+
+
+    // Given inorder traversal and preorder traversal, create a treee
+    Node* CreateTree(int* preorder, int* inorder, int start, int end, int* index)
+    {
+        if (start > end)
+            return 0;
+        Node* n = new Node();
+        n->data = preorder[*index];
+
+        int mid;
+        for (int i = start; i <= end; i++)
+        {
+            if (inorder[i] == preorder[*index])
+            {
+                mid = i;
+                break;
+            }
+        }
+        *index = (*index) + 1;
+
+        Node* l = CreateTree(preorder, inorder, start, mid - 1, index);
+        Node* r = CreateTree(preorder, inorder, mid + 1, end, index);
+        n->l = l;
+        n->r = r;
+        return n;
+    }
+
+    // Given inorder traversal and postorder traversal, create a tree.
+    Node* CreateTreev2(int* postorder, int* inorder, int start, int end, int* index)
+    {
+        if (start > end) { return 0; }
+        Node* n = new Node();
+        n->data = postorder[*index];
+
+        int mid = 0;
+        for (int i = start; i <= end; i++)
+        {
+            if (inorder[i] == postorder[*index])
+            {
+                mid = i;
+                break;
+            }
+        }
+        *index = *index - 1;
+
+        Node* r = CreateTreev2(postorder, inorder, mid + 1, end, index);
+        Node* l = CreateTreev2(postorder, inorder, start, mid - 1, index);
+        n->r = r;
+        n->l = l;
+        return n;
+    }
+
+    // Given inorder traversal and levelorder traversal, creete a tree
+    Node* CreateTreev3(int* levelorder, int* inorder, int start, int end, int len)
+    {
+        if (start > end)
+            return 0;
+        Node* n = new Node();
+        n->data = *levelorder;
+
+        int mid = 0;
+        for (int i = start; i <= end; i++)
+        {
+            if (inorder[i] == *levelorder)
+            {
+                mid = i;
+                break;
+            }
+        }
+
+        int* levelorderL = 0;
+        int* levelorderR = 0;
+        int levelorderLLength = ((mid - 1) - start) + 1;
+        int levelorderRLength = (end - (mid + 1)) + 1;
+        if (levelorderLLength > 0)
+        {
+            levelorderL = new int[levelorderLLength]();
+        }
+        if (levelorderRLength > 0)
+        {
+            levelorderR = new int[levelorderRLength]();
+        }
+
+        int* levelorderLTemp = levelorderL;
+        int* levelorderRTemp = levelorderR;
+        for (int i = 1; i < len; i++)
+        {
+            for (int j = start; j <= mid - 1; j++)
+            {
+                if (levelorder[i] == inorder[j])
+                {
+                    *levelorderLTemp = inorder[j];
+                    levelorderLTemp++;
+                }
+            }
+            for (int j = mid + 1; j <= end; j++)
+            {
+                if (levelorder[i] == inorder[j])
+                {
+                    *levelorderRTemp = inorder[j];
+                    levelorderRTemp++;
+                }
+            }
+        }
+
+        Node* l = CreateTreev3(levelorderL, inorder, start, mid - 1, levelorderLLength);
+        Node* r = CreateTreev3(levelorderR, inorder, mid + 1, end, levelorderRLength);
+        n->l = l;
+        n->r = r;
+
+        if (levelorderL)
+            delete[] levelorderL;
+        if (levelorderR)
+            delete[] levelorderR;
+
+        return n;
+
+    }
+
+    Node* CreateTreeWithILPreorder(int* preorder, int* index)
+    {
+        Node* n = new Node();
+        n->data = preorder[*index];
+        n->l = 0;
+        n->r = 0;
+        *index = *index + 1;
+
+        if (n->data == 0)
+            return n;
+
+        Node* l = CreateTreeWithILPreorder(preorder, index);
+        Node* r = CreateTreeWithILPreorder(preorder, index);
+        n->l = l;
+        n->r = r;
+        return n;
+    }
 
 	void DoBinaryTreeQuestions()
 	{
@@ -832,14 +808,11 @@ namespace BinaryTreeQuestions
 		Stack sAllPath;
 		PrintAllPathsFromRoot(n1, &sAllPath);
 
-		bool pathOfSumExists = false;
-		PathOfSumExists(n1, 4, &pathOfSumExists);
+		bool pathOfSumExists = SumPathExists(n1, 4);
 
-		Node* mirror = createNode(n1->data, 0, 0);
-		CreateMirrorTree(n1, mirror);
+        Node* mirror = MakeMirror(n1);
 
-		bool isMirror = true;
-		AreTwoTreesMirrorOfEachOther(n1, mirror, &isMirror);
+		bool isMirror = IsMirror(n1, mirror);
 
 		int longest = 0;
 		FindLongestPath(n1, &longest);

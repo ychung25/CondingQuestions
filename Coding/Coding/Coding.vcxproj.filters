@@ -27,22 +27,10 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Queue.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Stack.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HashTable.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="StackQuestions.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="QueueQuestions.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TreeQuestions.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="BinarySearchTreeQuestions.h">
@@ -91,6 +79,18 @@
       <Filter>Done</Filter>
     </ClInclude>
     <ClInclude Include="GraphQuestions.h">
+      <Filter>Done</Filter>
+    </ClInclude>
+    <ClInclude Include="TreeQuestions.h">
+      <Filter>Done</Filter>
+    </ClInclude>
+    <ClInclude Include="HashTable.h">
+      <Filter>Done</Filter>
+    </ClInclude>
+    <ClInclude Include="Queue.h">
+      <Filter>Done</Filter>
+    </ClInclude>
+    <ClInclude Include="Stack.h">
       <Filter>Done</Filter>
     </ClInclude>
   </ItemGroup>

@@ -283,20 +283,14 @@ namespace BinarySearchTreeQuestions
 		}
 	}
 
-	Node* CreateFullBinarySearchTreeofHeightH(int h, int* count)
+	Node* CreateFullBinarySearchTreeofHeightH(int h)
 	{
 		if (h == 0)
 			return 0;
 
 		Node* n = new Node();
-
-		Node* l = CreateFullBinarySearchTreeofHeightH(h - 1, count);
-		n->data = *count;
-		*count = *count + 1;
-		Node* r = CreateFullBinarySearchTreeofHeightH(h - 1, count);
-
-		n->l = l;
-		n->r = r;
+        n->l = CreateFullBinarySearchTreeofHeightH(h - 1);
+	    n->r = CreateFullBinarySearchTreeofHeightH(h - 1);
 		return n;
 	}
 	// if h is 4 then 2^(h+1)-1 = 31. start = 0 and end 31.
@@ -565,7 +559,7 @@ namespace BinarySearchTreeQuestions
 		
 		{
 			int count = 1;
-			Node* fullBST = CreateFullBinarySearchTreeofHeightH(4, &count);
+			Node* fullBST = CreateFullBinarySearchTreeofHeightH(4);
 
 			Node* node7 = FindTheClosestNodeOfGivenKey(fullBST, 7);
 
