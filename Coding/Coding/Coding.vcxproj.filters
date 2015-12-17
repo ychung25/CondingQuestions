@@ -33,9 +33,6 @@
     <ClInclude Include="QueueQuestions.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="BinarySearchTreeQuestions.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Heap.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -91,6 +88,9 @@
       <Filter>Done</Filter>
     </ClInclude>
     <ClInclude Include="Stack.h">
+      <Filter>Done</Filter>
+    </ClInclude>
+    <ClInclude Include="BinarySearchTreeQuestions.h">
       <Filter>Done</Filter>
     </ClInclude>
   </ItemGroup>

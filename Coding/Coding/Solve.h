@@ -439,6 +439,40 @@ namespace Solve
         return n;
     }
 
+	int abs(int a, int b)
+	{
+		int diff = a - b;
+		if (diff < 0)
+			diff = diff * -1;
+		return diff;
+	}
+	void ClosestToX(Node* n, int x, int diff, Node** closest)
+	{
+		if (!n)
+			return;
+		int currentDiff = abs(n->data, x);
+		if (currentDiff < diff)
+		{
+			diff = currentDiff;
+			*closest = n;
+		}
+
+		if (x == n->data)
+		{
+			*closest = n;
+			return;
+		}
+		if (x < n->data)
+		{
+			ClosestToX(n->left, x, diff, closest);
+		}
+		if (x > n->data)
+		{
+			ClosestToX(n->right, x, diff, closest);
+		}
+
+	}
+
 	void Solve()
 	{
 		Node* n1 = CreateNode(1);
@@ -524,6 +558,33 @@ namespace Solve
             Node* removed = RemoveNodesWithOnlyOneChild(n7);
             printf("");
         }
+
+		{
+			Node* n30 = CreateNode(30);
+			Node* n20 = CreateNode(20);
+			Node* n40 = CreateNode(40);
+			Node* n42 = CreateNode(42);
+			Node* n22 = CreateNode(22);
+			Node* n7 = CreateNode(7);
+			Node* n9 = CreateNode(9);
+			Node* n1 = CreateNode(1);
+
+			n30->left = n20;
+			n30->right = n40;
+			n40->right = n42;
+			n20->right = n22;
+			n20->left = n7;
+			n7->left = n1;
+			n7->right = n9;
+
+
+			Node* closest = n30;
+			int x = 7;
+			ClosestToX(n30, x, abs(n30->data, x), &closest);
+			printf("");
+
+		
+		}
 
         printf("");
 	}
