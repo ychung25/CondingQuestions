@@ -440,32 +440,25 @@ namespace BinarySearchTreeQuestions
 		return r;
 	}
 
-	// if key is 4, the node containing 4 is returned or the one that has the closest value.
-	Node* FindTheClosestNodeOfGivenKey(Node* n, int key)
+	// if x is 4, the node containing 4 is returned or the one that has the closest value.
+	Node* ClosestToX(Node* n, int x)
 	{
-		if (n->data == key)
-			return n;
+        if (!n)
+            return 0;
+        Node* child = 0;
+        if (x < n->data)
+            child = ClosestToX(n->l, x);
+        else if (x > n->data)
+            child = ClosestToX(n->r, x);
 
-		if (key < n->data)
-		{
-			if (n->l)
-			{
-				Node* temp = FindTheClosestNodeOfGivenKey(n->l, key);
-				if (abs(temp->data - key) < abs(n->data - key))
-					return temp;
-			}
-			return n;
-		}
-		if (n->data < key)
-		{
-			if (n->r)
-			{
-				Node* temp = FindTheClosestNodeOfGivenKey(n->r, key);
-				if (abs(temp->data - key) < abs(n->data - key))
-					return temp;
-			}
-			return n;
-		}
+        if (child)
+        {
+            if (abs(child->data - x) < abs(n->data - x))
+            {
+                return child;
+            }
+        }
+        return n;
 	}
 
 
@@ -561,7 +554,7 @@ namespace BinarySearchTreeQuestions
 			int count = 1;
 			Node* fullBST = CreateFullBinarySearchTreeofHeightH(4);
 
-			Node* node7 = FindTheClosestNodeOfGivenKey(fullBST, 7);
+			Node* node7 = ClosestToX(fullBST, 7);
 
 			Node* fullBST2 = CreateFullBinarySearchTreeofHeight(1, 31);
 

@@ -62,6 +62,7 @@ namespace StackQuestions
 		return true;
 	}
 
+    // Implement a stack that as PeekMin() function which returns the smallest number in stack.
 	void GetMininumStack()
 	{
 		class GetMinStack
@@ -443,33 +444,29 @@ namespace StackQuestions
 	// Space O(c)
 	// Time  O(n)
 	// len = # of chars exlcuding the '\0'
-	void RemoveAdjacentDuplicatesV2(char* string, int len)
+	void RemoveAdjacentDuplicatesV2(char* str)
 	{
-		int c = 0;
-		int p = -1;
-
-		while (c < len)
-		{
-			if (p == -1 || string[p] != string[c])
-			{
-				p++;
-				string[p] = string[c];
-				c++;
-			}
-			else if (string[p] == string[c])
-			{
-				c++;
-				while (c < len)
-				{
-					if (string[c] == string[p])
-						c++;
-					else
-						break;
-				}
-				p--;
-			}
-		}
-		string[++p] = '\0';
+        if (!str)
+            return;
+        int x = 0;
+        int y = 1;
+        while (str[y])
+        {
+            if (str[x] != str[y])
+            {
+                str[++x] = str[y++];
+            }
+            else
+            {
+                x--;
+                y++;
+                while (str[y] == str[y - 1])
+                {
+                    y++;
+                }
+            }
+        }
+        str[++x] = '\0';
 	}
 
 	void NearestLargerNumberToRight(int* ar, int len)
@@ -555,8 +552,8 @@ namespace StackQuestions
 			char str[] = "mississippi";
 			char str2[] = "careermonk";
 			RemoveAdjacentDuplicates(str, stringLength(str));
-			RemoveAdjacentDuplicatesV2(str, stringLength(str));
-			RemoveAdjacentDuplicatesV2(str2, stringLength(str2));
+			RemoveAdjacentDuplicatesV2(str);
+			RemoveAdjacentDuplicatesV2(str2);
 		}
 
 		{

@@ -27,18 +27,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StackQuestions.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="QueueQuestions.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Heap.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HeapQuestions.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="SortAndSearchQuestions.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -91,6 +79,18 @@
       <Filter>Done</Filter>
     </ClInclude>
     <ClInclude Include="BinarySearchTreeQuestions.h">
+      <Filter>Done</Filter>
+    </ClInclude>
+    <ClInclude Include="QueueQuestions.h">
+      <Filter>Done</Filter>
+    </ClInclude>
+    <ClInclude Include="StackQuestions.h">
+      <Filter>Done</Filter>
+    </ClInclude>
+    <ClInclude Include="Heap.h">
+      <Filter>Done</Filter>
+    </ClInclude>
+    <ClInclude Include="HeapQuestions.h">
       <Filter>Done</Filter>
     </ClInclude>
   </ItemGroup>

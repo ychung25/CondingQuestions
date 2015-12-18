@@ -68,31 +68,20 @@ namespace HeapQuestions
 	}
 
 	// does given array represent heap?
-	bool IsItHeap(int data[], int size, int i)
-	{
-		bool bL = true;
-		bool bR = true;
+    bool IsAnArrayMeanHeap(int data[], int len)
+    {
+        for (int i = (len - 1); i >= 0; i--)
+        {
+            int parentIndex = (i - 2) / 2;
+            if (parentIndex >= 0)
+            {
+                if (data[parentIndex] > data[i])
+                    return false;
+            }
+        }
 
-		int lIndex = 2 * i + 1;
-		if (lIndex < size)
-		{
-			if (data[i] > data[lIndex])
-				bL = false;
-			else
-				bL =  IsItHeap(data, size, lIndex);
-		}
-
-		int rIndex = 2 * i + 2;
-		if (rIndex < size)
-		{
-			if (data[i] > data[rIndex])
-				bR = false;
-			else
-				bR = IsItHeap(data, size, rIndex);
-		}
-
-		return bL && bR;
-	}
+        return true;
+    }
 
 	int FindMaxInMinHeap(int data[], int size)
 	{
@@ -108,8 +97,6 @@ namespace HeapQuestions
 		return max;
 	}
 
-	// Know how to implement stack with heap
-	// Know how to implement queue with heap
 
 	void DoHeapQuestions()
 	{
@@ -135,20 +122,20 @@ namespace HeapQuestions
 			int data[] = { 999, 1, 65, 2 ,3, 78, 4, 5, 6, 88, 7, 8, 9, 10, 45, 11, 12, 13, 34, 14, 15, 16 };
 			int size = sizeof(data) / sizeof(data[0]);
 
-			bool isHeap = IsItHeap(data, size, 0);
+            bool isHeap = IsAnArrayMeanHeap(data, size);
 
 			ConvertArrayIntoHeap(data, size);
 
-			isHeap = IsItHeap(data, size, 0);
+            isHeap = IsAnArrayMeanHeap(data, size);
 			printf("");
 		}
 
 		{
 			int data[] = { 999, 1, 65, 2 ,3, 78, 4, 5, 6, 88, 7, 8, 9, 10, 45, 11, 12, 13, 34, 14, 15, 16 };
 			int size = sizeof(data) / sizeof(data[0]);
-			bool isHeap = IsItHeap(data, size, 0);
+            bool isHeap = IsAnArrayMeanHeap(data, size);
 			HeapSortClassic(data, size);
-			isHeap = IsItHeap(data, size, 0);
+            isHeap = IsAnArrayMeanHeap(data, size);
 			printf("");
 		}
 
