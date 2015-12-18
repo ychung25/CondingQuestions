@@ -218,6 +218,33 @@ namespace StringQuestions
 		TernaryNode* root;
 	};
 
+	// abcdddce -> abe
+	void RemoveAdjacentDuplicates(char* str)
+	{
+		if (!str)
+			return;
+		int x = 0;
+		int y = 1;
+		while (str[y])
+		{
+			if (str[x] != str[y])
+			{
+				str[++x] = str[y++];
+			}
+			else
+			{
+				x--;
+				y++;
+				while (str[y] == str[y - 1])
+				{
+					y++;
+				}
+			}
+		}
+		str[++x] = '\0';
+	}
+
+
 	// Given a string, replace every space char with '%20' in place.
 	// Assume the string is big enough for expansion.
 	void ReplaceSpaceWithOtherCharsInPlace(char str[])

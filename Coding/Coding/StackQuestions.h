@@ -204,8 +204,7 @@ namespace StackQuestions
 
 	}
 
-	// You can also solve it with by converting it to LL. Space O(c), Time (n)
-	// This implementation uses stack so Space O(n), Time O(n)
+	// you would usually do it with pointer manipulation, but for this one, let's say you need to use stack.
 	bool IsItPalindrome(char* string, int len)
 	{
 		int mid = len / 2;
@@ -236,7 +235,7 @@ namespace StackQuestions
 		return true;
 	}
 	 
-	// This is FUCKING AWESOME!!!!! Use only on stack to reverse stack.
+	// This is FUCKING AWESOME!!!!! Reverse stack recursively without using a temporary stack
 	void FlipIt(Stack* s, void* toInsert)
 	{
 		if (s->Size() == 0)
@@ -440,34 +439,6 @@ namespace StackQuestions
 		printf("\n\n");
 	}
 
-	// This is FUCKING AWESOME!! Inplace algorithm
-	// Space O(c)
-	// Time  O(n)
-	// len = # of chars exlcuding the '\0'
-	void RemoveAdjacentDuplicatesV2(char* str)
-	{
-        if (!str)
-            return;
-        int x = 0;
-        int y = 1;
-        while (str[y])
-        {
-            if (str[x] != str[y])
-            {
-                str[++x] = str[y++];
-            }
-            else
-            {
-                x--;
-                y++;
-                while (str[y] == str[y - 1])
-                {
-                    y++;
-                }
-            }
-        }
-        str[++x] = '\0';
-	}
 
 	void NearestLargerNumberToRight(int* ar, int len)
 	{
@@ -552,8 +523,6 @@ namespace StackQuestions
 			char str[] = "mississippi";
 			char str2[] = "careermonk";
 			RemoveAdjacentDuplicates(str, stringLength(str));
-			RemoveAdjacentDuplicatesV2(str);
-			RemoveAdjacentDuplicatesV2(str2);
 		}
 
 		{
