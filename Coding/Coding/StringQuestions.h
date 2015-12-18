@@ -7,13 +7,13 @@ namespace StringQuestions
 
 #include "stdafx.h"
 
+	/* these are applications of tree */
 	struct TrieNode
 	{
 		char data;
 		bool isEndOfString;
 		TrieNode** children;
 	};
-
 	class TrieTree
 	{
 	public:
@@ -104,119 +104,109 @@ namespace StringQuestions
 		TrieNode* rootNode;
 	};
 
+	/* THIS IS A SPECIAL APPLICATION OF TREE TO REPRESENT A DICTIONARY OF WORDS*/
 	struct TernaryNode
 	{
 		char data;
-		bool isEndOfString;
+		bool isEnd;
 		TernaryNode* left;
 		TernaryNode* mid;
 		TernaryNode* right;
 	};
-
-	TernaryNode* CreateTernaryNode(char word)
+	TernaryNode* CreateTernaryNode(char data)
 	{
-		TernaryNode* node = new TernaryNode();
-		node->data = word;
-		node->isEndOfString = false;
-		node->left = 0;
-		node->mid = 0;
-		node->right = 0;
-		return node;
+		TernaryNode* n = new TernaryNode();
+		n->isEnd = false;
+		n->data = data;
+		n->left = 0;
+		n->mid = 0;
+		n->right = 0;
+		return n;
 	}
-
-	class TernaryTree
+	TernaryNode* InsertWord(TernaryNode* n, char* word)
 	{
-	public:
-		TernaryTree() :root(0) {}
-
-		void Insert(char* word)
+		if (!n)
 		{
-			InsertHelper(&root, word);
+			n = CreateTernaryNode(*word);
 		}
 
-		bool IsSubString(char* word)
+		if (*word == n->data)
 		{
-			return IsSubStringHelper(&root, word);
-		}
-
-		void PrintAllStrings()
-		{
-			char buffer[1000];
-			PrintAllStrings(root, buffer, 0);
-		}
-
-	private:
-		void InsertHelper(TernaryNode** node, char* word)
-		{
-			if (!(*node))
-			{
-				*node = CreateTernaryNode(*word);
-				if (*(word + 1) == '\0')
-				{
-					(*node)->isEndOfString = true;
-					return;
-				}
-			}
-
-			if (*word < (*node)->data)
-			{
-				InsertHelper(&(*node)->left, word);
-			}
-			else if (*word > (*node)->data)
-			{
-				InsertHelper(&(*node)->right, word);
-			}
+			if (*(word + 1) == '\0')
+				n->isEnd = true;
 			else
-			{
-				InsertHelper(&(*node)->mid, word + 1);
-			}
+				n->mid = InsertWord(n->mid, ++word);
+		}
+		else if (*word < n->data)
+		{
+			n->left = InsertWord(n->left, word);
+		}
+		else if (*word > n->data)
+		{
+			n->right = InsertWord(n->right, word);
 		}
 
-		bool IsSubStringHelper(TernaryNode** node, char* word)
+		return n;
+	}
+	bool WordExists(TernaryNode* n, char* word)
+	{
+		if (!n)
+			return false;
+		if (*word == n->data)
 		{
-			if (!(*node))
-			{
-				return false;
-			}
-
-			if (*word < (*node)->data)
-			{
-				return IsSubStringHelper(&(*node)->left, word);
-			}
-			else if (*word > (*node)->data)
-			{
-				return IsSubStringHelper(&(*node)->right, word);
-			}
+			if (*(word + 1) == '\0')
+				return n->isEnd;
 			else
-			{
-				if (*(word + 1) == '\0')
-				{
-					return (*node)->isEndOfString;
-				}
-				return IsSubStringHelper(&(*node)->mid, word + 1);
-			}
+				return WordExists(n->mid, ++word);
 		}
-
-		void PrintAllStrings(TernaryNode* node, char buffer[], int level)
+		else if (*word < n->data)
 		{
-			if (!node)
-				return;
-
-			PrintAllStrings(node->left, buffer, level);
-
-			buffer[level] = node->data;
-			if (node->isEndOfString)
-			{
-				buffer[level + 1] = '\0';
-				printf("%s\n", buffer);
-			}
-			PrintAllStrings(node->mid, buffer, level+1);
-
-			PrintAllStrings(node->right, buffer, level);
+			return WordExists(n->left, word);
 		}
-
-		TernaryNode* root;
-	};
+		else if (*word > n->data)
+		{
+			return WordExists(n->right, word);
+		}
+	}
+	void PrintStack(Stack* s)
+	{
+		printf("\n");
+		Stack* temp = new Stack();
+		while (s->Size())
+		{
+			temp->push(s->pop());
+		}
+		while (temp->Size())
+		{
+			TernaryNode* n = (TernaryNode*)temp->pop();
+			char x = n->data;
+			printf("%c", n->data);
+			s->push(n);
+		}
+	}
+	void PrintAllWords(TernaryNode* n, Stack* s)
+	{
+		if (n->isEnd)
+		{
+			s->push(n);
+			PrintStack(s);
+			s->pop();
+		}
+		if (n->left)
+		{
+			PrintAllWords(n->left, s);
+		}
+		if (n->mid)
+		{
+			s->push(n);
+			PrintAllWords(n->mid, s);
+			s->pop();
+		}
+		if (n->right)
+		{
+			PrintAllWords(n->right, s);
+		}
+	}
 
 	// abcdddce -> abe
 	void RemoveAdjacentDuplicates(char* str)
@@ -243,7 +233,6 @@ namespace StringQuestions
 		}
 		str[++x] = '\0';
 	}
-
 
 	// Given a string, replace every space char with '%20' in place.
 	// Assume the string is big enough for expansion.
@@ -504,22 +493,27 @@ namespace StringQuestions
 		}
 
 		{
-			TernaryTree ternaryTree;
-			ternaryTree.Insert("sting");
-			ternaryTree.Insert("stink");
-			ternaryTree.Insert("pink");
-			ternaryTree.Insert("drink");
-			ternaryTree.Insert("rock");
-			ternaryTree.Insert("solid");
+			TernaryNode* root = 0;
+			root = InsertWord(root, "car");
+			root = InsertWord(root, "ca");
+			root = InsertWord(root, "cat");
+			root = InsertWord(root, "ass");
+			root = InsertWord(root, "cam");
+			root = InsertWord(root, "this");
+			root = InsertWord(root, "shout");
+			root = InsertWord(root, "south");
+			root = InsertWord(root, "park");
+			root = InsertWord(root, "think");
 
-			bool isSubString = ternaryTree.IsSubString("string");
-			isSubString = ternaryTree.IsSubString("sti");
-			isSubString = ternaryTree.IsSubString("ink");
-			isSubString = ternaryTree.IsSubString("rock");
-			isSubString = ternaryTree.IsSubString("solid");
-			isSubString = ternaryTree.IsSubString("what");
+			bool wordExists = WordExists(root, "car");
+			wordExists = WordExists(root, "ass");
+			wordExists = WordExists(root, "ca");
+			wordExists = WordExists(root, "cap");
+			wordExists = WordExists(root, "cam");
 
-			ternaryTree.PrintAllStrings();
+			Stack s;
+			PrintAllWords(root, &s);
+			printf("");
 		}
 
 		{
