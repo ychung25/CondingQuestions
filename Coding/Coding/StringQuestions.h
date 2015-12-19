@@ -208,8 +208,44 @@ namespace StringQuestions
 		}
 	}
 
+	void ReverseString(char str[])
+	{
+		int len = strlen(str);
+		int a = 0;
+		int b = len - 1;
+		while (a < b)
+		{
+			int temp = str[a];
+			str[a] = str[b];
+			str[b] = temp;
+			a++;
+			b--;
+		}
+	}
+
+	// "hello hi" -> remove 'h' -> "ello i"
+	void RemoveChars(char str[], char x)
+	{
+		int read = 0;
+		int write = 0;
+		while (str[read])
+		{
+			str[write] = str[read];
+			if (str[read] == x)
+			{
+				read++;
+			}
+			else
+			{
+				read++;
+				write++;
+			}
+		}
+		str[write] = str[read];
+	}
+
 	// abcdddce -> abe
-	void RemoveAdjacentDuplicates(char* str)
+	void RemoveDuplicates(char* str)
 	{
 		if (!str)
 			return;
@@ -278,30 +314,30 @@ namespace StringQuestions
 	// 'p' is a regex that can contain ? and *. Does 'p' exists in the string 's'?
 	bool PatternMatching(char s[], char p[])
 	{
-		if (!*s)
-		{
-			return *p ? false : true;
-		}
-		if (!*p)
-		{
+		if (!(*s) && !(*p))
 			return true;
+		if (!(*s) && *p)
+		{
+			if (*p == '*' || *p == '?')
+			{
+				return true;
+			}
+			return false;
 		}
 
-		if (*p == *s)
+		if (*p == '*')
 		{
-			return PatternMatching(++s, ++p);
+			return PatternMatching(s + 1, p) || PatternMatching(s, p + 1);
 		}
 		else if (*p == '?')
 		{
-			return PatternMatching(++s, ++p) || PatternMatching(s, ++p);
+			return PatternMatching(s + 1, p + 1) || PatternMatching(s, p + 1);
 		}
-		else if (*p == '*')
+		else if (*p)
 		{
-			return PatternMatching(++s, p) || PatternMatching(s, ++p);
-		}
-		else
-		{
-			return false;
+			if (*p != *s)
+				return false;
+			return PatternMatching(s + 1, p + 1);
 		}
 	}
 
@@ -405,38 +441,6 @@ namespace StringQuestions
 		_PrintAllCombination(s, p, 0, length, 0);
 	}
 
-	// e.g ABCCBCDA => ABBCDA => ACDA
-	void RemoveDuplicates(char s[])
-	{
-		char* temp = s;
-		int length = 0;
-		while (*temp)
-		{
-			length++;
-			temp++;
-		}
-
-		int i = 0;
-		int j = 1;
-
-		while (j < length)
-		{
-			if (s[i] == s[j])
-			{
-				i--;
-				j++;
-			}
-			else
-			{
-				s[i+1] = s[j];
-
-				i++;
-				j++;
-			}
-		}
-
-		s[i + 1] = '\0';
-	}
 
 	// e.g str1 = {A,B} str2 = {C,D} => ABCD, ACDB, ACBD, CDAB, CABD, CADB
 	void _PrintIntervening(char A[], int a, char B[], int b, char D[], char depth)
@@ -550,8 +554,14 @@ namespace StringQuestions
 		}
 
 		{
-			char str[] = "ABCCBCDABB";
+			char str[] = "ABCCCCBCDABB";
 			RemoveDuplicates(str);
+			printf("");
+		}
+
+		{
+			char str[] = "hello hi";
+			RemoveChars(str, 'h');
 			printf("");
 		}
 

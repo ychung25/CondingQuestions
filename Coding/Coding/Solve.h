@@ -107,6 +107,72 @@ namespace Solve
 		}
 	}
 
+	// 'p' is a regex that can contain ? and *. Does 'p' exists in the string 's'?
+	bool PatternMatching(char s[], char p[])
+	{
+		if (!(*s) && !(*p))
+			return true;
+		if (!(*s) && *p)
+		{
+			if (*p == '*' || *p == '?')
+			{
+				return true;
+			}
+			return false;
+		}
+
+		if (*p == '*')
+		{
+			return PatternMatching(s+1, p) || PatternMatching(s, p+1);
+		}
+		else if (*p == '?')
+		{
+			return PatternMatching(s+1, p+1) || PatternMatching(s, p+1);
+		}
+		else if (*p)
+		{
+			if (*p != *s)
+				return false;
+			return PatternMatching(s+1, p+1);
+		}
+	}
+
+	void ReplaceSpaceWithOtherCharsInPlace(char str[])
+	{
+		char* x = str;
+		int len = 0;
+		int spaces = 0;
+		while (*x)
+		{
+			if (*x == ' ')
+				spaces++;
+			len++;
+			x++;
+		}
+
+		int newlen = (len - spaces) + (3 * spaces);
+		x = str;
+		x[newlen] = '\0';
+
+		len--;
+		newlen--;
+
+		while (len >= 0)
+		{
+			if (x[len] != ' ')
+			{
+				x[newlen--] = x[len--];
+			}
+			else
+			{
+				x[newlen--] = '0';
+				x[newlen--] = '2';
+				x[newlen--] = '%';
+				len--;
+			}
+		}
+	}
+
 	void Solve()
 	{
 		TernaryNode* root = 0;
@@ -126,6 +192,36 @@ namespace Solve
 		wordExists = WordExists(root, "ca");
 		wordExists = WordExists(root, "cap");
 		wordExists = WordExists(root, "cam");
+
+		{
+			char str[100];
+			str[0] = 'a';
+			str[1] = 'b';
+			str[2] = ' ';
+			str[3] = 'c';
+			str[4] = ' ';
+			str[5] = '\0';
+			ReplaceSpaceWithOtherCharsInPlace(str);
+			printf("");
+		}
+
+		{
+			char str[] = "korea";
+			bool result = PatternMatching(str, "korea");
+			result = PatternMatching(str, "*");
+			result = PatternMatching(str, "*a");
+			result = PatternMatching(str, "*a*");
+			result = PatternMatching(str, "k*a");
+			result = PatternMatching(str, "?orea");
+			result = PatternMatching(str, "?korea");
+			result = PatternMatching(str, "korea?");
+			result = PatternMatching(str, "kore?");
+			result = PatternMatching(str, "??re?");
+
+			result = PatternMatching(str, "koreb");
+			result = PatternMatching(str, "k?oe");
+			result = PatternMatching(str, "d");
+		}
 
 		Stack s;
 		PrintAllWords(root, &s);
