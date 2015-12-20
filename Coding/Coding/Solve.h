@@ -4,227 +4,228 @@
 #include "Queue.h"
 namespace Solve
 {
-	struct TernaryNode
+	void BububleShort(int data[], int len)
 	{
-		char data;
-		bool isEnd;
-		TernaryNode* left;
-		TernaryNode* mid;
-		TernaryNode* right;
-	};
-	TernaryNode* CreateTernaryNode(char data)
-	{
-		TernaryNode* n = new TernaryNode();
-		n->isEnd = false;
-		n->data = data;
-		n->left = 0;
-		n->mid = 0;
-		n->right = 0;
-		return n;
-	}
-	TernaryNode* InsertWord(TernaryNode* n, char* word)
-	{
-		if (!n)
+		for (int j = len - 1; j > 0; j--)
 		{
-			n = CreateTernaryNode(*word);
+			for (int i = 0; i < j; i++)
+			{
+				if (data[i] > data[i + 1])
+				{
+					int temp = data[i];
+					data[i] = data[i + 1];
+					data[i + 1] = temp;
+				}
+			}
 		}
+	}
 
-		if (*word == n->data)
+	void SelectionSort(int data[], int len)
+	{
+		for (int i = 0; i < len; i++)
 		{
-			if (*(word + 1) == '\0')
-				n->isEnd = true;
+			for (int j = i + 1; j < len; j++)
+			{
+				if (data[j] < data[i])
+				{
+					int temp = data[i];
+					data[i] = data[j];
+					data[j] = temp;
+				}
+			}
+		}
+	}
+
+	void InsertionSort(int data[], int len)
+	{
+		for (int i = 0; i < len; i++)
+		{
+			int temp = data[i];
+			int j = i - 1;
+			while (j >= 0 && data[j] > temp)
+			{
+				data[j + 1] = data[j];
+				j--;
+			}
+			data[j + 1] = temp;
+		}
+	}
+
+	void QuickSort(int data[], int start, int end)
+	{
+		if (start >= end)
+			return;
+		
+		int pivot = (start + end) / 2;
+		int pivotValue = data[pivot];
+		int j = start;
+
+		for (int i = start; i <= end; i++)
+		{
+			if (data[j] < pivotValue)
+			{
+				j++;
+			}
+			if (data[i] < pivotValue && i > j)
+			{
+				if (pivot == j)
+				{
+					pivot = i;
+				}
+
+				int temp = data[i];
+				data[i] = data[j];
+				data[j] = temp;
+				j++;
+			}
+		}
+		int temp = data[pivot];
+		data[pivot] = data[j];
+		data[j] = temp;
+		pivot = j;
+
+		QuickSort(data, start, pivot - 1);
+		QuickSort(data, pivot + 1, end);
+	}
+
+	void Merge(int data[], int start, int end)
+	{
+		if (start >= end)
+			return;
+
+		int mid = (start + end) / 2;
+		int* buffer = new int[(end - start) + 1]();
+		int i = start;
+		int j = mid + 1;
+		int k = 0;
+		while (i <= mid && j <= end)
+		{
+			if (data[i] < data[j])
+			{
+				buffer[k++] = data[i++];
+			}
 			else
-				n->mid = InsertWord(n->mid, ++word);
+			{
+				buffer[k++] = data[j++];
+			}
 		}
-		else if(*word < n->data)
+		while (i <= mid)
 		{
-			n->left = InsertWord(n->left, word);
+			buffer[k++] = data[i++];
 		}
-		else if (*word > n->data)
+		while (j <= end)
 		{
-			n->right = InsertWord(n->right, word);
+			buffer[k++] = data[j++];
 		}
 
-		return n;
+		k = 0;
+		for (int i = start; i <= end; i++)
+		{
+			data[i] = buffer[k++];
+		}
+		delete[] buffer;
 	}
-	bool WordExists(TernaryNode* n, char* word)
+	void MergeSort(int data[], int start, int end)
 	{
-		if (!n)
+		if (start >= end)
+			return;
+
+		int mid = (start + end) / 2;
+		MergeSort(data, start, mid);
+		MergeSort(data, mid + 1, end);
+		Merge(data, start, end);
+	}
+
+	void BucketSort(int data[], int len, int range)
+	{
+		int* bucket = new int[range]();
+		for (int i = 0; i < len; i++)
+		{
+			bucket[data[i]]++;
+		}
+
+		int j = 0;
+		for (int i = 0; i < range; i++)
+		{
+			int count = bucket[i];
+			while (count)
+			{
+				data[j++] = i;
+				count--;
+			}
+		}
+	}
+
+	bool BinarySearch(int data[], int start, int end, int k)
+	{
+		if (start > end)
 			return false;
-		if (*word == n->data)
-		{
-			if (*(word + 1) == '\0')
-				return n->isEnd;
-			else
-				return WordExists(n->mid, ++word);
-		}
-		else if (*word < n->data)
-		{
-			return WordExists(n->left, word);
-		}
-		else if (*word > n->data)
-		{
-			return WordExists(n->right, word);
-		}
-	}
-	void PrintStack(Stack* s)
-	{
-		printf("\n");
-		Stack* temp = new Stack();
-		while (s->Size())
-		{
-			temp->push(s->pop());
-		}
-		while (temp->Size())
-		{
-			TernaryNode* n = (TernaryNode*)temp->pop();
-			char x = n->data;
-			printf("%c", n->data);
-			s->push(n);
-		}
-	}
-	void PrintAllWords(TernaryNode* n, Stack* s)
-	{
-		if (n->isEnd)
-		{
-			s->push(n);
-			PrintStack(s);
-			s->pop();
-		}
-		if (n->left)
-		{
-			PrintAllWords(n->left, s);
-		}
-		if (n->mid)
-		{
-			s->push(n);
-			PrintAllWords(n->mid, s);
-			s->pop();
-		}
-		if (n->right)
-		{
-			PrintAllWords(n->right, s);
-		}
-	}
 
-	// 'p' is a regex that can contain ? and *. Does 'p' exists in the string 's'?
-	bool PatternMatching(char s[], char p[])
-	{
-		if (!(*s) && !(*p))
+		int mid = (start + end) / 2;
+		if (k == data[mid])
+		{
 			return true;
-		if (!(*s) && *p)
-		{
-			if (*p == '*' || *p == '?')
-			{
-				return true;
-			}
-			return false;
 		}
-
-		if (*p == '*')
+		else if (k < data[mid])
 		{
-			return PatternMatching(s+1, p) || PatternMatching(s, p+1);
+			return BinarySearch(data, start, mid - 1, k);
 		}
-		else if (*p == '?')
+		else
 		{
-			return PatternMatching(s+1, p+1) || PatternMatching(s, p+1);
-		}
-		else if (*p)
-		{
-			if (*p != *s)
-				return false;
-			return PatternMatching(s+1, p+1);
-		}
-	}
-
-	void ReplaceSpaceWithOtherCharsInPlace(char str[])
-	{
-		char* x = str;
-		int len = 0;
-		int spaces = 0;
-		while (*x)
-		{
-			if (*x == ' ')
-				spaces++;
-			len++;
-			x++;
-		}
-
-		int newlen = (len - spaces) + (3 * spaces);
-		x = str;
-		x[newlen] = '\0';
-
-		len--;
-		newlen--;
-
-		while (len >= 0)
-		{
-			if (x[len] != ' ')
-			{
-				x[newlen--] = x[len--];
-			}
-			else
-			{
-				x[newlen--] = '0';
-				x[newlen--] = '2';
-				x[newlen--] = '%';
-				len--;
-			}
+			return BinarySearch(data, mid+1, end, k);
 		}
 	}
 
 	void Solve()
 	{
-		TernaryNode* root = 0;
-		root = InsertWord(root, "car");
-		root = InsertWord(root, "ca");
-		root = InsertWord(root, "cat");
-		root = InsertWord(root, "ass");
-		root = InsertWord(root, "cam");
-		root = InsertWord(root, "this");
-		root = InsertWord(root, "shout");
-		root = InsertWord(root, "south");
-		root = InsertWord(root, "park");
-		root = InsertWord(root, "think");
-
-		bool wordExists = WordExists(root, "car");
-		wordExists = WordExists(root, "ass");
-		wordExists = WordExists(root, "ca");
-		wordExists = WordExists(root, "cap");
-		wordExists = WordExists(root, "cam");
-
 		{
-			char str[100];
-			str[0] = 'a';
-			str[1] = 'b';
-			str[2] = ' ';
-			str[3] = 'c';
-			str[4] = ' ';
-			str[5] = '\0';
-			ReplaceSpaceWithOtherCharsInPlace(str);
+			int data[] = { 4,3,5,6,9,1,10,41,34 };
+			BububleShort(data, sizeof(data) / sizeof(data[0]));
 			printf("");
 		}
 
 		{
-			char str[] = "korea";
-			bool result = PatternMatching(str, "korea");
-			result = PatternMatching(str, "*");
-			result = PatternMatching(str, "*a");
-			result = PatternMatching(str, "*a*");
-			result = PatternMatching(str, "k*a");
-			result = PatternMatching(str, "?orea");
-			result = PatternMatching(str, "?korea");
-			result = PatternMatching(str, "korea?");
-			result = PatternMatching(str, "kore?");
-			result = PatternMatching(str, "??re?");
-
-			result = PatternMatching(str, "koreb");
-			result = PatternMatching(str, "k?oe");
-			result = PatternMatching(str, "d");
+			int data[] = { 4,3,5,6,9,1,10,41,34 };
+			SelectionSort(data, sizeof(data) / sizeof(data[0]));
+			printf("");
 		}
 
-		Stack s;
-		PrintAllWords(root, &s);
-		printf("");
+		{
+			int data[] = { 4,3,5,6,9,1,10,41,34 };
+			InsertionSort(data, sizeof(data) / sizeof(data[0]));
+			printf("");
+		}
+
+
+		{
+			int data[] = { 4,3,5,6,9,1,10,41,34 };
+			int end = (sizeof(data) / sizeof(data[0])) - 1;
+			QuickSort(data, 0, end);
+			printf("");
+		}
+
+		{
+			int data[] = { 4,3,5,6,9,1,10,41,34 };
+			int end = (sizeof(data) / sizeof(data[0])) - 1;
+			MergeSort(data, 0, end);
+			printf("");
+		}
+
+		{
+			int data[] = { 4,3,10,5,6,9,1,4,10,41,34,10,10 };
+			BucketSort(data, sizeof(data) / sizeof(data[0]), 50);
+			printf("");
+		}
+
+		{
+			int data[] = { 4,3,5,6,9,1,10,41,34 };
+			int end = (sizeof(data) / sizeof(data[0])) - 1;
+			bool found = BinarySearch(data, 0, end, 11);
+			found = BinarySearch(data, 0, end, 8);
+			found = BinarySearch(data, 0, end, 41);
+			found = BinarySearch(data, 0, end, 10);
+			//printf("");
+		}
+
 	}
 }

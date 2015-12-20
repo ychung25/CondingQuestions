@@ -441,39 +441,30 @@ namespace StringQuestions
 		_PrintAllCombination(s, p, 0, length, 0);
 	}
 
-
 	// e.g str1 = {A,B} str2 = {C,D} => ABCD, ACDB, ACBD, CDAB, CABD, CADB
-	void _PrintIntervening(char A[], int a, char B[], int b, char D[], char depth)
+	void _PrintIntervening(char* str1, char* str2, char* toPrintStr, int len, int i)
 	{
-		if (A[a])
+		if (!(*str1))
+			return;
+		toPrintStr[i] = *str1;
+		if (i + 1 < len)
 		{
-			D[depth] = A[a];
-			if (depth == 3)
-			{
-				printf("%s\n", D);
-			}
-			else if (depth < 3)
-			{
-				_PrintIntervening(A, a + 1, B, b, D, depth + 1);
-				_PrintIntervening(B, b, A, a + 1, D, depth + 1);
-			}
+			_PrintIntervening(str1 + 1, str2, toPrintStr, len, i + 1);
+			_PrintIntervening(str2, str1 + 1, toPrintStr, len, i + 1);
+		}
+		else
+		{
+			toPrintStr[i + 1] = '\0';
+			printf("\n%s", toPrintStr);
 		}
 	}
-	void PrintIntervening(char A[], char B[])
+	void PrintIntervening(char str1[], char str2[])
 	{
-		int length = 0;
-		char* temp = A;
-		while (*temp)
-		{
-			temp++;
-			length++;
-		}
-
-		char* D = new char[(2*length) + 1]();
-		D[(2 * length)] = '\0';
-
-		_PrintIntervening(A, 0, B, 0, D, 0);
-		_PrintIntervening(B, 0, A, 0, D, 0);
+		int len = strlen(str1);
+		char* toPrintStr = new char[len + 1]();
+		int i = 0;
+		_PrintIntervening(str1, str2, toPrintStr, len * 2, 0);
+		_PrintIntervening(str2, str1, toPrintStr, len * 2, 0);
 	}
 
 	void DoStringQuestions()
