@@ -4,6 +4,34 @@
 #include "Queue.h"
 namespace Solve
 {
+	struct Node
+	{
+		int data;
+		Node* next;
+	};
+	Node* CreateNode(int data)
+	{
+		Node* n = new Node();
+		n->data = data;
+		n->next = 0;
+		return n;
+	}
+	Node* FindMid(Node* n)
+	{
+		Node* slow = n;
+		Node* fast = n;
+		while (fast)
+		{
+			fast = fast->next;
+			if (!fast)
+				break;
+			fast = fast->next;
+			if (!fast)
+				break;
+			slow = slow->next;
+		}
+		return slow;
+	}
 	void BububleShort(int data[], int len)
 	{
 		for (int j = len - 1; j > 0; j--)
@@ -176,6 +204,52 @@ namespace Solve
 		}
 	}
 
+	Node* Merge(Node* l, Node* r)
+	{
+		Node* current = 0;
+		Node* newHead = 0;
+		while (l && r)
+		{
+			if (l->data < r->data)
+			{
+				if (!newHead)
+					newHead = l;
+				else
+					current->next = l;
+				current = l;
+				l = l->next;
+			}
+			else
+			{
+				if (!newHead)
+					newHead = r;
+				else
+					current->next = r;
+				current = r;
+				r = r->next;
+			}
+		}
+		if (l)
+			current->next = l;
+		if (r)
+			current->next = r;
+		return newHead;
+	}
+	Node* MergeSort(Node* n)
+	{
+		if (!n)
+			return 0;
+		if (!n->next)
+			return n;
+		Node* mid = FindMid(n);
+		Node* l = n;
+		Node* r = mid->next;
+		mid->next = 0;
+		l = MergeSort(l);
+		r = MergeSort(r);
+		return Merge(l, r);
+	}
+
 	void Solve()
 	{
 		{
@@ -224,8 +298,26 @@ namespace Solve
 			found = BinarySearch(data, 0, end, 8);
 			found = BinarySearch(data, 0, end, 41);
 			found = BinarySearch(data, 0, end, 10);
-			//printf("");
+			printf("");
 		}
+
+		{
+			Node* n1 = CreateNode(1);
+			Node* n2 = CreateNode(2);
+			Node* n3 = CreateNode(3);
+			Node* n4 = CreateNode(4);
+			Node* n5 = CreateNode(5);
+
+			n5->next = n4;
+			n4->next = n3;
+			n3->next = n2;
+			n2->next = n1;
+
+			Node* sorted = MergeSort(n5);
+			printf("");
+
+		}
+
 
 	}
 }
