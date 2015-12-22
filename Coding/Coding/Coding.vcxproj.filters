@@ -27,9 +27,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SortAndSearchQuestions.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="ArrayAndPointer.h">
       <Filter>Done</Filter>
     </ClInclude>
@@ -91,6 +88,9 @@
       <Filter>Done</Filter>
     </ClInclude>
     <ClInclude Include="StringQuestions.h">
+      <Filter>Done</Filter>
+    </ClInclude>
+    <ClInclude Include="SortAndSearchQuestions.h">
       <Filter>Done</Filter>
     </ClInclude>
   </ItemGroup>

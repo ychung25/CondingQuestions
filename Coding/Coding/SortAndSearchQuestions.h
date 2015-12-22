@@ -926,36 +926,6 @@ namespace SortAndSearchQuestions
 		}
 	}
 
-	// Given an array, find the second smallest element.
-	int FindSecondSmallest(int data[], int size)
-	{
-		//!!! this is wrong!!!!! because heap tree can look like
-		//         0
-		//        / \
-		//       1  100
-		//      / \
-		//     2   3
-		int lastElement = size - 1;
-		int firstParent = (lastElement - 1) / 2;
-		for (int i = firstParent; i >= 0; i--)
-		{
-			HeapifyDown(data, size, i);
-		}
-
-		if (size == 2)
-		{
-			return data[1];
-		}
-		else
-		{
-			int l = data[1];
-			int r = data[2];
-			if (l < r)
-				return l;
-			return r;
-		}
-
-	}
 
 	// This shows hany property of XOR. Given an array where there is single lonely element and others are pairs, find the lonley one.
 	// e.g {3,4,5,5,3,4,2,6,6} = 2
@@ -1080,16 +1050,11 @@ namespace SortAndSearchQuestions
 	{
 		for (int y = 0; y < height; y++)
 		{
-			if (k < data[width - 1 + (y*width)])
+			int temp = (width - 1) + (y*width);
+			if (k < data[(width - 1) + (y*width)])
 			{
-				for (int x = 0; x < width; x++)
-				{
-					if (k == data[x + (y*width)])
-					{
-						return true;
-					}
-				}
-				return false;
+				int foundIndex = 0;
+				return BinarySearch(data, (y*width), (y*width) + (width - 1), k, &foundIndex);
 			}
 		}
 		return false;
@@ -1364,6 +1329,7 @@ namespace SortAndSearchQuestions
 			int data[] = { -16, -25, -10, 14, 17, 35, -50, 0 };
 			int size = sizeof(data) / sizeof(data[0]);
 			ClosestToZero(data, size);
+			printf("");
 		}
 
 		{
@@ -1439,12 +1405,7 @@ namespace SortAndSearchQuestions
 			}
 		}
 
-		{
-			int data[] = { 3,5,9,10,23,43 };
-			int size = sizeof(data) / sizeof(data[0]);
-			int secondSmallest = FindSecondSmallest(data, size);
-			printf("");
-		}
+
 
 		{
 			int data[] = { 3,4,5,5,3,4,2,6,6 };
@@ -1465,8 +1426,8 @@ namespace SortAndSearchQuestions
 			//     |19 20 24 26|
 			//     |30 32 34 36| 
 
-			int twoDimension[] = { 1,2,4,5, 7,10,12,15, 19,20,24,16, 30,32,34,36 };
-			bool found = FindKIn2DArrayOfAccendingRowAndColum(twoDimension, 4, 4, 21);
+			int twoDimension[] = { 1,2,4,5, 7,10,12,15, 19,20,24,26, 30,32,34,36 };
+			bool found = FindKIn2DArrayOfAccendingRowAndColum(twoDimension, 4, 4, 24);
 			printf("");
 		}
 
