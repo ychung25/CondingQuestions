@@ -163,6 +163,51 @@ namespace Solve
 		MergeSort(data, mid + 1, end);
 		Merge(data, start, end);
 	}
+    Node* Merge(Node* l, Node* r)
+    {
+        Node* current = 0;
+        Node* newHead = 0;
+        while (l && r)
+        {
+            if (l->data < r->data)
+            {
+                if (!newHead)
+                    newHead = l;
+                else
+                    current->next = l;
+                current = l;
+                l = l->next;
+            }
+            else
+            {
+                if (!newHead)
+                    newHead = r;
+                else
+                    current->next = r;
+                current = r;
+                r = r->next;
+            }
+        }
+        if (l)
+            current->next = l;
+        if (r)
+            current->next = r;
+        return newHead;
+    }
+    Node* MergeSort(Node* n)
+    {
+        if (!n)
+            return 0;
+        if (!n->next)
+            return n;
+        Node* mid = FindMid(n);
+        Node* l = n;
+        Node* r = mid->next;
+        mid->next = 0;
+        l = MergeSort(l);
+        r = MergeSort(r);
+        return Merge(l, r);
+    }
 
 	void BucketSort(int data[], int len, int range)
 	{
@@ -204,120 +249,202 @@ namespace Solve
 		}
 	}
 
-	Node* Merge(Node* l, Node* r)
-	{
-		Node* current = 0;
-		Node* newHead = 0;
-		while (l && r)
-		{
-			if (l->data < r->data)
-			{
-				if (!newHead)
-					newHead = l;
-				else
-					current->next = l;
-				current = l;
-				l = l->next;
-			}
-			else
-			{
-				if (!newHead)
-					newHead = r;
-				else
-					current->next = r;
-				current = r;
-				r = r->next;
-			}
-		}
-		if (l)
-			current->next = l;
-		if (r)
-			current->next = r;
-		return newHead;
-	}
-	Node* MergeSort(Node* n)
-	{
-		if (!n)
-			return 0;
-		if (!n->next)
-			return n;
-		Node* mid = FindMid(n);
-		Node* l = n;
-		Node* r = mid->next;
-		mid->next = 0;
-		l = MergeSort(l);
-		r = MergeSort(r);
-		return Merge(l, r);
-	}
+
+    void HeapifyDown(int data[], int size, int i)
+    {
+        int l = (2 * i) + 1;
+        int r = (2 * i) + 2;
+        if (l < size && r < size)
+        {
+            if (data[l] < data[r])
+            {
+                if (data[l] < data[i])
+                {
+                    int temp = data[i];
+                    data[i] = data[l];
+                    data[l] = temp;
+                    HeapifyDown(data, size, l);
+                }
+            }
+            else
+            {
+                if (data[r] < data[i])
+                {
+                    int temp = data[i];
+                    data[i] = data[r];
+                    data[r] = temp;
+                    HeapifyDown(data, size, r);
+                }
+            }
+        }
+        else if (l < size)
+        {
+            if (data[l] < data[i])
+            {
+                int temp = data[i];
+                data[i] = data[l];
+                data[l] = temp;
+                HeapifyDown(data, size, l);
+            }
+        }
+    }
+    void HeapSort(int data[], int size)
+    {
+        int lastElement = size - 1;
+        int firstParent = (lastElement - 1) / 2;
+        for (int i = firstParent; i >= 0; i--)
+        {
+            HeapifyDown(data, size, i);
+        }
+
+        for (int i = 0; i < size; i++)
+        {
+            int temp = data[0];
+            data[0] = data[lastElement];
+            data[lastElement] = temp;
+
+            HeapifyDown(data, lastElement, 0);
+            lastElement--;
+        }
+
+        int start = 0;
+        int end = size - 1;
+        while (start < end)
+        {
+            int temp = data[start];
+            data[start] = data[end];
+            data[end] = temp;
+            start++;
+            end--;
+        }
+    }
+
+    int FindMode(int data[], int len)
+    {
+        if (len < 1)
+            return -999;
+        HeapSort(data, len);
+
+        int prev = data[0];
+        int maxRepeatCount = 0;
+        int repeatCount = 0;
+
+        for (int i = 1; i < len; i++)
+        {
+            if (data[i] == data[i - 1])
+            {
+                repeatCount++;
+                if (++repeatCount > maxRepeatCount)
+                {
+                    maxRepeatCount = repeatCount;
+                    prev = data[i - 1];
+                }
+            }
+            else
+            {
+                repeatCount = 0;
+            }
+        }
+        return prev;
+
+    }
+
+    bool FindAandBThatMakesUpK(int data[], int len, int k, int* a, int *b)
+    {
+        HeapSort(data, len);
+
+        int start = 0;
+        int end = len-1;
+        while (start < end)
+        {
+            if (data[start] + data[end] == k)
+            {
+                *a = data[start];
+                *b = data[end];
+                return true;
+            }
+            else if (data[start] + data[end] < k)
+            {
+                start++;
+            }
+            else if (data[start] + data[end] > k)
+            {
+                end--;
+            }
+        }
+        return false;
+    }
+    void FindAandBandCThatMakesupK(int data[], int len, int k)
+    {
+        HeapSort(data, len);
+        for (int i = 0; i < len; i++) 
+        {
+            int m = k - data[i];
+            int a;
+            int b;
+            if (FindAandBThatMakesUpK(data, len, m, &a, &b))
+            {
+                printf("(%d,%d,%d)\n", data[i], a, b);
+            }
+        }
+    }
+
+    void MergeTwoSortedArray(int A[], int m, int B[], int n)
+    {
+        int a = (m - n) - 1;
+        int b = n - 1;
+        int w = m - 1;
+        while (w >= 0)
+        {
+            if (A[a] > B[b])
+                A[w--] = A[a--];
+            else
+                A[w--] = B[b--];
+        }
+    }
 
 	void Solve()
 	{
-		{
-			int data[] = { 4,3,5,6,9,1,10,41,34 };
-			BububleShort(data, sizeof(data) / sizeof(data[0]));
-			printf("");
-		}
-
-		{
-			int data[] = { 4,3,5,6,9,1,10,41,34 };
-			SelectionSort(data, sizeof(data) / sizeof(data[0]));
-			printf("");
-		}
-
-		{
-			int data[] = { 4,3,5,6,9,1,10,41,34 };
-			InsertionSort(data, sizeof(data) / sizeof(data[0]));
-			printf("");
-		}
+        {
+            int data[] = { 4,2,2,3,5,4,4,1,3,5,5,2,2 };
+            int mode = FindMode(data, sizeof(data) / sizeof(data[0]));
+            printf("");
+        }
 
 
-		{
-			int data[] = { 4,3,5,6,9,1,10,41,34 };
-			int end = (sizeof(data) / sizeof(data[0])) - 1;
-			QuickSort(data, 0, end);
-			printf("");
-		}
+        {
+            int data[] = { 4,2,2,3,5,4,4,1,3,5,5,2,2 };
+            int mode = FindMode(data, sizeof(data) / sizeof(data[0]));
+            printf("");
+        }
 
-		{
-			int data[] = { 4,3,5,6,9,1,10,41,34 };
-			int end = (sizeof(data) / sizeof(data[0])) - 1;
-			MergeSort(data, 0, end);
-			printf("");
-		}
+        {
+            int data[] = { 1,3,5,6,7,2,4};
+            int a;
+            int b;
+            if (FindAandBThatMakesUpK(data, sizeof(data) / sizeof(data[0]), 10, &a, &b))
+            {
+                printf("%d, %d", a, b);
+            }
+            
+            printf("");
+        }
 
-		{
-			int data[] = { 4,3,10,5,6,9,1,4,10,41,34,10,10 };
-			BucketSort(data, sizeof(data) / sizeof(data[0]), 50);
-			printf("");
-		}
+        {
+            printf("\nFindAandBandCThatMakesupK\n");
+            int data[] = {1,4,10,5,7,3,20,45,98,8};
+            FindAandBandCThatMakesupK(data, sizeof(data) / sizeof(data[0]), 15);
+            printf("");
+        }
 
-		{
-			int data[] = { 4,3,5,6,9,1,10,41,34 };
-			int end = (sizeof(data) / sizeof(data[0])) - 1;
-			bool found = BinarySearch(data, 0, end, 11);
-			found = BinarySearch(data, 0, end, 8);
-			found = BinarySearch(data, 0, end, 41);
-			found = BinarySearch(data, 0, end, 10);
-			printf("");
-		}
-
-		{
-			Node* n1 = CreateNode(1);
-			Node* n2 = CreateNode(2);
-			Node* n3 = CreateNode(3);
-			Node* n4 = CreateNode(4);
-			Node* n5 = CreateNode(5);
-
-			n5->next = n4;
-			n4->next = n3;
-			n3->next = n2;
-			n2->next = n1;
-
-			Node* sorted = MergeSort(n5);
-			printf("");
-
-		}
-
+        {
+            int A[] = { 2, 4, 5, 6, 7 , 0, 0 };
+            int B[] = { 3, 9 };
+            int m = sizeof(A) / sizeof(A[0]);
+            int n = sizeof(B) / sizeof(B[0]);
+            MergeTwoSortedArray(A, m, B, n);
+            printf("");
+        }
 
 	}
 }
