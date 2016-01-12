@@ -414,7 +414,28 @@ namespace SortAndSearchQuestions
 		}
 	}
 
-
+	bool IterativeBinarySearch(int data[], int start, int end, int x)
+	{
+		while (start <= end)
+		{
+			int mid = (start + end) / 2;
+			if (data[mid] == x)
+			{
+				return true;
+			}
+			else if (x < data[mid])
+			{
+				start = start;
+				end = mid - 1;
+			}
+			else if (x > data[mid])
+			{
+				start = mid + 1;
+				end = end;
+			}
+		}
+		return false;
+	}
 
 
 	// Find the mode.
